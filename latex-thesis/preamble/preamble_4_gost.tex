@@ -1,3 +1,5 @@
+%!TEX root = ../main.tex
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%% ГОСТОВСКИЕ ПРИБАМБАСЫ %%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -70,8 +72,8 @@
 \titlecontents{section}
 [3 em] %
 {\normalsize}
-{\contentslabel{1.75 em}}
-{\hspace{-1.75 em}}
+{\contentslabel{2 em}}
+{\hspace{-2 em}}
 {\normalsize\titlerule*[10pt]{.}\contentspage}
 
 \titlecontents{subsection}
@@ -83,29 +85,35 @@
 
 % Правильные подписи под таблицей и рисунком
 % Документация к пакету на русском языке!
-\usepackage[tableposition=top, singlelinecheck=false]{caption}
+\usepackage[singlelinecheck=false]{caption}
 \usepackage{subcaption}
 
 \DeclareCaptionStyle{base}%
 [justification=centering,indention=0pt]{}
 \DeclareCaptionLabelFormat{gostfigure}{Рисунок #2}
+\DeclareCaptionLabelFormat{gostsubfigure}{(#2)}
 \DeclareCaptionLabelFormat{gosttable}{Таблица #2}
+\DeclareCaptionLabelFormat{gostsubtable}{#2)}
 
 \DeclareCaptionLabelSeparator{gost}{~---~}
-\captionsetup{labelsep=gost}
+\DeclareCaptionLabelSeparator{subgost}{~}
 
 \DeclareCaptionStyle{fig01}%
-[margin=5mm,justification=centering]%
+[margin=0mm,justification=centering,indention=0pt,parindent=0pt]%
 {margin={3em,3em}}
-\captionsetup*[figure]{style=fig01,labelsep=gost,labelformat=gostfigure,format=hang}
+\captionsetup*[figure]{position=below,style=fig01,labelsep=gost,labelformat=gostfigure,format=hang}
+\captionsetup*[subfigure]{position=below,style=fig01,labelsep=subgost,labelformat=gostsubfigure,format=hang}
+\renewcommand\thesubfigure{\asbuk{subfigure}}
 
 \DeclareCaptionStyle{tab01}%
-[margin=5mm,justification=centering]%
+[margin=0mm,justification=raggedright,indention=0pt,parindent=0pt]%
 {margin={3em,3em}}
-\captionsetup*[table]{style=tab01,labelsep=gost,labelformat=gosttable,format=hang}
+\captionsetup*[table]{position=top,style=tab01,labelsep=gost,labelformat=gosttable,format=hang}
+\captionsetup*[subtable]{position=top,style=tab01,labelsep=subgost,labelformat=gostsubtable,format=hang}
+\renewcommand\thesubtable{\asbuk{subtable}}
 
 % межстрочный отступ в таблице
-\renewcommand{\arraystretch}{1.2}
+\renewcommand{\arraystretch}{1}
 
 % многостраничные таблицы под РОССИЙСКИЙ СТАНДАРТ
 % ВНИМАНИЕ! Обязательно после пакета caption!
@@ -148,10 +156,10 @@
 
 %%%%%%%%%% Список литературы %%%%%%%%%%
 
-\usepackage[backend=biber,style=gost-numeric, maxbibnames=9,maxcitenames=2,uniquelist=false, babel=other]{biblatex}
+\usepackage[backend=biber, style=gost-numeric, maxbibnames=9, maxcitenames=2, uniquelist=false, babel=other, sorting=nyt]{biblatex}
 
 %\addbibresource{diploma.bib} % this might not work in online TeX compilers
-\bibliography{./\mybibliographyfilename} % and this should work
+\bibliography{bibliography.bib} % and this should work
 
 % Ещё немного настроек
 \DeclareFieldFormat{postnote}{#1} %убирает с. и p.

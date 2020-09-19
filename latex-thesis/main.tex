@@ -3,10 +3,10 @@
 %!TEX root = main.tex
 \newcommand{\mybibliographyfilename}{diploma.bib}
 
-\input{preamble/preamble_text.tex}
-\input{preamble/preamble_images.tex}
-\input{preamble/preamble_tables.tex}
-\input{preamble/preamble_gost.tex}
+\input{preamble/preamble_1_text.tex}
+\input{preamble/preamble_2_images.tex}
+\input{preamble/preamble_3_tables.tex}
+\input{preamble/preamble_4_gost.tex}
 
 %%%%%%%%% Свои команды %%%%%%%%%%%
 
@@ -53,11 +53,7 @@
 	%%%%%%%%%%%%%%%%%%%% Приложения %%%%%%%%%%%%%%%%%%%%
 	
 	\appendix
-	\renewcommand{\thechapter}{\Asbuk{chapter}}
-	
-	%%%%%%%%%% titlesec для приложений
-	\titleformat{\chapter}
-	{\normalfont\bfseries\large}{\chaptertitlename~\thechapter}{0.25em}{\normalfont}
+	\input{preamble/appendix.tex}
 		
 	\titlecontents{chapter}
 	[0 em] % 
