@@ -15,7 +15,7 @@
     \usepackage{csquotes}
 #+end_src
 
-При работе с XeLaTeX используется другой набор пакетов:
+При работе с XeLaTeX используется другой набор пакетов.
 
 #+begin_src tex :tangle no
     \usepackage{fontspec}
@@ -58,19 +58,19 @@
     \usepackage{mathtools}
 #+end_src
 
-Показывать номера только у тех формул, на которые есть \eqref{} в тексте:
+Показывать номера только у тех формул, на которые есть \eqref{} в тексте.
 
 #+begin_src tex :tangle no
     \mathtoolsset{showonlyrefs=true}
 #+end_src
 
-Нумерация формул слева:
+Нумерация формул слева.
 
 #+begin_src tex :tangle no
     \usepackage{leqno}
 #+end_src
 
-Работа с единицами измерения:
+Работа с единицами измерения.
 
 #+begin_src tex :tangle no
     \usepackage{siunitx}
@@ -93,18 +93,16 @@
 #+begin_src tex :tangle preamble/packages.tex
     \usepackage{graphicx}
     \usepackage{graphics}
-    % \usepackage{wrapfig}
-    \usepackage{tikz, pgfplots}
 #+end_src
 
-Язык для рисования графики из LaTeX'a:
+Язык для рисования графики из LaTeX'a.
 
 #+begin_src tex :tangle no
     \usepackage{tikz}
     \usepackage{pgfplots}
 #+end_src
 
-Обтекание рисунков и таблиц текстом:
+Обтекание рисунков и таблиц текстом. Отключено.
 
 #+begin_src tex :tangle no
     \usepackage{wrapfig}
@@ -118,7 +116,7 @@
 
 *** Таблицы
 
-Новые типы колонок:
+Новые типы колонок.
 
 #+begin_src tex :tangle preamble/packages.tex
     \usepackage{tabularx}
@@ -130,38 +128,38 @@
     \newcolumntype{Z}{>{\centering\arraybackslash}X}
 #+end_src
 
-Длинные таблицы:
+Длинные таблицы.
 
 #+begin_src tex :tangle preamble/packages.tex
     \usepackage{longtable}
 #+end_src
 
-Объединение столбцов и колонок:
+Объединение столбцов и колонок.
 
 #+begin_src tex :tangle preamble/packages.tex
     \usepackage{multicol}
     \usepackage{multirow}
 #+end_src
 
-Возможность позиционировать объекты в нужном месте:
+Возможность позиционировать объекты в нужном месте.
 
 #+begin_src tex :tangle preamble/packages.tex
     \usepackage{float}
 #+end_src
 
-Сжатие таблиц по ширине:
+Сжатие таблиц по ширине.
 
 #+begin_src tex :tangle preamble/packages.tex
     \usepackage{adjustbox}
 #+end_src
 
-Таблицы как в книгах (в смысле оформления):
+Таблицы как в книгах (в смысле оформления).
 
 #+begin_src tex :tangle preamble/packages.tex
     \usepackage{booktabs}
 #+end_src
 
-Дополнительная работа с таблицами:
+Дополнительная работа с таблицами.
 
 #+begin_src tex :tangle preamble/packages.tex
     \usepackage{array}
@@ -185,7 +183,7 @@
     \usepackage[backend=biber, style=gost-numeric, maxbibnames=9, maxcitenames=2, uniquelist=false, babel=other, sorting=nyt]{biblatex}
 #+end_src
 
-Добавляем библиографию:
+Добавляем библиографию.
 
 #+begin_src tex :tangle preamble/packages.tex
     \bibliography{bibliography.bib}
@@ -193,7 +191,7 @@
 
 ** Полезные пакеты
 
-Для многострочных комментариев:
+Для многострочных комментариев.
 
 #+begin_src tex :tangle preamble/packages.tex
     \usepackage{verbatim}
@@ -218,7 +216,7 @@
 
 ** Гиперссылки
 
-Цвета:
+Цвета.
 
 #+begin_src tex :tangle preamble/packages.tex
     \usepackage{xcolor}
@@ -255,13 +253,13 @@
 
 ** Всякие разные расстояния (пакет =setspace=)
 
-Полуторный межстрочный интервал:
+Полуторный межстрочный интервал.
 
 #+begin_src tex :tangle preamble/gost.tex
     \setstretch{1.33}
 #+end_src
 
-Красная строка:
+Красная строка.
 
 #+begin_src tex :tangle preamble/gost.tex
     \setlength{\parindent}{12.5mm}
@@ -269,20 +267,20 @@
 
 ** Настройка переносов
 
-Разрешение переноса двух и более символов:
+Разрешение переноса двух и более символов.
 
 #+begin_src tex :tangle preamble/gost.tex
     \righthyphenmin=2
 #+end_src
 
-Наказание за вдовствующие и сиротствующие строки:
+Наказание за вдовствующие и сиротствующие строки.
 
 #+begin_src tex :tangle preamble/gost.tex
     \widowpenalty=10000
     %\clubpenalty=10000
 #+end_src
 
-Ещё какое-то наказание:
+Ещё какое-то наказание.
 
 #+begin_src tex :tangle preamble/gost.tex
     \tolerance=1000
@@ -297,13 +295,13 @@
     \fancyhead[C]{\thepage}
 #+end_src
 
-Не рисовать черту:
+Не рисовать черту.
 
 #+begin_src tex :tangle preamble/gost.tex
     \renewcommand{\headrulewidth}{0pt}
 #+end_src
 
-Нумерация страниц с надписью "Глава":
+Нумерация страниц с надписью "Глава".
 
 #+begin_src tex :tangle preamble/gost.tex
     \patchcmd{\chapter}{\thispagestyle{plain}}{\thispagestyle{fancy}}{}{}
@@ -318,7 +316,7 @@
     \makeatother
 #+end_src
 
-Редактирование глав:
+Редактирование глав.
 
 #+begin_src tex :tangle preamble/gost.tex
     \titleformat{\chapter}{\normalfont\large\bfseries\raggedright\hyphenpenalty=10000}{\thechapter }{0.5 em}{}
@@ -329,7 +327,7 @@
     \titlecontents{chapter}[1em]{\normalsize}{\contentslabel{1 em}}{\hspace{-1 em}}{\normalsize\titlerule*[10pt]{.}\contentspage}
 #+end_src
 
-Редактирование подзаголовков:
+Редактирование подзаголовков.
 
 #+begin_src tex :tangle preamble/gost.tex
     \titleformat{\section}{\bfseries\raggedright}{\thesection}{0.5 em}{}
@@ -350,7 +348,7 @@
     \DeclareCaptionStyle{base}[justification=centering,indention=0pt]{}
 #+end_src
 
-Разделители в подписях:
+Разделители в подписях.
 
 #+begin_src tex :tangle preamble/gost.tex
     \DeclareCaptionLabelSeparator{gost}{~---~}
@@ -432,13 +430,13 @@ Cообщаем окружению о том, что существует так
 
 ** Список литературы
 
-Убираем страницы:
+Убираем страницы.
 
 #+begin_src tex :tangle preamble/gost.tex
     \DeclareFieldFormat{postnote}{#1}
 #+end_src
 
-Убираем курсив с авторов:
+Убираем курсив с авторов.
 
 #+begin_src tex :tangle preamble/gost.tex
     \renewcommand*{\mkgostheading}[1]{#1}
@@ -460,7 +458,7 @@ Cообщаем окружению о том, что существует так
     }}
 #+end_src
 
-Приводим английские источники в соответствие:
+Приводим английские источники в соответствие.
 
 #+begin_src tex :tangle preamble/gost.tex
     \DefineBibliographyStrings{english}{%
@@ -471,13 +469,13 @@ Cообщаем окружению о том, что существует так
 
 ** Приложения
 
-Нумеруем приложения буквами:
+Нумеруем приложения буквами.
 
 #+begin_src tex :tangle preamble/appendix.tex
     \renewcommand{\thechapter}{\Asbuk{chapter}}
 #+end_src
 
-Вносим приложения в оглавление:
+Вносим приложения в оглавление.
 
 #+begin_src tex :tangle preamble/appendix.tex
     \titleformat{\chapter}{\normalfont\bfseries\large}{\chaptertitlename~\thechapter}{0.25em}{\normalfont}
