@@ -1,0 +1,494 @@
+#+title: GOST template
+#+property: header-args :file-name preamble.org
+
+Шаблон для написания дипломов и диссертаций в LaTeX.
+
+* Базовая преамбула
+
+** Подгрузка шрифтов, кодировок и языков
+
+#+begin_src tex :tangle preamble/packages.tex
+    \usepackage{cmap}
+    \usepackage[utf8]{inputenc}
+    \usepackage[T2A,T1]{fontenc}
+    \usepackage[english, russian]{babel}
+    \usepackage{csquotes}
+#+end_src
+
+При работе с XeLaTeX используется другой набор пакетов:
+
+#+begin_src tex :tangle no
+    \usepackage{fontspec}
+    \setmainfont{Times New Roman}
+    \usepackage{unicode-math}
+    \setmathfont{Asana-Math.otf}
+    \setmonofont{Courier New}
+    \setmathfont[range=\int]{Neo Euler}
+#+end_src
+
+** Формат страниц
+
+#+begin_src tex :tangle preamble/packages.tex
+    \usepackage{geometry}
+    \usepackage{setspace}
+    \usepackage{indentfirst}
+#+end_src
+
+** Нумерация страниц
+
+#+begin_src tex :tangle preamble/packages.tex
+    \usepackage{fancyhdr}
+    \usepackage{etoolbox}
+#+end_src
+
+** Пакеты для редактирования заголовков и оглавления
+
+#+begin_src tex :tangle preamble/packages.tex
+    \usepackage{titlesec}
+    \usepackage{titletoc}
+#+end_src
+
+** Пакеты для работы с математикой
+
+#+begin_src tex :tangle preamble/packages.tex
+    \usepackage{amsmath}
+    \usepackage{amsfonts}
+    \usepackage{amssymb}
+    \usepackage{amsthm}
+    \usepackage{mathtools}
+#+end_src
+
+Показывать номера только у тех формул, на которые есть \eqref{} в тексте:
+
+#+begin_src tex :tangle no
+    \mathtoolsset{showonlyrefs=true}
+#+end_src
+
+Нумерация формул слева:
+
+#+begin_src tex :tangle no
+    \usepackage{leqno}
+#+end_src
+
+Работа с единицами измерения:
+
+#+begin_src tex :tangle no
+    \usepackage{siunitx}
+    \sisetup{
+        table-number-alignment = center
+    }
+#+end_src
+
+** Рисунки и таблицы
+
+*** Подписи
+
+#+begin_src tex :tangle preamble/packages.tex
+    \usepackage{caption}
+    \usepackage{subcaption}
+#+end_src
+
+*** Рисунки
+
+#+begin_src tex :tangle preamble/packages.tex
+    \usepackage{graphicx}
+    \usepackage{graphics}
+    % \usepackage{wrapfig}
+    \usepackage{tikz, pgfplots}
+#+end_src
+
+Язык для рисования графики из LaTeX'a:
+
+#+begin_src tex :tangle no
+    \usepackage{tikz}
+    \usepackage{pgfplots}
+#+end_src
+
+Обтекание рисунков и таблиц текстом:
+
+#+begin_src tex :tangle no
+    \usepackage{wrapfig}
+#+end_src
+
+Задаем папки с картинками. Можно менять по своему усмотрению.
+
+#+begin_src tex :tangle preamble/packages.tex
+    \graphicspath{{images/}{pictures/}}
+#+end_src
+
+*** Таблицы
+
+Новые типы колонок:
+
+#+begin_src tex :tangle preamble/packages.tex
+    \usepackage{tabularx}
+    \usepackage{tabulary}
+
+    \newcolumntype{C}{>{\centering\arraybackslash}X}
+    \newcolumntype{L}{>{\raggedright\arraybackslash}X}
+    \newcolumntype{Y}{>{\arraybackslash}X}
+    \newcolumntype{Z}{>{\centering\arraybackslash}X}
+#+end_src
+
+Длинные таблицы:
+
+#+begin_src tex :tangle preamble/packages.tex
+    \usepackage{longtable}
+#+end_src
+
+Объединение столбцов и колонок:
+
+#+begin_src tex :tangle preamble/packages.tex
+    \usepackage{multicol}
+    \usepackage{multirow}
+#+end_src
+
+Возможность позиционировать объекты в нужном месте:
+
+#+begin_src tex :tangle preamble/packages.tex
+    \usepackage{float}
+#+end_src
+
+Сжатие таблиц по ширине:
+
+#+begin_src tex :tangle preamble/packages.tex
+    \usepackage{adjustbox}
+#+end_src
+
+Таблицы как в книгах (в смысле оформления):
+
+#+begin_src tex :tangle preamble/packages.tex
+    \usepackage{booktabs}
+#+end_src
+
+Дополнительная работа с таблицами:
+
+#+begin_src tex :tangle preamble/packages.tex
+    \usepackage{array}
+    \usepackage{delarray}
+#+end_src
+
+** Программный код
+
+Включает подсветку команд в программах!
+Нужно, чтобы на компе стоял =Python=, надо поставить пакет =Pygments=, в котором он сделан, через =pip=.
+
+Отключено, так как на текущий момент мне не нужно.
+
+#+begin_src tex :tangle no
+    \usepackage{minted}
+#+end_src
+
+** Список литературы
+
+#+begin_src tex :tangle preamble/packages.tex
+    \usepackage[backend=biber, style=gost-numeric, maxbibnames=9, maxcitenames=2, uniquelist=false, babel=other, sorting=nyt]{biblatex}
+#+end_src
+
+Добавляем библиографию:
+
+#+begin_src tex :tangle preamble/packages.tex
+    \bibliography{bibliography.bib}
+#+end_src
+
+** Полезные пакеты
+
+Для многострочных комментариев:
+
+#+begin_src tex :tangle preamble/packages.tex
+    \usepackage{verbatim}
+#+end_src
+
+Дополнительные плюшки для списков. Например, =\begin{enumerate}[resume]= позволяет продолжить нумерацию в новом списке.
+
+#+begin_src tex :tangle preamble/packages.tex
+    \usepackage{enumitem}
+#+end_src
+
+Вставка в документ заметок о том, что осталось сделать.
+- =\todo{Здесь надо коэффициенты исправить}=
+- =\missingfigure{Здесь будет Последний день Помпеи}=
+- =\listoftodos --- печатает все поставленные \todo'шки=
+
+Отключено.
+
+#+begin_src tex :tangle no
+    \usepackage{todonotes}
+#+end_src
+
+** Гиперссылки
+
+Цвета:
+
+#+begin_src tex :tangle preamble/packages.tex
+    \usepackage{xcolor}
+#+end_src
+
+Делаем ссылки внутри документа интерактивными. Данный пакет *должен* быть последним, так как он много чего переопределяет из других пакетов.
+
+#+begin_src tex :tangle preamble/packages.tex
+    \usepackage{hyperref}
+    \hypersetup{
+    	unicode=true,
+    	colorlinks=true,
+        urlcolor=blue,
+        linkcolor=black,
+        citecolor=black,
+        breaklinks
+    }
+#+end_src
+
+* ГОСТовские <<прибамбасы>>
+
+** Размер листа бумаги (пакет =geometry=)
+
+#+begin_src tex :tangle preamble/gost.tex
+    \geometry{
+        paper=a4paper,
+        top=15mm,
+        bottom=15mm,
+        left=35mm,
+        right=10mm,
+        includehead
+    }
+#+end_src
+
+** Всякие разные расстояния (пакет =setspace=)
+
+Полуторный межстрочный интервал:
+
+#+begin_src tex :tangle preamble/gost.tex
+    \setstretch{1.33}
+#+end_src
+
+Красная строка:
+
+#+begin_src tex :tangle preamble/gost.tex
+    \setlength{\parindent}{12.5mm}
+
+    \righthyphenmin=2    % Разрешение переноса двух и более символов
+    \widowpenalty=10000  % Наказание за вдовствующую строку (одна строка абзаца на этой странице, остальное --- на следующей)
+    %\clubpenalty=10000  % Наказание за сиротствующую строку (омерзительно висящая одинокая строка в начале страницы)
+    \tolerance=1000      % Ещё какое-то наказание.
+#+end_src
+
+** Настройка переносов
+
+Разрешение переноса двух и более символов:
+
+#+begin_src tex :tangle preamble/gost.tex
+    \righthyphenmin=2    % Разрешение переноса двух и более символов
+    \widowpenalty=10000  % Наказание за вдовствующую строку (одна строка абзаца на этой странице, остальное --- на следующей)
+    %\clubpenalty=10000  % Наказание за сиротствующую строку (омерзительно висящая одинокая строка в начале страницы)
+    \tolerance=1000      % Ещё какое-то наказание.
+#+end_src
+
+Наказание за вдовствующие и сиротствующие строки:
+
+#+begin_src tex :tangle preamble/gost.tex
+    \widowpenalty=10000
+    %\clubpenalty=10000
+    \tolerance=1000      %
+#+end_src
+
+Ещё какое-то наказание:
+
+#+begin_src tex :tangle preamble/gost.tex
+    \tolerance=1000
+#+end_src
+
+** Нумерация страниц сверху по центру (пакет =fancyhdr=)
+
+#+begin_src tex :tangle preamble/gost.tex
+    \pagestyle{fancy}
+    \fancyhead{ }
+    \fancyfoot{ }
+    \fancyhead[C]{\thepage}
+#+end_src
+
+Не рисовать черту:
+
+#+begin_src tex :tangle preamble/gost.tex
+    \renewcommand{\headrulewidth}{0pt}
+#+end_src
+
+Нумерация страниц с надписью "Глава":
+
+#+begin_src tex :tangle preamble/gost.tex
+    \patchcmd{\chapter}{\thispagestyle{plain}}{\thispagestyle{fancy}}{}{}
+#+end_src
+
+** Расположение заголовков (пакет =titlesec=)
+
+#+begin_src tex :tangle preamble/gost.tex
+    \makeatletter
+    \patchcmd{\ttlh@hang}{\parindent\z@}{\parindent\z@\leavevmode}{}{}
+    \patchcmd{\ttlh@hang}{\noindent}{}{}{}
+    \makeatother
+#+end_src
+
+Редактирование глав:
+
+#+begin_src tex :tangle preamble/gost.tex
+    \titleformat{\chapter}{\normalfont\large\bfseries\raggedright\hyphenpenalty=10000}{\thechapter }{0.5 em}{}
+    \titleformat{name=\chapter,numberless}{\centering\large\bfseries}{}{0.25em}{}
+
+    \titlespacing{\chapter}{0pt}{-\baselineskip}{\baselineskip}
+
+    \titlecontents{chapter}[1em]{\normalsize}{\contentslabel{1 em}}{\hspace{-1 em}}{\normalsize\titlerule*[10pt]{.}\contentspage}
+#+end_src
+
+Редактирование подзаголовков:
+
+#+begin_src tex :tangle preamble/gost.tex
+    \titleformat{\section}{\bfseries\raggedright}{\thesection}{0.5 em}{}
+    \titlespacing*{\section}{0 pt}{\baselineskip}{\baselineskip}
+    \titlecontents{section}[3 em]{\normalsize}{\contentslabel{2 em}}{\hspace{-2 em}}{\normalsize\titlerule*[10pt]{.}\contentspage}
+
+    \titleformat{\subsection}{\bfseries\raggedright}{\thesubsection}{0.5 em}{}
+    \titlespacing*{\subsection}{0 pt}{\baselineskip}{\baselineskip}
+    \titlecontents{subsection}[6 em]{\normalsize}{\contentslabel{3 em}}{\hspace{-3 em}}{\normalsize\titlerule*[10pt]{.}\contentspage}
+#+end_src
+
+** Правильные подписи под таблицей и рисунком
+
+#+begin_src tex :tangle preamble/gost.tex
+    \captionsetup{
+        singlelinecheck=false
+    }
+    \DeclareCaptionStyle{base}[justification=centering,indention=0pt]{}
+#+end_src
+
+Разделители в подписях:
+
+#+begin_src tex :tangle preamble/gost.tex
+    \DeclareCaptionLabelSeparator{gost}{~---~}
+    \DeclareCaptionLabelSeparator{subgost}{~}
+#+end_src
+
+*** Рисунки
+
+#+begin_src tex :tangle preamble/gost.tex
+    \DeclareCaptionLabelFormat{gostfigure}{Рисунок #2}
+    \DeclareCaptionLabelFormat{gostsubfigure}{(#2)}
+
+    \DeclareCaptionStyle{fig01}[margin=0mm,justification=centering,indention=0pt,parindent=0pt]{margin={3em,3em}}
+    \captionsetup*[figure]{position=below,style=fig01,labelsep=gost,labelformat=gostfigure,format=hang}
+    \captionsetup*[subfigure]{position=below,style=fig01,labelsep=subgost,labelformat=gostsubfigure,format=hang}
+    \renewcommand\thesubfigure{\asbuk{subfigure}}
+#+end_src
+
+*** Таблицы
+
+#+begin_src tex :tangle preamble/gost.tex
+    \DeclareCaptionLabelFormat{gosttable}{Таблица #2}
+    \DeclareCaptionLabelFormat{gostsubtable}{#2)}
+
+    \DeclareCaptionStyle{tab01}[margin=0mm,justification=raggedright,indention=0pt,parindent=0pt]{margin={3em,3em}}
+    \captionsetup*[table]{position=top,style=tab01,labelsep=gost,labelformat=gosttable,format=hang}
+    \captionsetup*[subtable]{position=top,style=tab01,labelsep=subgost,labelformat=gostsubtable,format=hang}
+    \renewcommand\thesubtable{\asbuk{subtable}}
+#+end_src
+
+** Межстрочный отступ в таблице
+
+#+begin_src tex :tangle preamble/gost.tex
+    \renewcommand{\arraystretch}{1}
+#+end_src
+
+** Списки
+
+Cообщаем окружению о том, что существует такая штука, как нумерация русскими буквами^
+
+#+begin_src tex :tangle preamble/gost.tex
+    \makeatletter
+        \AddEnumerateCounter{\asbuk}{\russian@alph}{щ}
+    \makeatother
+#+end_src
+
+Первый тип списков. Большая буква. Если в списке предложения.
+
+#+begin_src tex :tangle preamble/gost.tex
+    \newlist{Enumerate}{enumerate}{1}
+
+    \setlist[Enumerate,1]{labelsep=0.5em,leftmargin=1.25em,labelwidth=1.25em,parsep=0em,itemsep=0em,topsep=0ex,before={\parskip=-1em},ref=\arabic{Enumeratei},label=\arabic{Enumeratei}.}
+    \setlist[Enumerate,2]{leftmargin=1.3em,itemsep=0mm,parsep=0em,topsep=0ex,before={\parskip=-1em},ref=\asbuk{enumii},label=\asbuk{enumii}.}
+    \setlist[Enumerate,3]{leftmargin=2.6em,itemsep=0mm,parsep=0em,topsep=0ex,before={\parskip=-1em},ref=\arabic{enumiii},label=\arabic{enumiii})}
+#+end_src
+
+Второй тип списков. Маленькая буква.
+
+#+begin_src tex :tangle preamble/gost.tex
+    \setlist[enumerate,1]{parsep=0em,itemsep=0em,topsep=0.75ex,before={\parskip=-1em},ref=\arabic{enumi},label=\arabic{enumi}.}
+    \setlist[enumerate,2]{leftmargin=1.3em,itemsep=0mm,parsep=0em,topsep=0ex,before={\parskip=-1em},ref=\asbuk{enumii},label=\asbuk{enumii}.}
+    \setlist[enumerate,3]{leftmargin=2.6em,itemsep=0mm,parsep=0em,topsep=0ex,before={\parskip=-1em},ref=\arabic{enumiii},label=\arabic{enumiii})}
+#+end_src
+
+Третий тип списков. Два уровня.
+
+#+begin_src tex :tangle preamble/gost.tex
+    \newlist{twoenumerate}{enumerate}{2}
+    \setlist[twoenumerate,1]{itemsep=0mm,parsep=0em,topsep=0.75ex,before={\parskip=-1em},ref=label=\asbuk{twoenumeratei},label=\asbuk{twoenumeratei})}
+    \setlist[twoenumerate,2]{leftmargin=1.3em,itemsep=0mm,parsep=0em,topsep=0ex, before={\parskip=-1em},ref=\arabic{twoenumerateii},label=\arabic{twoenumerateii})}
+#+end_src
+
+Четвёртый тип списков. Список с тире.
+
+#+begin_src tex :tangle preamble/gost.tex
+    \setlist[itemize]{label=--,parsep=0em,itemsep=0em,topsep=0ex,before={\parskip=-1em},after={\parskip=-1em}}
+#+end_src
+
+
+** Список литературы
+
+Убираем страницы:
+
+#+begin_src tex :tangle preamble/gost.tex
+    \DeclareFieldFormat{postnote}{#1}
+#+end_src
+
+Убираем курсив с авторов:
+
+#+begin_src tex :tangle preamble/gost.tex
+    \renewcommand*{\mkgostheading}[1]{#1}
+#+end_src
+
+Этот кусок кода выносит русские источники на первое место. Костыль описали авторы пакета =biblatex= в руководстве к нему.
+
+#+begin_src tex :tangle preamble/gost.tex
+    \DeclareSourcemap{
+    \maps[datatype=bibtex]{
+        \map{
+        \step[fieldsource=langid, match=russian, final]
+        \step[fieldset=presort, fieldvalue={a}]
+        }
+        \map{
+        \step[fieldsource=langid, notmatch=russian, final]
+        \step[fieldset=presort, fieldvalue={z}]
+        }
+    }}
+#+end_src
+
+Приводим английские источники в соответствие:
+
+#+begin_src tex :tangle preamble/gost.tex
+    \DefineBibliographyStrings{english}{%
+        pages = {P\adddot},
+        number = {№},
+    }
+#+end_src
+
+** Приложения
+
+Нумеруем приложения буквами:
+
+#+begin_src tex :tangle preamble/appendix.tex
+    \renewcommand{\thechapter}{\Asbuk{chapter}}
+#+end_src
+
+Вносим приложения в оглавление:
+
+#+begin_src tex :tangle preamble/appendix.tex
+    \titleformat{\chapter}{\normalfont\bfseries\large}{\chaptertitlename~\thechapter}{0.25em}{\normalfont}
+    \titlecontents{chapter}[0 em]{\normalsize}{\makebox[7em][l]{Приложение \thecontentslabel}}{Приложение }{\titlerule*[10pt]{.}\contentspage}
+#+end_src
