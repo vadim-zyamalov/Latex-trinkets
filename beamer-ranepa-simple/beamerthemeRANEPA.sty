@@ -102,6 +102,13 @@
 {\makebox[\paperwidth][r]
   {\tiny\insertframenumber\hskip 5pt}\vskip 5pt}
 
+% Номер слайда-продолжения
+\makeatletter
+\setbeamertemplate{frametitle continuation}{%
+  (\insertcontinuationcount)%
+}
+\makeatother
+
 % Убираем символы навигации
 \setbeamertemplate{navigation symbols}{}
 
