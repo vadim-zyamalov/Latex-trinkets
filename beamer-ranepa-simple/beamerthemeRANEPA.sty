@@ -2,14 +2,10 @@
 
 \mode<presentation>
 
-%%% Базовая тема %%%
 
-\usefonttheme{default}
+%%% Цветовая тема %%%
+
 \usecolortheme{default}
-\useinnertheme{circles}
-\useoutertheme{default}
-
-%%% Дополнительные цвета %%%
 
 \definecolor{LightCyan}{rgb}{0.88,1,1}
 \definecolor{LightRed}{rgb}{1,0.5,0.5}
@@ -22,7 +18,39 @@
 \setbeamercolor*{bibliography entry author}{fg=black}
 \setbeamercolor*{bibliography entry note}{fg=black}
 
-%%% Оформление слайдов %%%
+
+%%% Внутренняя тема %%%
+
+\useinnertheme{circles}
+
+% Нет разных цветов в списке
+\setbeamertemplate{bibliography entry article}{}
+\setbeamertemplate{bibliography entry title}{}
+\setbeamertemplate{bibliography entry location}{}
+\setbeamertemplate{bibliography entry note}{}
+
+% Настраиваем меркеры
+% Треугольники
+% \setbeamertemplate{bibliography item}[triangle]
+
+% или красивые иконки
+\setbeamertemplate{bibliography item}
+{\ifboolexpr{ test {\ifentrytype{book}}
+    or test {\ifentrytype{mvbook}}
+    or test {\ifentrytype{collection}}
+    or test {\ifentrytype{mvcollection}}
+    or test {\ifentrytype{reference}}
+    or test {\ifentrytype{mvreference}} }
+  {\setbeamertemplate{bibliography item}[book]}
+  {\ifentrytype{online}
+    {\setbeamertemplate{bibliography item}[online]}
+    {\setbeamertemplate{bibliography item}[article]}}%
+  \usebeamertemplate{bibliography item}}
+
+
+%%% Внешняя тема %%%
+
+\useoutertheme{default}
 
 % Титульный лист
 \makeatletter
@@ -52,7 +80,7 @@
 
 \def\ps@navigation@titlepage{%
   \setbeamertemplate{headline}%
-  {\vskip 5pt \hskip 5pt \includegraphics[height=1cm]{logos/ranepa.pdf} \hskip 5pt \includegraphics[height=1cm]{logos/iep.pdf}}%
+  {\vskip 5pt \hskip 5pt \includegraphics[height=1cm]{logos/logo_ranepa.pdf} \hskip 5pt \includegraphics[height=1cm]{logos/logo_iep.pdf}}%
   \setbeamertemplate{footline}%
   {\makebox[\paperwidth][c]%
     {\scriptsize\insertdate}\vskip 5pt}%
@@ -109,44 +137,6 @@
 }
 \makeatother
 
-% Убираем символы навигации
-\setbeamertemplate{navigation symbols}{}
-
-%%% Шрифты %%%
-
-% Serif в формулах
-\usefonttheme[onlymath]{serif}
-
-%%% Список литературы %%%
-
-% Убираем лишние точки
-
-% Нет разных цветов в списке
-\setbeamertemplate{bibliography entry article}{}
-\setbeamertemplate{bibliography entry title}{}
-\setbeamertemplate{bibliography entry location}{}
-\setbeamertemplate{bibliography entry note}{}
-
-% Настраиваем меркеры
-% Треугольники
-% \setbeamertemplate{bibliography item}[triangle]
-
-% или красивые иконки
-\setbeamertemplate{bibliography item}
-{\ifboolexpr{ test {\ifentrytype{book}}
-    or test {\ifentrytype{mvbook}}
-    or test {\ifentrytype{collection}}
-    or test {\ifentrytype{mvcollection}}
-    or test {\ifentrytype{reference}}
-    or test {\ifentrytype{mvreference}} }
-  {\setbeamertemplate{bibliography item}[book]}
-  {\ifentrytype{online}
-    {\setbeamertemplate{bibliography item}[online]}
-    {\setbeamertemplate{bibliography item}[article]}}%
-  \usebeamertemplate{bibliography item}}
-
-%%% Приложения %%%
-
 % Нумерация приложений буквами
 \makeatletter
 \renewcommand<>\appendix{%
@@ -154,6 +144,41 @@
   \renewcommand\insertsectionnumber{\Alph{section}}%
   \only#1{\part{\appendixname}
     \addtocontents{nav}{\protect\headcommand{\protect\beamer@appendixpages{\the\c@page}}}}}
+\makeatother
+
+
+%%% Шрифтовая тема %%%
+
+\usefonttheme{default}
+
+% Serif в формулах
+\usefonttheme[onlymath]{serif}
+
+
+%%% Дополнительные настройки %%%
+\setbeamertemplate{navigation symbols}{}
+
+
+%%% Вспомогательные команды и окружения %%%
+
+% Маnематические функции
+\newcommand{\E}{\operatorname{E}}
+\newcommand{\Var}{\operatorname{var}}
+\newcommand{\Cov}{\operatorname{cov}}
+\newcommand{\Corr}{\operatorname{corr}}
+
+% Доказательства на несколько слайдов
+\makeatletter
+\newenvironment<>{proofs}[1][\proofname]{%
+    \par
+    \def\insertproofname{#1\@addpunct{.}}%
+    \usebeamertemplate{proof begin}#2}
+  {\usebeamertemplate{proof end}}
+\makeatother
+
+% Номер слайда для оверлеев
+\makeatletter
+\newcommand*{\slideinframe}{\number\beamer@slideinframe}
 \makeatother
 
 \mode

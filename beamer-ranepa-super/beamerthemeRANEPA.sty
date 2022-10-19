@@ -1,13 +1,91 @@
 \mode<presentation>
 
-% Requirement
+%%% Зависимость темы %%%
 \RequirePackage{tikz}
 
-% Settings
-\useinnertheme{RANEPA}
-\useoutertheme{RANEPA}
-\usecolortheme{RANEPA}
-\usefonttheme{RANEPA}
+
+%%% Цветовая тема %%%
+
+\definecolor{DarkRed}{RGB}{120,0,0}
+\definecolor{LightRed}{RGB}{206,0,0}
+\definecolor{ItemRed}{RGB}{196,0,0}
+\definecolor{TextGray}{RGB}{64,64,64}
+
+% Цвета элементов
+\setbeamercolor*{title page header}{fg=black}
+\setbeamercolor*{author}{fg=black}
+\setbeamercolor*{date}{fg=black}
+\setbeamercolor*{institute}{fg=black}
+\setbeamercolor*{institute in title}{fg=black}
+\setbeamercolor*{normal text}{fg=TextGray}
+\setbeamercolor*{item}{fg=ItemRed}
+\setbeamercolor*{block title}{fg=ItemRed}
+\setbeamercolor*{enumerate item}{fg=TextGray}
+\setbeamercolor*{item projected}{bg=ItemRed}
+
+
+%%% Внутренняя тема %%%
+
+\setbeamertemplate{items}[square]
+\setbeamertemplate{enumerate items}[default]
+\setbeamertemplate{sections/subsections in toc}[square]
+
+
+%%% Внешняя тема %%%
+
+% Титульный лист
+\defbeamertemplate*{title page}{RANEPA}{
+    \vspace*{-0.03\paperheight}
+    \begin{beamercolorbox}[wd=\paperwidth,ht=\paperheight]{title page}
+        \begin{tikzpicture}
+            \useasboundingbox (0,0) rectangle (\paperwidth,\paperheight);
+            % Pictures
+            \fill[left color=LightRed, right color=DarkRed] (0,0.385\paperheight) rectangle (0.333\paperwidth,0.615\paperheight);
+            \node[anchor=east,inner sep=0pt] at (0.333\paperwidth,0.8075\paperheight) {\includegraphics[height=0.11\paperheight]{logo_ranepa.pdf}};
+            % Texts
+            \node[anchor=west,text width=0.25\paperwidth,align=center] at (0.667\paperwidth,0.8075\paperheight) {\tiny\insertinstitute\par};
+            \node[text width=0.6\paperwidth,align=center] at (0.66667\paperwidth,0.5\paperheight) {\inserttitle\par};
+            \node[anchor=north west,text width=0.6\paperwidth,align=left] at (0.02\paperwidth,0.2\paperheight) {\tiny\insertauthor\par};
+            \node[anchor=north east,text width=0.4\paperwidth,align=right] at (0.98\paperwidth,0.2\paperheight) {\tiny\insertdate\par};
+        \end{tikzpicture}
+    \end{beamercolorbox}
+}
+
+\defbeamertemplate*{headline}{RANEPA}{
+    \begin{beamercolorbox}[wd=\paperwidth,ht=0.175\paperheight]{headline}
+        \begin{tikzpicture}
+            \useasboundingbox (0,0) rectangle(\paperwidth,0.175\paperheight);
+            % Pictures
+            \node[inner sep=0pt] at (0.15\paperwidth,0.0875\paperheight) {\includegraphics[height=0.05\paperheight]{logo_ranepa.pdf}};
+            % Texts
+            \node[anchor=east,text width=0.25\paperwidth,align=center] at (0.95\paperwidth,0.08333\paperheight) {\tiny\insertinstitute\par};
+        \end{tikzpicture}
+    \end{beamercolorbox}
+}
+
+% Заголовок слайда
+\defbeamertemplate*{frametitle}{RANEPA}{
+    \begin{beamercolorbox}[wd=\paperwidth,ht=0.088\paperheight]{frametitle}
+        \begin{tikzpicture}
+            \useasboundingbox[fill=white](0,0) rectangle(\paperwidth,0.088\paperheight);
+            % Pictures
+            \fill[left color=DarkRed,right color=LightRed] (0,0) rectangle(\paperwidth-0.088\paperheight,0.088\paperheight);
+            % Texts
+            \node[anchor=west,white,align=left] at (0.011\paperheight,0.044\paperheight) {\scriptsize\textbf\insertframetitle\par};
+        \end{tikzpicture}
+    \end{beamercolorbox}
+    \vspace*{-0.03\paperheight}
+}
+
+
+%%% Шрифтовая тема %%%
+
+\setbeamerfont{block title}{size=\large}
+\setbeamerfont{block body}{size=\small}
+
+
+%%% Дополнительные настройки %%%
+
 \setbeamertemplate{navigation symbols}{}
 \setbeamertemplate{blocks}[shadow=false]
 \addtobeamertemplate{block begin}{\vspace*{-5pt}}{}
@@ -15,5 +93,28 @@
 \addtobeamertemplate{normal text begin}{\vspace*{-5pt}}{}
 \addtobeamertemplate{normal text end}{}{\vspace*{-3pt}}
 \setbeamersize{text margin left=5mm,text margin right=5mm}
+
+
+%%% Вспомогательные команды и окружения %%%
+
+% Маnематические функции
+\newcommand{\E}{\operatorname{E}}
+\newcommand{\Var}{\operatorname{var}}
+\newcommand{\Cov}{\operatorname{cov}}
+\newcommand{\Corr}{\operatorname{corr}}
+
+% Доказательства на несколько слайдов
+\makeatletter
+\newenvironment<>{proofs}[1][\proofname]{%
+    \par
+    \def\insertproofname{#1\@addpunct{.}}%
+    \usebeamertemplate{proof begin}#2}
+  {\usebeamertemplate{proof end}}
+\makeatother
+
+% Номер слайда для оверлеев
+\makeatletter
+\newcommand*{\slideinframe}{\number\beamer@slideinframe}
+\makeatother
 
 \mode<all>
