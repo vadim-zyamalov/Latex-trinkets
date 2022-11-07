@@ -1,0 +1,73 @@
+% Языковые настройки
+
+\ifxetex%
+  \usepackage{polyglossia}
+  \setdefaultlanguage{russian}
+  \setotherlanguage{english}
+\else
+  \usepackage{cmap}
+  \usepackage[utf8]{inputenc}
+  \usepackage[T1,T2A]{fontenc}
+  \usepackage[russian]{babel}
+\fi
+
+\usepackage{paratype}
+
+\ifxetex%
+  \usepackage[mathrm=sym]{unicode-math}
+
+  \defaultfontfeatures{Ligatures={TeX}}
+  \setmainfont{PT Sans}
+  \setsansfont{PT Sans}
+  \setmonofont{PT Mono}
+
+  \setmathfont{Fira Math}
+  \setmathfont[range={\vdots,\ddots}]{TeX Gyre DejaVu Math}
+  \setmathfont[range=\int]{Fira Math}
+\fi
+
+\usepackage{csquotes}
+\usepackage{bookmark}
+\usepackage{parskip}
+
+% Библиография
+\usepackage[backend=biber, style=gost-authoryear, uniquelist=false, movenames=false]{biblatex}
+
+% Математические шрифты и символы
+\usepackage{mathtools}
+\usepackage{amsmath}
+
+% Рисунки
+\usepackage{graphics}
+\usepackage{setspace}
+\usepackage{color, colortbl}
+
+% Рисование графиков
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{pgfplotstable}
+
+% Таблицы
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{adjustbox}
+\usepackage{makecell}
+\usepackage{siunitx}[=v2]
+\sisetup{
+detect-all,
+table-number-alignment = center,
+table-figures-integer = 2,
+table-figures-decimal = 2
+}
+
+% Настройка предпросмотра в beamer внутри Emacs с AUCTeX
+\usepackage[displaymath,textmath,sections,graphics]{preview}
+\PreviewEnvironment{align*}
+\PreviewEnvironment{multline*}
+\PreviewEnvironment{tabular}
+\PreviewEnvironment{verbatim}
+\PreviewEnvironment{lstlisting}
+\PreviewEnvironment*{frame}
+
+% Дополнительные настройки
+\usepackage{appendixnumberbeamer}
