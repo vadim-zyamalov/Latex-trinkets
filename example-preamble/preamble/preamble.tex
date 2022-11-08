@@ -1,41 +1,43 @@
 % Языковые настройки
-
-\ifxetex%
+\iftutex%
   \usepackage{polyglossia}
   \setdefaultlanguage{russian}
   \setotherlanguage{english}
-\else
+\fi
+\ifpdftex%
   \usepackage{cmap}
   \usepackage[utf8]{inputenc}
   \usepackage[T1,T2A]{fontenc}
-  \usepackage[russian]{babel}
+  \usepackage[russian,english]{babel}
 \fi
 
 \usepackage{paratype}
+\usepackage{csquotes}
+\usepackage{bookmark}
+\usepackage{parskip}
 
-\ifxetex%
-  \usepackage[mathrm=sym]{unicode-math}
-
+\iftutex%
   \defaultfontfeatures{Ligatures={TeX}}
   \setmainfont{PT Sans}
   \setsansfont{PT Sans}
   \setmonofont{PT Mono}
-
-  \setmathfont{Fira Math}
-  \setmathfont[range={\vdots,\ddots}]{TeX Gyre DejaVu Math}
-  \setmathfont[range=\int]{Fira Math}
 \fi
-
-\usepackage{csquotes}
-\usepackage{bookmark}
-\usepackage{parskip}
 
 % Библиография
 \usepackage[backend=biber, style=gost-authoryear, uniquelist=false, movenames=false]{biblatex}
 
 % Математические шрифты и символы
+% https://tex.stackexchange.com/q/552864/283103
+\let\normalunderbrace=\underbrace
 \usepackage{mathtools}
+\let\underbrace=\normalunderbrace
 \usepackage{amsmath}
+\iftutex%
+  \usepackage[mathrm=sym]{unicode-math}
+  \setmathfont{Fira Math}
+  \setmathfont[range={\vdots,\ddots}]{TeX Gyre DejaVu Math}
+  \setmathfont[range=\int]{Fira Math}
+\fi
 
 % Рисунки
 \usepackage{graphics}

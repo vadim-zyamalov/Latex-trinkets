@@ -62,6 +62,7 @@
 \useoutertheme{default}
 
 % Титульный лист
+
 \makeatletter
 \setbeamertemplate{title page}
 {\vbox{}
@@ -89,7 +90,13 @@
 
 \def\ps@navigation@titlepage{%
   \setbeamertemplate{headline}%
-  {\vskip 5pt \hskip 5pt \includegraphics[height=1cm]{logos/logo_ranepa.pdf} \hskip 5pt \includegraphics[height=1cm]{logos/logo_iep.pdf}}%
+  {\vskip 5pt \hskip 5pt %
+    \IfFileExists{logos/logo_ranepa.pdf}{
+      \includegraphics[height=1cm]{logos/logo_ranepa.pdf} \hskip 5pt
+    }{}%
+    \IfFileExists{logos/logo_iep.pdf}{
+      \includegraphics[height=1cm]{logos/logo_iep.pdf}
+    }{}}%
   \setbeamertemplate{footline}%
   {\makebox[\paperwidth][c]%
     {\scriptsize\insertdate}\vskip 5pt}%
