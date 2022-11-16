@@ -1,0 +1,387 @@
+\newcommand*{\No}{\textnumero}
+\newcommand*\ulfill{%
+  \mbox{}\leaders\hrule depth 2pt height -1.5pt\hfill%
+}
+
+% https://tex.stackexchange.com/a/55706
+\makeatletter
+\newcommand*\ulfillx[1][\linewidth]{%
+  \protect\makebox{#1}{\ulfill}
+}
+\makeatother
+
+% https://tex.stackexchange.com/a/55706
+\newcommand*\ultext[2][\linewidth]{%
+  \raisebox{%
+    -\baselineskip%
+  }{%
+    \shortstack{%
+    \protect\makebox{#1}{\ulfill}\\
+    {\footnotesize \centering (#2)}}
+  }
+}
+
+\newcommand\Nir@Udk{
+  УДК~\ulfillx[3em]
+}
+\newcommand*\NirUdk[1]{%
+  \renewcommand\Nir@Udk{#1}%
+}
+
+\newcommand\Nir@RegNo{%
+  Рег.~\No \ulfillx[3em]%
+}
+\newcommand*\NirRegNo[1]{%
+    \renewcommand\Nir@RegNo{#1}%
+}
+
+\newcommand\Nir@InnerNo{
+  Рег.~\No \ulfillx[3em]%
+}
+\newcommand*\NirInnerNo[1]{%
+  \renewcommand\Nir@InnerNo{#1}%
+}
+
+% Examples number
+\newcommand\Nir@Copies{%
+    \vspace{-2ex}
+}
+\newcommand*\NirCopies[1]{%
+  \renewcommand\Nir@Copies{#1 экз.}%
+}
+
+% Гриф секретности
+\newcommand\Nir@Classified{%
+  \vspace{-2ex}%
+}
+\newcommand*\NirGrif[1]{%
+  \renewcommand\Nir@Grif{#1}%
+}
+
+% Approve text
+\newcommand*\Nir@Approve{%
+  Утверждаю%
+}
+\newcommand*\NirApprove[1]{%
+  \renewcommand\Nir@Approve{#1}%
+}
+
+% Organization name
+\newcommand\Nir@OrgLongName{
+  \ultext[\linewidth]{предприятие (организация)}%
+}
+\newcommand\NirOrgLongName[1]{%
+  \renewcommand\Nir@OrgLongName{#1}%
+}
+
+% Report Name
+\newcommand*\Nir@Type{%
+  Отчёт%
+}
+\newcommand\NirType[1]{%
+  \renewcommand\Nir@Type{#1}%
+}
+
+% Report about text
+\newcommand*\Nir@About{
+ О{} научно-исследовательской{} работе%
+}
+\newcommand\NirAbout[1]{%
+  \renewcommand\Nir@About{#1}%
+}
+
+% Annotated report
+\newcommand\Nir@Annotate{}
+\newcommand*\NirIsAnnotacion[1]{%
+  \renewcommand\Nir@AnnOtchet{#1}%
+}
+
+% Report part
+\newcommand*\Nir@PartNo{%
+  \vspace{-2ex}%
+}
+\newcommand\NirPartNo[2]{%
+  \renewcommand\Nir@PartNo{#1 #2}%
+}
+
+% Report Year
+\newcommand\Nir@Year{\the\year}
+\newcommand*\NirYear[1]{%
+  \renewcommand\Nir@Year{#1}%
+}
+
+\newcommand\Nir@Town{}
+\newcommand*\NirTown[1]{%
+  \renewcommand\Nir@Town{#1}%
+}
+
+
+\newcommand\Nir@ApproverStamp{
+  \parbox[t]{.4\linewidth}{
+    {\centering\MakeUppercase{\Nir@Approve}
+
+    }
+    \bigskip
+    {\raggedright\Nir@ApproverPost
+
+    }
+    \bigskip
+    \ulfill~\Nir@ApproverName
+
+    \bigskip
+    <<\ulfillx[3em]>>~\ulfill~\Nir@Year~г.
+  }
+}
+\newcommand*\NirApproverStamp[1]{%
+  \renewcommand\Nir@ApproverStamp{#1}%
+}
+
+\newcommand\Nir@ApproverPost{
+  \ultext{головной исполнитель НИР}
+}
+\newcommand*\NirApproverPost[1]{%
+  \renewcommand\Nir@ApproverPost{#1}%
+}
+
+\newcommand\Nir@ApproverName{%
+  \ultext[5em]{Ф.И.О.}%
+}
+\newcommand*\NirApproverName[1]{%
+  \renewcommand\Nir@ApproverName{#1}%
+}
+
+\newcommand*\NirApprover[2]{
+  \renewcommand\Nir@ApproverPost{#1}
+  \renewcommand\Nir@ApproverName{#2}
+}
+
+% Head Supervisor stamp
+\newcommand\Nir@SupervisorStamp{
+  \parbox[t]{\linewidth}{
+    {\raggedright\Nir@SupervisorPost
+
+    }
+    \bigskip
+    \ulfill~\Nir@SupervisorName
+
+    \bigskip
+    <<\ulfillx[3em]>>~\ulfill~\Nir@Year~г.
+  }
+}
+
+\newcommand\Nir@SupervisorPost{
+    \ultext{научный руководитель НИР}
+}
+\newcommand*\NirSupervisorPost[1]{%
+  \renewcommand\Nir@SupervisorPost{#1}%
+}
+
+\newcommand\Nir@SupervisorName{%
+  \ultext[5em]{Ф.И.О.}%
+}
+
+\newcommand*\NirSupervisor[2]{
+  \renewcommand\Nir@SupervisorPost{#1}
+  \renewcommand\Nir@SupervisorName{#2}
+} % ID of head of research
+\newcommand*\NirSupervisorStamp[1]{\renewcommand\Nir@SupervisorStamp{#1}} % Changeable ID Supervisor stamp
+
+% Head executor of research
+\newcommand\Nir@IspStamp[1]{\vspace{-2ex}}
+\newcommand\Nir@IspPost{
+    \vspace{3ex}
+\hrule\par
+\vspace{1ex}
+\centering\footnotesize ответственный исполнитель
+}
+\newcommand\Nir@IspName{\makebox[5em]{\ulfill}}
+\newcommand*\NirIsp[3][0.49]{
+    \renewcommand\Nir@IspPost{#2}\renewcommand\Nir@IspName{#3}
+    \renewcommand\Nir@IspStamp[1]{
+        \parbox[t]{#1\linewidth}{
+            {\raggedright\Nir@IspPost
+
+            }
+            \bigskip
+            \ulfill~\Nir@IspName
+
+            \bigskip
+            <<\makebox[3em]{\ulfill}>>~\ulfill~\Nir@Year~г.
+        }
+    }
+} % ID of head executor of research
+\newcommand*\NirIspStamp[1]{\renewcommand\Nir@IspStamp{#1}}     % Changeable head executor stamp
+
+%fix for first time compilation
+\newcommand\Nir@Title{\vspace{-2ex}}
+\newcommand\Nir[1]{\renewcommand\Nir@Title{#1}}  %Название НИР, не совместимо с \NirTitle
+\newcommand\Nir@TitleAndSubject{
+    \vspace{5ex}
+\hrule\par\vspace{1ex}
+\centering\footnotesize наименование и шифр НИР\par\vspace{5ex}
+\hrule
+}
+
+%
+% The simple case when the subject of the report is the same
+% as the NIR title -- like in example 2 in ГОСТ 7.32-2001 ред. 2009 года.pdf:
+
+%
+% Optionally, specify a different report subject:
+\newcommand\NirSubject[1]{%
+  \renewcommand\Nir@TitleAndSubject{%
+    \Nir@Title
+    \vspace{1ex}
+    \par
+    \NirSubjectModifier{#1}%
+  }%
+}
+
+%
+% The default modifier is as in example 1 in ГОСТ 7.32-2001 ред. 2009 года.pdf:
+% "по теме:"
+\newcommand\NirSubjectModifier{%
+  по~теме:\\
+  %\MakeUppercase%
+}
+%
+% A switch for the variant of the modifier as
+% in example 3 in ГОСТ 7.32-2001 ред. 2009 года.pdf:
+% (empty)
+\newcommand*\NirBareSubject[1]{%
+  \renewcommand\NirSubjectModifier{}%
+}
+
+% вид отчёта:
+% The default "stage type" is "intermediate" ("промежуточный")
+% (this default saves typing unless you need a modified stage type):
+% "промежуточный"
+\newcommand\intermediatename{промежуточный}
+\newcommand\Nir@StageType{\intermediatename}
+% "заключительный"
+\newcommand\@finalname{заключительный}
+
+%Эти команды нужно вызвать для корректного определения титульной страницы
+
+% One of the "stage type" variants
+% (if different from the default "intermediate")
+% -- set to "final"/"заключительный" if the arg is silently omitted.
+% The second variant is not supported
+% by any example in ГОСТ 7.32-2001 ред. 2009 года.pdf,
+% but it is like in a document example I've seen elsewhere.
+\newcommand*\NirFinal[1][\@finalname]{%
+  \renewcommand\Nir@StageType{#1}%
+}
+\newcommand*\NirFinalStage[2][\@finalname]{%
+  \renewcommand\Nir@StageType{#1, #2}%
+} % Usage: \NirFinalStage[промежуточный]{этап~3}
+
+% Following allows to change command arguments
+\newcommand\finalname[1]{\renewcommand\@finalname{#1}}          % to change finalname  text
+
+\newcommand\Nir@Code{шифр\,---\,\makebox[6em]{\ulfill}}
+\newcommand*\NirCode[1]{\renewcommand\Nir@Code{#1}} % Code of report changeable
+
+
+\RequirePackage{etoolbox}%                                  For \newrobustcmd
+\def\beamer@calltheme#1#2#3{%
+    \def\beamer@themelist{#2}%
+    \@for\beamer@themename:=\beamer@themelist\do
+    {\usepackage[{#1}]{#3\beamer@themename}}}
+
+  \newrobustcmd*\gosttitle[2][]{\beamer@calltheme{#1}{#2}{gosttitle}}
+
+\def\maketitle{\titlepage}
+
+
+\renewcommand*\NirSupervisor[3][.49]{ % ID of head of research
+    \renewcommand\Nir@SupervisorPost{#2} \renewcommand\Nir@SupervisorName{#3}
+    \renewcommand\Nir@SupervisorStamp{
+        \parbox[b]{#1\linewidth}{
+            \raggedright\Nir@SupervisorPost
+        }
+        \hspace{3em}\ulfill~\Nir@SupervisorName
+    }
+}
+\renewcommand*\NirIsp[3][0.49]{  % ID of head executor of research
+    \renewcommand\Nir@IspPost{#2}\renewcommand\Nir@IspName{#3}
+    \renewcommand\Nir@IspStamp[1]{
+        \parbox[b]{#1\linewidth}{
+            \raggedright\Nir@IspPost
+        }
+            \hspace{3em}\ulfill~\Nir@IspName
+
+    }
+}
+
+\newlength{\savedparskip}
+
+\renewenvironment*{titlepage}{
+    \setlength{\savedparskip}{\parskip}
+    \setlength{\parskip}{0\p@ \@plus \p@}
+    \thispagestyle{empty}
+    \linespread{1.1}\normalsize
+    \hfill \Nir@Grif
+
+    \hfill \Nir@Ekz
+    \vspace{-3ex}
+
+    \IfFileExists{logo.pdf}{      % logo for first page (no compatible with GOST)
+        \begin{flushleft}
+            \parbox[t]{.3\linewidth}{
+                \vspace{-5ex}\center{\includegraphics[width=.99\linewidth]{logo}}\\
+            }
+            {{\Nir@OrgLongName}}  % name of Institute
+
+        \end{flushleft}
+        }{
+        \begin{center}
+            {{\Nir@OrgLongName}} % name of Institute
+        \end{center}
+    }
+    \begin{centering}
+
+        \vspace{3ex}
+
+        \parbox[t]{.45\linewidth}{
+            \Nir@Udk\\ % UDK name and number
+            \Nir@No\\       %Reg name and number
+            \Nir@InventarNo\\ %Inventory name and number
+        }
+        \hfill\Nir@ApproverStamp
+
+        %\vspace{3ex}
+        \vfill
+
+        \MakeUppercase{\Nir@AnnOtchet \Nir@Type}\\ % Annotated and Report name
+        \MakeUppercase{\Nir@About}         % Report about
+
+        \vspace{2ex}
+        \Nir@TitleAndSubject          % Report Subject
+
+        (\Nir@StageType)              % Stage type
+
+        \Nir@Code
+
+        \vspace{2ex}
+        \Nir@PartNo
+
+        \vfill
+
+        \Nir@SupervisorStamp
+
+        \vspace{2ex}
+
+        \Nir@IspStamp
+
+
+        \vfill
+
+        \vfill
+
+        \Nir@Town~\Nir@Year
+
+    \end{centering}
+    \linespread{\Gost@LineSpread}\normalsize
+    \setlength{\parskip}{\savedparskip}
+}
