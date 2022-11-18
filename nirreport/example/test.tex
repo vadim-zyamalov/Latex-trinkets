@@ -1,0 +1,142 @@
+\documentclass[12pt, rusmathsym]{nirreport}
+
+\usepackage{cmap}
+\usepackage[utf8]{inputenc}
+\usepackage[T2A]{fontenc}
+\usepackage[russian]{babel}
+
+\usepackage{graphicx}
+\usepackage{float}
+
+\setlength\parindent{15mm}
+
+\usepackage{lipsum}
+
+\NirOrgLongName{Черноморское отделение Арбатовской конторы\\по заготовке рогов и копыт}%
+%\NirOrgShortName{РАНХиГС}%
+\NirTitle{}
+\NirSubject{Удар автопробегом по разгильдяйству}
+\NirFinal
+\NirApprover{Великий комбинатор}{О.~Б.~М.~Бендер-бей}%
+\NirSupervisor{Нарушитель\\конвенции}{М.~С.~Паниковский}
+\NirTown{Черноморск}
+\NirYear{1930}
+
+% \def\abstractname{Реферат}
+
+% \addto\captionsrussian{%
+%   \def\contentsname{Содержание}%
+%  \def\bibname{Список~использованных~источников}%
+% }
+
+
+%\addbibresource{bibliography.bib}
+
+% https://tex.stackexchange.com/a/55706
+\usepackage[backend=biber, style=gost-numeric, uniquelist=false, movenames=false]{biblatex}
+
+\addbibresource{bibliography.bib}
+
+\begin{document}
+
+\titlepage
+
+\begin{abstract}
+  Привет, это пример!
+
+  Кое-чего не хватает...
+\end{abstract}
+
+\tableofcontents
+
+\chapter{Глава}
+
+\begin{itemize}
+\item Раз
+\item Два
+\end{itemize}
+
+\begin{enumerate}
+\item Раз
+\item Два
+\end{enumerate}
+
+\lipsum[1]
+
+\section{Раздел}
+
+\lipsum[1]
+
+\subsection{Глубже}
+
+\lipsum[1]
+
+\subsubsection{Подраздел}
+
+\lipsum[1]
+\begin{equation}
+  E \geq mc^2
+\end{equation}
+\begin{equation}
+  E \leq mc^2
+\end{equation}
+\lipsum[1]
+
+\subsubsection{Подподраздел}
+
+\lipsum[1]
+
+\begin{table}[ht]
+  \caption{Как интересно то...}
+  \centering
+  \begin{tabular}{ccc} \hline
+    A           & B & C            \\ \hline
+    1           & 2 & 3            \\
+    \(e^{\pi}\) & 0 & \(\Uparrow\) \\ \hline
+  \end{tabular}
+\end{table}
+
+\chapter{Еще одна глава}
+
+\lipsum[1]
+
+\begin{table}[!ht]
+  \caption{Как интересно то...}
+  \centering
+  \begin{tabular}{ccc} \hline
+    A           & B & C            \\ \hline
+    1           & 2 & 3            \\
+    \(e^{\pi}\) & 0 & \(\Uparrow\) \\ \hline
+  \end{tabular}
+\end{table}
+
+\lipsum[1]
+
+\begin{figure}[!ht]
+  \begin{center}
+    \includegraphics[height=.1\textheight]{img/leonardo.png}
+  \end{center}
+  \caption{Тест}
+\end{figure}
+
+\chapter*{Заключение}
+
+Ссылка~\cite{Pup09}
+
+\lipsum[1]
+
+% \bibliographystyle{ugost2008}
+% \bibliography{bibliography}
+\printbibliography
+
+\appendix
+
+\chapter{Новое приложение}
+
+\[ E = m c^2 \]
+
+\chapter{И еще одно}
+
+\[ F = m a \]
+
+\end{document}

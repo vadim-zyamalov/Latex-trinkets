@@ -1053,7 +1053,7 @@
 
     \vfill
 
-    \Nir@Town~\Nir@Year.
+    \Nir@Town,~\Nir@Year.
 
   \end{centering}
   \renewcommand\baselinestretch{\nirreport@linestretch}\normalsize
