@@ -19,9 +19,11 @@
 %% but WITHOUT ANY WARRANTY; without even the implied warranty of
 %% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
-\ProvidesClass{nirreport}
-              [1996/10/08 v1.0
- Non Standard LaTeX document class]
+\ProvidesClass{nirreport}[1996/10/08 v1.0 Non Standard LaTeX document class]
+
+\RequirePackage{etoolbox}
+\RequirePackage{kvoptions}
+
 \newcommand\@ptsize{}
 \newif\if@restonecol
 \newif\if@titlepage
@@ -34,28 +36,32 @@
 %% Опции класса
 %% -----------------------------------------------------------------------------
 
+\DeclareStringOption[12.5mm]{parindent}[12.5mm]
+\DeclareStringOption[1.5]{linestretch}[1.5]
+\ProcessKeyvalOptions*
+
 \DeclareOption{a4paper}
    {\setlength\paperheight {297mm}%
     \setlength\paperwidth  {210mm}}
-\DeclareOption{a5paper}
-   {\setlength\paperheight {210mm}%
-    \setlength\paperwidth  {148mm}}
-\DeclareOption{b5paper}
-   {\setlength\paperheight {250mm}%
-    \setlength\paperwidth  {176mm}}
-\DeclareOption{letterpaper}
-   {\setlength\paperheight {11in}%
-    \setlength\paperwidth  {8.5in}}
-\DeclareOption{legalpaper}
-   {\setlength\paperheight {14in}%
-    \setlength\paperwidth  {8.5in}}
-\DeclareOption{executivepaper}
-   {\setlength\paperheight {10.5in}%
-    \setlength\paperwidth  {7.25in}}
-\DeclareOption{landscape}
-   {\setlength\@tempdima   {\paperheight}%
-    \setlength\paperheight {\paperwidth}%
-    \setlength\paperwidth  {\@tempdima}}
+% \DeclareOption{a5paper}
+%    {\setlength\paperheight {210mm}%
+%     \setlength\paperwidth  {148mm}}
+% \DeclareOption{b5paper}
+%    {\setlength\paperheight {250mm}%
+%     \setlength\paperwidth  {176mm}}
+% \DeclareOption{letterpaper}
+%    {\setlength\paperheight {11in}%
+%     \setlength\paperwidth  {8.5in}}
+% \DeclareOption{legalpaper}
+%    {\setlength\paperheight {14in}%
+%     \setlength\paperwidth  {8.5in}}
+% \DeclareOption{executivepaper}
+%    {\setlength\paperheight {10.5in}%
+%     \setlength\paperwidth  {7.25in}}
+% \DeclareOption{landscape}
+%    {\setlength\@tempdima   {\paperheight}%
+%     \setlength\paperheight {\paperwidth}%
+%     \setlength\paperwidth  {\@tempdima}}
 \DeclareOption{8pt}{\renewcommand\@ptsize{8}}
 \DeclareOption{9pt}{\renewcommand\@ptsize{9}}
 \DeclareOption{10pt}{\renewcommand\@ptsize{10}}
@@ -148,10 +154,28 @@
 %% -----------------------------------------------------------------------------
 
 \RequirePackage{exscale}
+
+\setlength\hoffset{-1in}
+\setlength\voffset{-1in}
+
+\setlength\oddsidemargin{30mm}
+\setlength\evensidemargin{15mm}
+
+\setlength\marginparwidth{0mm}
+\setlength\marginparsep{0mm}
+
+\setlength\topmargin{20mm}
+\setlength\headheight{0mm}
+\setlength\headsep{0mm}
+
+\setlength\textheight{257mm}
+\setlength\textwidth{165mm}
+
 \setlength\lineskip{1\p@}
 \setlength\normallineskip{1\p@}
-\renewcommand\baselinestretch{1.5}
+\renewcommand\baselinestretch{\nirreport@linestretch}
 \setlength\parskip{\z@}
+\setlength\parindent{\nirreport@parindent}
 \@lowpenalty   51
 \@medpenalty  151
 \@highpenalty 301
@@ -256,90 +280,6 @@
     \let\chaptermark\@gobble
     \let\sectionmark\@gobble
     }
-
-%% -----------------------------------------------------------------------------
-%% Опции класса
-%% -----------------------------------------------------------------------------
-
-\if@titlepage
-  \newcommand\maketitle{\begin{titlepage}%
-  \let\footnotesize\small
-  \let\footnoterule\relax
-  \let \footnote \thanks
-  \null\vfil
-  \vskip 60\p@
-  \begin{center}%
-    {\LARGE \@title \par}%
-    \vskip 3em%
-    {\large
-     \lineskip .75em%
-      \begin{tabular}[t]{c}%
-        \@author
-      \end{tabular}\par}%
-      \vskip 1.5em%
-    {\large \@date \par}%       % Set date in \large size.
-  \end{center}\par
-  \@thanks
-  \vfil\null
-  \end{titlepage}%
-  \setcounter{footnote}{0}%
-  \global\let\thanks\relax
-  \global\let\maketitle\relax
-  \global\let\@thanks\@empty
-  \global\let\@author\@empty
-  \global\let\@date\@empty
-  \global\let\@title\@empty
-  \global\let\title\relax
-  \global\let\author\relax
-  \global\let\date\relax
-  \global\let\and\relax
-}
-\else
-\newcommand\maketitle{\par
-  \begingroup
-    \renewcommand\thefootnote{\@fnsymbol\c@footnote}%
-    \def\@makefnmark{\rlap{\@textsuperscript{\normalfont\@thefnmark}}}%
-    \long\def\@makefntext##1{\parindent 1em\noindent
-            \hb@xt@1.8em{%
-                \hss\@textsuperscript{\normalfont\@thefnmark}}##1}%
-
-    \newpage
-    \global\@topnum\z@   % Prevents figures from going at top of page.
-    \@maketitle
-    \thispagestyle{plain}\@thanks
-  \endgroup
-  \setcounter{footnote}{0}%
-  \global\let\thanks\relax
-  \global\let\maketitle\relax
-  \global\let\@maketitle\relax
-  \global\let\@thanks\@empty
-  \global\let\@author\@empty
-  \global\let\@date\@empty
-  \global\let\@title\@empty
-  \global\let\title\relax
-  \global\let\author\relax
-  \global\let\date\relax
-  \global\let\and\relax
-}
-\def\@maketitle{%
-  \newpage
-  \null
-  \vskip 2em%
-  \begin{center}%
-  \let \footnote \thanks
-    {\LARGE \@title \par}%
-    \vskip 1.5em%
-    {\large
-      \lineskip .5em%
-      \begin{tabular}[t]{c}%
-        \@author
-      \end{tabular}\par}%
-    \vskip 1em%
-    {\large \@date}%
-  \end{center}%
-  \par
-  \vskip 1.5em}
-\fi
 
 %% -----------------------------------------------------------------------------
 %% Опции класса
@@ -475,25 +415,11 @@
 \newcommand*\descriptionlabel[1]{\hspace\labelsep
                                 \normalfont\bfseries #1}
 
-\if@titlepage
-  \newenvironment{abstract}{%
-      \titlepage
-      \null\vfil
-      \@beginparpenalty\@lowpenalty
-      \begin{center}%
-        \bfseries \abstractname
-        \@endparpenalty\@M
-      \end{center}}%
-     {\par\vfil\null\endtitlepage}
-\else
-  \newenvironment{abstract}{%
-      \small
-      \begin{center}%
-        {\bfseries \abstractname\vspace{-.5em}\vspace{\z@}}%
-      \end{center}%
-      \quotation}
-      {\endquotation}
-\fi
+\newenvironment{abstract}{%
+  \addtocontents{toc}{\protect\setcounter{tocdepth}{-1}}
+  \chapter*{\abstractname}%
+  \addtocontents{toc}{\protect\setcounter{tocdepth}{1}}}
+{}
 
 \newenvironment{verse}
                {\let\\\@centercr
@@ -519,26 +445,58 @@
                {\endlist}
 
 \newenvironment{titlepage}
-    {%
-      \newpage
-      \thispagestyle{empty}%
-      \setcounter{page}\@ne
-    }%
-    {\newpage
-     \if@twoside\else
-        \setcounter{page}\@ne
-     \fi
-    }
+{%
+  \newpage
+  \thispagestyle{empty}%
+  \setcounter{page}\@ne
+}%
+{\newpage
+  \if@twoside\else
+    \setcounter{page}\@ne
+  \fi
+}
 
 %% -----------------------------------------------------------------------------
 %% Опции класса
 %% -----------------------------------------------------------------------------
 
 \newcommand\appendix{\par
+  \setcounter{secnumdepth}{4}
   \setcounter{chapter}{0}%
   \setcounter{section}{0}%
-  \gdef\@chapapp{\appendixname}%
-  \gdef\thechapter{\@Alph\c@chapter}}
+  \@addtoreset{equation}{chapter}%
+  \renewcommand{\theequation}{\thechapter.\arabic{equation}}%
+  \@addtoreset{figure}{chapter}%
+  \renewcommand{\thefigure}{\thechapter.\arabic{figure}}%
+  \@addtoreset{table}{chapter}%
+  \renewcommand{\thetable}{\thechapter.\arabic{table}}%
+  \renewcommand\@chapapp{\appendixname}%
+  \gdef\thechapter{\Alph{chapter}}%
+  \renewcommand\@makechapterhead[1]{%
+    {\parindent \z@ \centering \normalfont
+      \ifnum \c@secnumdepth >\m@ne
+        \normalfont\bfseries\centering \@chapapp\space\thechapter%
+      \fi
+      \par
+      \interlinepenalty\@M
+      \normalfont\bfseries\centering{##1}\par\nobreak
+    }}
+
+  \gdef\@chapter[##1]##2{\ifnum \c@secnumdepth >\m@ne
+      \refstepcounter{chapter}%
+      \typeout{\@chapapp\space\thechapter.}%
+      \addcontentsline{toc}{chapter}%
+      {\@chapapp\space\protect\numberline{\thechapter}##1}%
+    \else
+      \addcontentsline{toc}{chapter}{##1}%
+    \fi
+    \chaptermark{##1}%
+    \addtocontents{lof}{\protect\addvspace{10\p@}}%
+    \addtocontents{lot}{\protect\addvspace{10\p@}}%
+    \@makechapterhead{##2}%
+    \@afterheading
+  }
+}
 
 %% -----------------------------------------------------------------------------
 %% Опции класса
@@ -775,6 +733,348 @@
 \else
   \raggedbottom
 \fi
+
+%% -----------------------------------------------------------------------------
+%% Опции класса
+%% -----------------------------------------------------------------------------
+
+\def\maketitle{\titlepage}
+
+\def\Nir@text@Organization{Organization}
+\def\Nir@text@Approve{Approved by}
+\def\Nir@text@Name{First name, last name}
+\def\Nir@text@Approver{Chief executor}
+\def\Nir@text@Supervisor{Supervisor}
+\def\Nir@text@Executor{Executor}
+\def\Nir@text@Title{Title}
+\def\Nir@text@Subject{Topic}
+\def\Nir@text@Modifier{on the topic}
+\def\Nir@text@Type{Scientific report}
+\def\Nir@text@About{on the research}
+\def\Nir@text@Signature{Signature}
+\def\Nir@text@intermediatename{intermediate}
+\def\Nir@text@finalname{final}
+\def\Nir@text@No{Reg.~\textnumero}
+\def\Nir@text@Udk{UDC}
+
+\newcommand*\ulfill{%
+  \mbox{}\leaders\hrule depth 2pt height -1.5pt\hfill%
+}
+
+% https://tex.stackexchange.com/a/55706
+\newcommand*\ulfillx[1][\linewidth]{%
+  \protect\makebox[#1]{\ulfill}
+}
+
+% https://tex.stackexchange.com/a/55706
+\newcommand*\ultext[2][\linewidth]{%
+  \raisebox{%
+    -\baselineskip%
+  }{%
+    \shortstack{%
+    \underline{\hspace{#1}}\\
+    {\footnotesize \centering (#2)}}
+  }
+}
+
+\newcommand\Nir@Udk{
+  \Nir@text@Udk~\protect\makebox[3em]{\ulfill}
+}
+\newcommand*\NirUdk[1]{%
+  \renewcommand\Nir@Udk{#1}%
+}
+
+\newcommand\Nir@RegNo{%
+  \Nir@text@No~\protect\makebox[3em]{\ulfill}%
+}
+\newcommand*\NirRegNo[1]{%
+    \renewcommand\Nir@RegNo{#1}%
+}
+
+\newcommand\Nir@InnerNo{
+  \Nir@text@No~\protect\makebox[3em]{\ulfill}%
+}
+\newcommand*\NirInnerNo[1]{%
+  \renewcommand\Nir@InnerNo{#1}%
+}
+
+% Гриф секретности
+\newcommand\Nir@Classified{%
+  \vspace{-2ex}%
+}
+\newcommand*\NirGrif[1]{%
+  \renewcommand\Nir@Grif{#1}%
+}
+
+% Approve text
+\newcommand*\Nir@Approve{%
+  \Nir@text@Approve%
+}
+\newcommand*\NirApprove[1]{%
+  \renewcommand\Nir@Approve{#1}%
+}
+
+% Organization name
+\newcommand\Nir@OrgLongName{
+  \ultext[\linewidth]{\Nir@text@Organization}%
+}
+\newcommand\NirOrgLongName[1]{%
+  \renewcommand\Nir@OrgLongName{\MakeUppercase{#1}}%
+}
+
+% Report Name
+\newcommand*\Nir@Type{%
+  \MakeUppercase\Nir@text@Type
+  %Отчёт%
+}
+\newcommand\NirType[1]{%
+  \renewcommand\Nir@Type{#1}%
+}
+
+% Report about text
+\newcommand*\Nir@About{
+  \MakeUppercase\Nir@text@About
+ %о{} научно-исследовательской{} работе%
+}
+\newcommand\NirAbout[1]{%
+  \renewcommand\Nir@About{\MakeUppercase{#1}}%
+}
+
+% Annotated report
+\newcommand\Nir@Annotate{}
+\newcommand*\NirIsAnnotation[1]{%
+  \renewcommand\Nir@Annotate{\MakeUppercase{#1}}%
+}
+
+% Report part
+\newcommand*\Nir@PartNo{%
+  \vspace{-2ex}%
+}
+\newcommand\NirPartNo[2]{%
+  \renewcommand\Nir@PartNo{#1 #2}%
+}
+
+% Report Year
+\newcommand\Nir@Year{\the\year}
+\newcommand*\NirYear[1]{%
+  \renewcommand\Nir@Year{#1}%
+}
+
+\newcommand\Nir@Town{}
+\newcommand*\NirTown[1]{%
+  \renewcommand\Nir@Town{#1}%
+}
+
+\newcommand\Nir@ApproverStamp{
+  \parbox[t]{.4\linewidth}{
+    {\centering\MakeUppercase{\Nir@Approve}
+
+    }
+    \bigskip
+    {\raggedright\Nir@ApproverPost
+
+    }
+    \bigskip
+    \ulfill~\Nir@ApproverName
+
+    \bigskip
+    <<\protect\makebox[3em]{\ulfill}>>~\ulfill~\Nir@Year~г.
+  }
+}
+\newcommand*\NirApproverStamp[1]{%
+  \renewcommand\Nir@ApproverStamp{#1}%
+}
+
+\newcommand\Nir@ApproverPost{
+  \ultext{\Nir@text@Approver}
+}
+\newcommand\NirApproverPost[1]{%
+  \renewcommand\Nir@ApproverPost{#1}%
+}
+
+\newcommand\Nir@ApproverName{%
+  \ultext[5em]{\Nir@text@Name}%
+}
+\newcommand*\NirApproverName[1]{%
+  \renewcommand\Nir@ApproverName{#1}%
+}
+
+\newcommand*\NirApprover[2]{
+  \renewcommand\Nir@ApproverPost{#1}
+  \renewcommand\Nir@ApproverName{#2}
+}
+
+% Head Supervisor stamp
+\newcommand\Nir@SupervisorStamp{
+  \parbox[b]{0.4\linewidth}{\raggedright
+    \Nir@text@Supervisor\par
+    %Руководитель темы\par
+    \Nir@SupervisorPost}
+  \hfill
+  \ultext[3em]{\Nir@text@Signature}
+  \hfill
+  \Nir@SupervisorName
+}
+\newcommand*\NirSupervisorStamp[1]{%
+  \renewcommand\Nir@SupervisorStamp{#1}}
+
+\newcommand\Nir@SupervisorPost{
+    \ultext{\Nir@text@Supervisor}
+}
+\newcommand*\NirSupervisorPost[1]{%
+  \renewcommand\Nir@SupervisorPost{#1}%
+}
+
+\newcommand\Nir@SupervisorName{%
+  \ultext[5em]{\Nir@text@Signature}%
+}
+\newcommand*\NirSupervisorName{%
+  \renewcommand\Nir@SupervisorName{}
+}
+
+\newcommand*\NirSupervisor[2]{
+  \renewcommand\Nir@SupervisorPost{#1}
+  \renewcommand\Nir@SupervisorName{#2}
+}
+
+% Head executor of research
+\newcommand\Nir@ExecutorStamp[1]{%
+  \parbox[b]{0.4\linewidth}{\raggedright
+    \Nir@text@Executor\par
+    %Исполнитель темы\par
+    \Nir@ExecutorPost}
+  \hfill
+  \ultext[3em]{\Nir@text@Signature}
+  \hfill
+  \Nir@ExecutorName}
+\newcommand*\NirExecutorStamp[1]{%
+  \renewcommand\Nir@ExecutorStamp{#1}}
+
+\newcommand\Nir@ExecutorPost{%
+  % \ultext{ответственный исполнитель}
+  \ultext{\Nir@text@Executor}
+}
+
+\newcommand\Nir@ExecutorName{%
+  \ultext[5em]{\Nir@text@Name}}
+\newcommand*\NirExecutorName{%
+  \renewcommand\Nir@ExecutorName{}
+}
+
+\newcommand*\NirExecutor[2]{
+  \renewcommand\Nir@ExecutorPost{#1}
+  \renewcommand\Nir@ExecutorName{#2}
+}
+
+\newcommand\Nir@Title{%
+  % \ultext{наименование}
+  \ultext{\Nir@text@Title}}
+\newcommand\NirTitle[1]{%
+  \renewcommand\Nir@Title{\MakeUppercase{#1}}}
+
+\newcommand\Nir@Subject{%
+  % \ultext{тема НИР}
+  \ultext{\Nir@text@Subject}
+}
+\newcommand\NirSubject[1]{%
+  \renewcommand\Nir@Subject{\MakeUppercase{#1}}}
+
+\newcommand\Nir@SubjectModifier{%
+  \Nir@text@Modifier :
+}
+\newcommand\NirSubjectModifier[1]{%
+  \renewcommand\Nir@SubjectModifier{#1}}
+
+\newcommand\Nir@TitleAndSubject{
+  \Nir@Title\par
+  \Nir@SubjectModifier\par
+  \Nir@Subject
+}
+
+\newcommand\@intermediatename{\Nir@text@intermediatename}
+\newcommand\intermediatename[1]{\renewcommand\@intermediatename{#1}}
+
+\newcommand\@finalname{\Nir@text@finalname}
+\newcommand\finalname[1]{\renewcommand\@finalname{#1}}
+
+\newcommand\Nir@StageType{\@intermediatename}
+
+\newcommand*\NirFinal[1][\@finalname]{%
+  \renewcommand\Nir@StageType{#1}%
+}
+
+\newcommand*\NirFinalStage[2][\@finalname]{%
+  \renewcommand\Nir@StageType{#1, #2}%
+}
+
+\newlength{\savedparskip}
+\renewenvironment*{titlepage}{
+  \setlength{\savedparskip}{\parskip}
+  \setlength{\parskip}{0pt}
+  \thispagestyle{empty}
+  \linespread{1.1}\normalsize
+
+  \begin{centering}
+    {{\Nir@OrgLongName}} % name of Institute
+
+    \vfill
+
+    \parbox[t]{.45\linewidth}{
+      \Nir@Udk\\ % UDK name and number
+      \Nir@RegNo\\       %Reg name and number
+      \Nir@InnerNo\\ %Inventory name and number
+    }
+    \hfill\Nir@ApproverStamp
+
+    \vfill
+
+    \Nir@Annotate \Nir@Type\\ % Annotated and Report name
+    \Nir@About\\         % Report about
+    \Nir@TitleAndSubject\\          % Report Subject
+    (\Nir@StageType)
+
+    \vfill
+
+    \Nir@SupervisorStamp
+
+    \vfill
+
+    \vfill
+
+    \Nir@Town~\Nir@Year.
+
+  \end{centering}
+  \renewcommand\baselinestretch{\nirreport@linestretch}\normalsize
+  \setlength{\parskip}{\savedparskip}
+}
+
+\AtBeginDocument{%
+  \IfPackageLoadedWithOptionsTF{babel}{russian}{%
+    \renewcommand{\theenumi}{\asbuk{enumi}}%
+    \addto\captionsrussian{%
+      \def\contentsname{Содержание}%
+      \def\bibname{Список~использованных~источников}%
+      \def\abstractname{Реферат}
+    }
+    \def\Nir@text@Organization{организация (предприятие)}
+    \def\Nir@text@Approve{Утверждаю}
+    \def\Nir@text@Name{Ф.И.О.}
+    \def\Nir@text@Approver{Главный испонитель}
+    \def\Nir@text@Supervisor{Руководитель темы}
+    \def\Nir@text@Executor{Ответственный исполнитель}
+    \def\Nir@text@Title{Название отчёта}
+    \def\Nir@text@Subject{Название темы}
+    \def\Nir@text@Modifier{на тему}
+    \def\Nir@text@Type{Отчёт}
+    \def\Nir@text@About{о{} научно-исследовательской{} работе}
+    \def\Nir@text@Signature{Подпись}
+    \def\Nir@text@intermediatename{промежуточный}
+    \def\Nir@text@finalname{итоговый}
+    \def\Nir@text@No{Рег.~\textnumero}
+    \def\Nir@text@Udk{УДК}
+  }{}%
+}
+
 \onecolumn
 \endinput
 %%
