@@ -364,23 +364,23 @@
 \renewcommand{\@listiv}  {\Nir@List}
 
 \newcommand\Nir@List{
-  \setlength{\itemsep}{.5\parskip}
-  \setlength{\topsep}{\z@}
-  \setlength{\partopsep}{\z@}
-  \setlength\parsep{\parskip}
-  \setlength\listparindent{\parindent}
-  \setlength\itemindent{\parindent}
+  \setlength\itemsep       {.5\parskip}
+  \setlength\topsep        {\z@}
+  \setlength\partopsep     {\z@}
+  \setlength\parsep        {\parskip}
+  \setlength\listparindent {\parindent}
+  \setlength\itemindent    {\parindent}
 
-  \setlength \leftmargini{\z@}
+  \setlength \leftmargini   {\z@}
   \leftmargin \leftmargini
-  \setlength \leftmarginii {\z@}
-  \setlength \leftmarginiii{\z@}
-  \setlength \leftmarginiv {\z@}
-  \setlength \leftmarginv  {\z@}
-  \setlength \leftmarginvi {\z@}
-  \setlength \labelsep     {2mm}
-  \setlength \labelwidth{\leftmargini}
-  \addtolength\labelwidth{2\labelsep}
+  \setlength \leftmarginii  {\z@}
+  \setlength \leftmarginiii {\z@}
+  \setlength \leftmarginiv  {\z@}
+  \setlength \leftmarginv   {\z@}
+  \setlength \leftmarginvi  {\z@}
+  \setlength \labelsep      {2mm}
+  \setlength \labelwidth    {\leftmargini}
+  \addtolength\labelwidth   {2\labelsep}
   \@beginparpenalty -\@lowpenalty
   \@endparpenalty   -\@lowpenalty
   \@itempenalty     -\@lowpenalty
@@ -510,6 +510,18 @@
 \skip\@mpfootins = \skip\footins
 \setlength\fboxsep{3\p@}
 \setlength\fboxrule{.4\p@}
+
+\expandafter\def\expandafter\normalsize\expandafter{%
+  \normalsize
+  \setlength\abovedisplayskip{\z@}
+  \setlength\belowdisplayskip{\z@}
+  \setlength\abovedisplayshortskip{\z@}
+  \setlength\belowdisplayshortskip{\z@}
+}
+
+\setlength\textfloatsep{\z@}
+\setlength\floatsep{\z@}
+\setlength\intextsep{\baselineskip}
 
 \if@numinchap
   \@addtoreset{equation}{chapter}
@@ -1048,6 +1060,31 @@
   \setlength{\parskip}{\savedparskip}
 }
 
+\AtEndPreamble{
+  \IfPackageLoadedTF{biblatex}{
+    \renewrobustcmd*{\mkbibemph}{}
+    \protected\long\def\blx@imc@mkbibemph#1{#1}
+
+    \defbibenvironment{bibliography}
+    {\list
+      {\printtext[labelnumberwidth]{%
+          \printfield{labelprefix}%
+          \printfield{labelnumber}}}
+      {\setlength{\labelwidth}{\labelnumberwidth}%
+       \setlength{\leftmargin}{\z@}%
+       \setlength{\itemsep}{\bibitemsep}%
+       \setlength{\parsep}{\bibparsep}}%
+      \renewcommand*{\makelabel}[1]{\hss##1}}
+    {\endlist}
+    {\item}
+
+    \DefineBibliographyStrings{russian}{
+      bibliography = {Список~использованных~источников},
+      references = {Список~использованных~источников}
+    }
+  }{}
+}
+
 \AtBeginDocument{%
   \IfPackageLoadedWithOptionsTF{babel}{russian}{%
     \renewcommand{\theenumi}{\asbuk{enumi}}%
@@ -1056,6 +1093,7 @@
       \def\bibname{Список~использованных~источников}%
       \def\abstractname{Реферат}
     }
+
     \def\Nir@text@Organization{организация (предприятие)}
     \def\Nir@text@Approve{Утверждаю}
     \def\Nir@text@Name{Ф.И.О.}
