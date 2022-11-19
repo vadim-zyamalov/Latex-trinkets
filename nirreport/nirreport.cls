@@ -22,12 +22,16 @@
 \ProvidesClass{nirreport}[1996/10/08 v1.0 Non Standard LaTeX document class]
 
 \RequirePackage{etoolbox}
+\RequirePackage{ifthen}
 \RequirePackage{kvoptions}
+\RequirePackage{totcount}
 
 \newcommand\@ptsize{}
 \newif\if@restonecol
 \newif\if@titlepage
 \newif\if@numinchap
+\newif\if@Nir@hasappendices
+\@Nir@hasappendicesfalse
 \@titlepagetrue
 \@numinchapfalse
 \newif\if@openright
@@ -303,6 +307,12 @@
 \newcommand\@chapapp{\chaptername}
 
 \newcommand\chapter{\if@openright\cleardoublepage\else\clearpage\fi
+                    \if@numinchap%
+                      \addtocounter{totfigures}{\value{figure}}
+                      \setcounter{figure}{0}
+                      \addtocounter{tottables}{\value{table}}
+                      \setcounter{table}{0}
+                    \fi
                     \thispagestyle{plain}%
                     \global\@topnum\z@
                     \@afterindenttrue
@@ -461,9 +471,12 @@
 %% -----------------------------------------------------------------------------
 
 \newcommand\appendix{\par
+  \@Nir@hasappendicestrue
   \setcounter{secnumdepth}{4}
   \setcounter{chapter}{0}%
   \setcounter{section}{0}%
+  \addtocounter{totfigures}{\value{figure}}
+  \addtocounter{tottables}{\value{table}}
   \@addtoreset{equation}{chapter}%
   \renewcommand{\theequation}{\thechapter.\arabic{equation}}%
   \@addtoreset{figure}{chapter}%
@@ -675,25 +688,29 @@
       \@mkboth{%
           \MakeUppercase\listtablename}{\MakeUppercase\listtablename}}%
     \@starttoc{lot}}
-\let\l@table\l@figure
+  \let\l@table\l@figure
+
+\newcounter{biblio}
+\setcounter{biblio}{0}
 \newdimen\bibindent
 \setlength\bibindent{1.5em}
 \newenvironment{thebibliography}[1]
-     {\chapter*{\bibname
-        \@mkboth{\MakeUppercase\bibname}{\MakeUppercase\bibname}}%
-      \list{\@biblabel{\@arabic\c@enumiv}}%
-           {\settowidth\labelwidth{\@biblabel{#1}}%
-            \leftmargin\labelwidth
-            \advance\leftmargin\labelsep
-            \@openbib@code
-            \usecounter{enumiv}%
-            \let\p@enumiv\@empty
-            \renewcommand\theenumiv{\@arabic\c@enumiv}}%
-      \sloppy\clubpenalty4000\widowpenalty4000%
-      \sfcode`\.\@m}
-     {\def\@noitemerr
-       {\@latex@warning{Empty `thebibliography' environment}}%
-      \endlist}
+{\chapter*{\bibname
+    \@mkboth{\MakeUppercase\bibname}{\MakeUppercase\bibname}}%
+  \list{\@biblabel{\@arabic\c@biblio}}%
+  {\settowidth\labelwidth{\@biblabel{#1}}%
+    \leftmargin\labelwidth
+    \advance\leftmargin\labelsep
+    \@openbib@code
+    \usecounter{biblio}%
+    \let\p@enumiv\@empty
+    \renewcommand\theenumiv{\@arabic\c@biblio}}%
+  \sloppy\clubpenalty4000\widowpenalty4000%
+  \sfcode`\.\@m}
+{\def\@noitemerr
+  {\@latex@warning{Empty `thebibliography' environment}}%
+  \endlist}
+
 \newcommand\newblock{\hskip .11em\@plus.33em\@minus.07em}
 \let\@openbib@code\@empty
 \newenvironment{theindex}
@@ -1060,6 +1077,45 @@
   \setlength{\parskip}{\savedparskip}
 }
 
+%% -----------------------------------------------------------------------------
+%% Опции класса
+%% -----------------------------------------------------------------------------
+
+\newcounter{totpages}
+\newcounter{totfigures}
+\newcounter{tottables}
+\newcounter{totappendices}
+\newcounter{totbiblio}
+
+\setcounter{totpages}{0}
+\setcounter{totfigures}{0}
+\setcounter{tottables}{0}
+\setcounter{totappendices}{0}
+\setcounter{totbiblio}{0}
+
+\providecommand\totpag{\number\value{totpages}}
+\providecommand\totfig{\number\value{totfigures}}%
+\providecommand\tottab{\number\value{tottables}}%
+\providecommand\totapp{\number\value{totappendices}}%
+\providecommand\totbib{\number\value{totbiblio}}%
+
+\AtEndDocument{%
+  \addtocounter{totpages}{\c@page}%
+  \addtocounter{totfigures}{\value{figure}}%
+  \addtocounter{tottables}{\value{table}}%
+ \if@Nir@hasappendices%
+  \addtocounter{totappendices}{\value{chapter}}%
+  \fi%
+  \addtocounter{totbiblio}{\value{biblio}}%
+  \immediate\write\@mainaux{%
+    \string\gdef\string\totpag{\number\value{totpages}}%
+    \string\gdef\string\totfig{\number\value{totfigures}}%
+    \string\gdef\string\tottab{\number\value{tottables}}%
+    \string\gdef\string\totapp{\number\value{totappendices}}%
+    \string\gdef\string\totbib{\number\value{totbiblio}}%
+  }%
+}
+
 \AtEndPreamble{
   \IfPackageLoadedTF{biblatex}{
     \renewrobustcmd*{\mkbibemph}{}
@@ -1082,34 +1138,43 @@
       bibliography = {Список~использованных~источников},
       references = {Список~использованных~источников}
     }
+
+    \AtEveryBibitem{\stepcounter{biblio}}
   }{}
+}
+
+\newcommand\Nir@lang@russian{%
+  \renewcommand{\theenumi}{\asbuk{enumi}}%
+  \addto\captionsrussian{%
+    \def\contentsname{Содержание}%
+    \def\bibname{Список~использованных~источников}%
+    \def\abstractname{Реферат}
+  }
+
+  \def\Nir@text@Organization{организация (предприятие)}
+  \def\Nir@text@Approve{Утверждаю}
+  \def\Nir@text@Name{Ф.И.О.}
+  \def\Nir@text@Approver{Главный испонитель}
+  \def\Nir@text@Supervisor{Руководитель темы}
+  \def\Nir@text@Executor{Ответственный исполнитель}
+  \def\Nir@text@Title{Название отчёта}
+  \def\Nir@text@Subject{Название темы}
+  \def\Nir@text@Modifier{на тему}
+  \def\Nir@text@Type{Отчёт}
+  \def\Nir@text@About{о{} научно-исследовательской{} работе}
+  \def\Nir@text@Signature{Подпись}
+  \def\Nir@text@intermediatename{промежуточный}
+  \def\Nir@text@finalname{итоговый}
+  \def\Nir@text@No{Рег.~\textnumero}
+  \def\Nir@text@Udk{УДК}
 }
 
 \AtBeginDocument{%
   \IfPackageLoadedWithOptionsTF{babel}{russian}{%
-    \renewcommand{\theenumi}{\asbuk{enumi}}%
-    \addto\captionsrussian{%
-      \def\contentsname{Содержание}%
-      \def\bibname{Список~использованных~источников}%
-      \def\abstractname{Реферат}
-    }
-
-    \def\Nir@text@Organization{организация (предприятие)}
-    \def\Nir@text@Approve{Утверждаю}
-    \def\Nir@text@Name{Ф.И.О.}
-    \def\Nir@text@Approver{Главный испонитель}
-    \def\Nir@text@Supervisor{Руководитель темы}
-    \def\Nir@text@Executor{Ответственный исполнитель}
-    \def\Nir@text@Title{Название отчёта}
-    \def\Nir@text@Subject{Название темы}
-    \def\Nir@text@Modifier{на тему}
-    \def\Nir@text@Type{Отчёт}
-    \def\Nir@text@About{о{} научно-исследовательской{} работе}
-    \def\Nir@text@Signature{Подпись}
-    \def\Nir@text@intermediatename{промежуточный}
-    \def\Nir@text@finalname{итоговый}
-    \def\Nir@text@No{Рег.~\textnumero}
-    \def\Nir@text@Udk{УДК}
+    \Nir@lang@russian
+  }{}%
+  \IfPackageLoadedTF{polyglossia}{%
+    \ifthenelse{\equal{\xpg@main@language}{russian}}{\Nir@lang@russian}{}
   }{}%
 }
 

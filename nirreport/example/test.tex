@@ -1,12 +1,28 @@
 \documentclass[12pt, rusmathsym]{nirreport}
+\usepackage{iftex}
 
-\usepackage{cmap}
-\usepackage[utf8]{inputenc}
-\usepackage[T2A]{fontenc}
-\usepackage[russian]{babel}
+\iftutex
+  \usepackage[babelshorthands=true]{polyglossia}
+  \setdefaultlanguage{russian}
+  \setotherlanguage{english}
+
+  \defaultfontfeatures{Scale=MatchLowercase, Ligatures=TeX, Mapping=tex-text}
+
+  \setmainfont{Times New Roman}
+  \setmonofont{Courier New}
+  \setsansfont{Arial}
+
+  \newfontfamily\cyrillicfont{Times New Roman}
+  \newfontfamily\cyrillicfonttt{Courier New}
+  \newfontfamily\cyrillicfontsf{Arial}
+\else
+  \usepackage{cmap}
+  \usepackage[utf8]{inputenc}
+  \usepackage[T2A]{fontenc}
+  \usepackage[russian]{babel}
+\fi
 
 \usepackage{graphicx}
-\usepackage{float}
 
 \setlength\parindent{15mm}
 
@@ -22,17 +38,6 @@
 \NirTown{Черноморск}
 \NirYear{1930}
 
-% \def\abstractname{Реферат}
-
-% \addto\captionsrussian{%
-%   \def\contentsname{Содержание}%
-%  \def\bibname{Список~использованных~источников}%
-% }
-
-
-%\addbibresource{bibliography.bib}
-
-% https://tex.stackexchange.com/a/55706
 \usepackage[backend=biber, style=gost-numeric, uniquelist=false, movenames=false]{biblatex}
 
 \addbibresource{bibliography.bib}
@@ -45,6 +50,12 @@
   Привет, это пример!
 
   Кое-чего не хватает...
+
+  стр. \totpag\\
+  рис. \totfig\\
+  тбл. \tottab\\
+  ббл. \totbib\\
+  прл. \totapp
 \end{abstract}
 
 \tableofcontents
