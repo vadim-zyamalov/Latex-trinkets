@@ -22,9 +22,8 @@
 \ProvidesClass{nirreport}[1996/10/08 v1.0 Non Standard LaTeX document class]
 
 \RequirePackage{etoolbox}
-\RequirePackage{ifthen}
 \RequirePackage{kvoptions}
-\RequirePackage{totcount}
+\RequirePackage{makecell}
 
 \newcommand\@ptsize{}
 \newif\if@restonecol
@@ -418,18 +417,58 @@
 %% Опции класса
 %% -----------------------------------------------------------------------------
 
-\newenvironment{description}
-               {\list{}{\labelwidth\z@ \itemindent-\leftmargin
-                        \let\makelabel\descriptionlabel}}
-               {\endlist}
-\newcommand*\descriptionlabel[1]{\hspace\labelsep
-                                \normalfont\bfseries #1}
+\newcommand*\Nir@Keywords{}
+\newcommand\NirKeywords[1]{%
+  \renewcommand\Nir@Keywords{#1}}
 
 \newenvironment{abstract}{%
-  \addtocontents{toc}{\protect\setcounter{tocdepth}{-1}}
+  \addtocontents{toc}{\protect\setcounter{tocdepth}{-1}}%
   \chapter*{\abstractname}%
-  \addtocontents{toc}{\protect\setcounter{tocdepth}{1}}}
+  \addtocontents{toc}{\protect\setcounter{tocdepth}{1}}%
+
+  Отчет \totpag~с., \totfig~рис., \tottab~табл., \totbib~ист., \totapp~прил.
+
+  \noindent\MakeUppercase{\Nir@Keywords}\par
+}
 {}
+
+\newenvironment{executors}{%
+  \addtocontents{toc}{\protect\setcounter{tocdepth}{-1}}%
+  \chapter*{\executorsname}%
+  \addtocontents{toc}{\protect\setcounter{tocdepth}{1}}%
+  \noindent\begin{tabular}{p{80mm}cp{45mm}}
+}{%
+  \end{tabular}
+}
+\newcommand\executor[3]{#1 & \ultext[7em]{\Nir@text@Signature} & \makecell[tl]{#2\\(#3)} \\}
+
+\newenvironment{nirdefslist}{%
+  \addtocontents{toc}{\protect\setcounter{tocdepth}{-1}}%
+  \chapter*{\nirdefsname}%
+  \addtocontents{toc}{\protect\setcounter{tocdepth}{1}}%
+  \Nir@text@nirdefslist\par
+  \begin{description}
+}{%
+  \end{description}
+}
+
+\newenvironment{nirabbrlist}{%
+  \addtocontents{toc}{\protect\setcounter{tocdepth}{-1}}%
+  \chapter*{\nirabbrname}%
+  \addtocontents{toc}{\protect\setcounter{tocdepth}{1}}%
+  \Nir@text@nirabbrlist\par
+  \begin{description}
+}{%
+  \end{description}
+}
+
+\newenvironment{description}[1][30mm]
+{\list{}{\setlength\labelwidth{#1}%
+    \itemindent\dimexpr(\parindent+\labelwidth)\relax
+    \let\makelabel\descriptionlabel}}
+{\endlist}
+\newcommand*\descriptionlabel[1]{\hspace\labelsep
+                                \raggedright\normalfont #1 \hfil ---}
 
 \newenvironment{verse}
                {\let\\\@centercr
@@ -738,6 +777,7 @@
     \parindent 1em%
     \noindent
     \hb@xt@1.8em{\hss\@makefnmark}#1}
+
 \newcommand\contentsname{Contents}
 \newcommand\listfigurename{List of Figures}
 \newcommand\listtablename{List of Tables}
@@ -749,6 +789,29 @@
 \newcommand\chaptername{Chapter}
 \newcommand\appendixname{Appendix}
 \newcommand\abstractname{Abstract}
+\newcommand\executorsname{Executors List}
+\newcommand\nirdefsname{Definitions List}
+\newcommand\nirabbrname{Abbreviations List}
+
+\def\Nir@text@Organization{Organization}
+\def\Nir@text@Approve{Approved by}
+\def\Nir@text@Name{First name, last name}
+\def\Nir@text@Approver{Chief executor}
+\def\Nir@text@Supervisor{Supervisor}
+\def\Nir@text@Executor{Executor}
+\def\Nir@text@Title{Title}
+\def\Nir@text@Subject{Topic}
+\def\Nir@text@Modifier{on the topic}
+\def\Nir@text@Type{Scientific report}
+\def\Nir@text@About{on the research}
+\def\Nir@text@Signature{Signature}
+\def\Nir@text@intermediatename{intermediate}
+\def\Nir@text@finalname{final}
+\def\Nir@text@No{Reg.~\textnumero}
+\def\Nir@text@Udk{UDC}
+\def\Nir@text@nirdefslist{In this scientific report used are the following definitions:}
+\def\Nir@text@nirabbrlist{In this scientific report used are the following abbreviations:}
+
 \newcommand\today{}
 \edef\today{\ifcase\month\or
   January\or February\or March\or April\or May\or June\or
@@ -769,23 +832,6 @@
 
 \def\maketitle{\titlepage}
 
-\def\Nir@text@Organization{Organization}
-\def\Nir@text@Approve{Approved by}
-\def\Nir@text@Name{First name, last name}
-\def\Nir@text@Approver{Chief executor}
-\def\Nir@text@Supervisor{Supervisor}
-\def\Nir@text@Executor{Executor}
-\def\Nir@text@Title{Title}
-\def\Nir@text@Subject{Topic}
-\def\Nir@text@Modifier{on the topic}
-\def\Nir@text@Type{Scientific report}
-\def\Nir@text@About{on the research}
-\def\Nir@text@Signature{Signature}
-\def\Nir@text@intermediatename{intermediate}
-\def\Nir@text@finalname{final}
-\def\Nir@text@No{Reg.~\textnumero}
-\def\Nir@text@Udk{UDC}
-
 \newcommand*\ulfill{%
   \mbox{}\leaders\hrule depth 2pt height -1.5pt\hfill%
 }
@@ -798,7 +844,7 @@
 % https://tex.stackexchange.com/a/55706
 \newcommand*\ultext[2][\linewidth]{%
   \raisebox{%
-    -\baselineskip%
+    -\normalbaselineskip%
   }{%
     \shortstack{%
     \underline{\hspace{#1}}\\
@@ -1149,6 +1195,9 @@
     \def\contentsname{Содержание}%
     \def\bibname{Список~использованных~источников}%
     \def\abstractname{Реферат}
+    \def\executorsname{Список исполнителей}
+    \def\nirdefsname{Термины и определения}
+    \def\nirabbrname{Перечень сокращений и обозначений}
   }
 
   \def\Nir@text@Organization{организация (предприятие)}
@@ -1167,6 +1216,8 @@
   \def\Nir@text@finalname{итоговый}
   \def\Nir@text@No{Рег.~\textnumero}
   \def\Nir@text@Udk{УДК}
+  \def\Nir@text@nirdefslist{В настоящем отчете о НИР применяют следующие термины с соответствующими определениями:}
+  \def\Nir@text@nirabbrlist{В настоящем отчете о НИР применяют следующие сокращения и обозначения:}
 }
 
 \AtBeginDocument{%
