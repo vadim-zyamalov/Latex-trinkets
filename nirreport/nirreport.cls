@@ -27,11 +27,9 @@
 
 \newcommand\@ptsize{}
 \newif\if@restonecol
-\newif\if@titlepage
 \newif\if@numinchap
 \newif\if@Nir@hasappendices
 \@Nir@hasappendicesfalse
-\@titlepagetrue
 \@numinchapfalse
 \newif\if@openright
 
@@ -77,8 +75,6 @@
 \DeclareOption{twoside}{\@twosidetrue  \@mparswitchtrue}
 \DeclareOption{draft}{\setlength\overfullrule{5pt}}
 \DeclareOption{final}{\setlength\overfullrule{0pt}}
-\DeclareOption{titlepage}{\@titlepagetrue}
-\DeclareOption{notitlepage}{\@titlepagefalse}
 \DeclareOption{numinchap}{\@numinchaptrue}
 \DeclareOption{numindoc}{\@numinchapfalse}
 \DeclareOption{openright}{\@openrighttrue}
@@ -877,8 +873,8 @@
 \newcommand\Nir@Classified{%
   \vspace{-2ex}%
 }
-\newcommand*\NirGrif[1]{%
-  \renewcommand\Nir@Grif{#1}%
+\newcommand*\NirClassified[1]{%
+  \renewcommand\Nir@Classified{#1}%
 }
 
 % Approve text
@@ -900,7 +896,6 @@
 % Report Name
 \newcommand*\Nir@Type{%
   \MakeUppercase\Nir@text@Type
-  %Отчёт%
 }
 \newcommand\NirType[1]{%
   \renewcommand\Nir@Type{#1}%
