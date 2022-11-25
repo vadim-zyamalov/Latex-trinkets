@@ -302,12 +302,6 @@
 \newcommand\@chapapp{\chaptername}
 
 \newcommand\chapter{\if@openright\cleardoublepage\else\clearpage\fi
-                    \if@numinchap%
-                      \addtocounter{totfigures}{\value{figure}}
-                      \setcounter{figure}{0}
-                      \addtocounter{tottables}{\value{table}}
-                      \setcounter{table}{0}
-                    \fi
                     \thispagestyle{plain}%
                     \global\@topnum\z@
                     \@afterindenttrue
@@ -510,8 +504,6 @@
   \setcounter{secnumdepth}{4}
   \setcounter{chapter}{0}%
   \setcounter{section}{0}%
-  \addtocounter{totfigures}{\value{figure}}
-  \addtocounter{tottables}{\value{table}}
   \@addtoreset{equation}{chapter}%
   \renewcommand{\theequation}{\thechapter.\arabic{equation}}%
   \@addtoreset{figure}{chapter}%
@@ -595,7 +587,7 @@
 \def\ext@figure{lof}
 \def\fnum@figure{\figurename~\thefigure}
 \newenvironment{figure}
-               {\@float{figure}}
+               {\stepcounter{totfigure}\@float{figure}}
                {\end@float}
 \newenvironment{figure*}
                {\@dblfloat{figure}}
@@ -617,7 +609,7 @@
 \def\ext@table{lot}
 \def\fnum@table{\tablename~\thetable}
 \newenvironment{table}
-               {\@float{table}}
+               {\stepcounter{tottable}\@float{table}}
                {\end@float}
 \newenvironment{table*}
                {\@dblfloat{table}}
@@ -940,13 +932,13 @@
     {\centering\MakeUppercase{\Nir@Approve}
 
     }
-    \bigskip
     {\raggedright\Nir@ApproverPost
 
     }
     \bigskip
-    \ulfill~\Nir@ApproverName
+    {\ulfill~\Nir@ApproverName
 
+    }
     \bigskip
     <<\protect\makebox[3em]{\ulfill}>>~\ulfill~\Nir@Year~г.
   }
@@ -977,11 +969,11 @@
 % Head Supervisor stamp
 \newcommand\Nir@SupervisorStamp{
   \parbox[b]{0.4\linewidth}{\raggedright
-    \Nir@text@Supervisor\par
+    \Nir@text@Supervisor\\
     %Руководитель темы\par
     \Nir@SupervisorPost}
   \hfill
-  \ultext[3em]{\Nir@text@Signature}
+  \ultext[5em]{\Nir@text@Signature}
   \hfill
   \Nir@SupervisorName
 }
@@ -1010,11 +1002,11 @@
 % Head executor of research
 \newcommand\Nir@ExecutorStamp[1]{%
   \parbox[b]{0.4\linewidth}{\raggedright
-    \Nir@text@Executor\par
+    \Nir@text@Executor\\
     %Исполнитель темы\par
     \Nir@ExecutorPost}
   \hfill
-  \ultext[3em]{\Nir@text@Signature}
+  \ultext[5em]{\Nir@text@Signature}
   \hfill
   \Nir@ExecutorName}
 \newcommand*\NirExecutorStamp[1]{%
@@ -1122,37 +1114,35 @@
 %% Опции класса
 %% -----------------------------------------------------------------------------
 
-\newcounter{totpages}
-\newcounter{totfigures}
-\newcounter{tottables}
-\newcounter{totappendices}
+\newcounter{totpage}
+\newcounter{totfigure}
+\newcounter{tottable}
+\newcounter{totappendix}
 \newcounter{totbiblio}
 
-\setcounter{totpages}{0}
-\setcounter{totfigures}{0}
-\setcounter{tottables}{0}
-\setcounter{totappendices}{0}
+\setcounter{totpage}{0}
+\setcounter{totfigure}{0}
+\setcounter{tottable}{0}
+\setcounter{totappendix}{0}
 \setcounter{totbiblio}{0}
 
-\providecommand\totpag{\number\value{totpages}}
-\providecommand\totfig{\number\value{totfigures}}%
-\providecommand\tottab{\number\value{tottables}}%
-\providecommand\totapp{\number\value{totappendices}}%
+\providecommand\totpag{\number\value{totpage}}
+\providecommand\totfig{\number\value{totfigure}}%
+\providecommand\tottab{\number\value{tottable}}%
+\providecommand\totapp{\number\value{totappendix}}%
 \providecommand\totbib{\number\value{totbiblio}}%
 
 \AtEndDocument{%
-  \addtocounter{totpages}{\c@page}%
-  \addtocounter{totfigures}{\value{figure}}%
-  \addtocounter{tottables}{\value{table}}%
- \if@Nir@hasappendices%
-  \addtocounter{totappendices}{\value{chapter}}%
+  \addtocounter{totpage}{\c@page}%
+  \if@Nir@hasappendices%
+  \addtocounter{totappendix}{\value{chapter}}%
   \fi%
   \addtocounter{totbiblio}{\value{biblio}}%
   \immediate\write\@mainaux{%
-    \string\gdef\string\totpag{\number\value{totpages}}%
-    \string\gdef\string\totfig{\number\value{totfigures}}%
-    \string\gdef\string\tottab{\number\value{tottables}}%
-    \string\gdef\string\totapp{\number\value{totappendices}}%
+    \string\gdef\string\totpag{\number\value{totpage}}%
+    \string\gdef\string\totfig{\number\value{totfigure}}%
+    \string\gdef\string\tottab{\number\value{tottable}}%
+    \string\gdef\string\totapp{\number\value{totappendix}}%
     \string\gdef\string\totbib{\number\value{totbiblio}}%
   }%
 }
