@@ -91,11 +91,11 @@
 \def\ps@navigation@titlepage{%
   \setbeamertemplate{headline}%
   {\vskip 5pt \hskip 5pt %
-    \IfFileExists{logos/logo_ranepa.pdf}{
-      \includegraphics[height=1cm]{logos/logo_ranepa.pdf} \hskip 5pt
+    \IfFileExists{logos/ranepa.pdf}{
+      \includegraphics[height=1cm]{logos/ranepa.pdf} \hskip 5pt
     }{}%
-    \IfFileExists{logos/logo_iep.pdf}{
-      \includegraphics[height=1cm]{logos/logo_iep.pdf}
+    \IfFileExists{logos/iep.pdf}{
+      \includegraphics[height=1cm]{logos/iep.pdf}
     }{}}%
   \setbeamertemplate{footline}%
   {\makebox[\paperwidth][c]%
@@ -135,15 +135,27 @@
           {\hphantom{~}}%
           {\hphantom{.\insertsubsectionnumber~}}}%
         \usebeamerfont{framesubtitle}\usebeamercolor[fg]{framesubtitle}\strut\insertframesubtitle\par}\fi}%
-    %\if@tempswa\else\vskip-.3cm\fi% set inside beamercolorbox... evil here...
+    \vskip-1ex%
+    \if@tempswa\else\vskip-.3cm\fi% set inside beamercolorbox... evil here...
   \end{beamercolorbox}%
 }
 \makeatother
 
 % Номер слайдов в подвале слайда
-\setbeamertemplate{footline}
-{\makebox[\paperwidth][r]
-  {\tiny\insertframenumber\hskip 5pt}\vskip 5pt}
+% https://tex.stackexchange.com/questions/387012/how-can-i-show-the-numbering-of-slides-of-each-frame
+\setbeamertemplate{footline}{%
+  \makebox[\paperwidth][r]{%
+  \ifnum\insertoverlaynumber>1
+    \tiny\insertframenumber{} -- \insertoverlaynumber\hskip 5pt%
+  \else
+    \tiny\insertframenumber\hskip 5pt%
+  \fi%
+  }\vskip 5pt%
+}
+
+%\setbeamertemplate{footline}
+%{\makebox[\paperwidth][r]
+%  {\tiny\insertframenumber\hskip 5pt}\vskip 5pt}
 
 % Номер слайда-продолжения
 \makeatletter
@@ -179,7 +191,7 @@
 % Выделенный текст
 \renewcommand{\emph}[1]{\color{RanepaRed}\textbf{#1}\color{black}\relax}
 
-% Маnематические функции
+% Математические функции
 \newcommand{\E}{\ensuremath{\operatorname{E}}}
 \newcommand{\Var}{\ensuremath{\operatorname{var}}}
 \newcommand{\Cov}{\ensuremath{\operatorname{cov}}}
