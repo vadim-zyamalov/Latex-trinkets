@@ -145,7 +145,7 @@
 % https://tex.stackexchange.com/questions/387012/how-can-i-show-the-numbering-of-slides-of-each-frame
 \setbeamertemplate{footline}{%
   \makebox[\paperwidth][r]{%
-  \ifnum\insertoverlaynumber>1
+  \ifnum\insertframeendpage>\insertframestartpage{}
     \tiny\insertframenumber{} -- \insertoverlaynumber\hskip 5pt%
   \else
     \tiny\insertframenumber\hskip 5pt%
