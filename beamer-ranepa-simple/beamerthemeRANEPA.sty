@@ -143,15 +143,21 @@
 
 % Номер слайдов в подвале слайда
 % https://tex.stackexchange.com/questions/387012/how-can-i-show-the-numbering-of-slides-of-each-frame
+\makeatletter
 \setbeamertemplate{footline}{%
   \makebox[\paperwidth][r]{%
-  \ifnum\insertframeendpage>\insertframestartpage{}
-    \tiny\insertframenumber{} -- \insertoverlaynumber\hskip 5pt%
-  \else
+  \ifnum\beamer@autobreakcount>0%
     \tiny\insertframenumber\hskip 5pt%
+  \else%
+    \ifnum\insertframeendpage>\insertframestartpage{}
+      \tiny\insertframenumber{} -- \insertoverlaynumber\hskip 5pt%
+    \else
+      \tiny\insertframenumber\hskip 5pt%
+    \fi%
   \fi%
   }\vskip 5pt%
 }
+\makeatother
 
 %\setbeamertemplate{footline}
 %{\makebox[\paperwidth][r]
