@@ -124,7 +124,13 @@
         \ifnumequal{\thesubsection}{0}%
         {~}%
         {.\insertsubsectionnumber~}}%
-      \insertframetitle}\fi%
+      \insertframetitle%
+      \ifnum\beamer@autobreakcount>0%
+      \else%
+        \ifnum\insertframeendpage>\insertframestartpage{}
+          (\insertoverlaynumber)%
+        \fi%
+      \fi}\fi%
     \par%
     {\ifx\insertframesubtitle\@empty%
       \else%
@@ -198,6 +204,10 @@
 \renewcommand{\emph}[1]{\color{RanepaRed}\textbf{#1}\color{black}\relax}
 
 % Математические функции
+\renewcommand{\le}{\leqslant}
+\renewcommand{\leq}{\leqslant}
+\renewcommand{\ge}{\geqslant}
+\renewcommand{\geq}{\geqslant}
 \newcommand{\E}{\ensuremath{\operatorname{E}}}
 \newcommand{\Var}{\ensuremath{\operatorname{var}}}
 \newcommand{\Cov}{\ensuremath{\operatorname{cov}}}
