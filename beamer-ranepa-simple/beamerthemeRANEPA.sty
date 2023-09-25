@@ -10,6 +10,7 @@
 \ifpdftex
   \RequirePackage{bm}
 \fi
+\RequirePackage{listofitems}
 
 
 %%% Цветовая тема %%%
@@ -64,6 +65,11 @@
 % Титульный лист
 
 \makeatletter
+\def\logos@list{}
+\newcommand{\logos}[1]{\gdef\logos@list{#1}}
+\makeatother
+
+\makeatletter
 \setbeamertemplate{title page}
 {\vbox{}
   \vfill
@@ -91,12 +97,13 @@
 \def\ps@navigation@titlepage{%
   \setbeamertemplate{headline}%
   {\vskip 5pt \hskip 5pt %
-    \IfFileExists{logos/ranepa.pdf}{
-      \includegraphics[height=1cm]{logos/ranepa.pdf} \hskip 5pt
-    }{}%
-    \IfFileExists{logos/iep.pdf}{
-      \includegraphics[height=1cm]{logos/iep.pdf}
-    }{}}%
+    \ignoreemptyitems%
+    \readlist*\logos@list@entries{\logos@list}%
+    \foreachitem\logo\in\logos@list@entries{%
+    	\includegraphics[height=1cm]{logos/\logo.pdf} \hskip 5pt%
+    }%
+    \reademptyitems%
+  }%
   \setbeamertemplate{footline}%
   {\makebox[\paperwidth][c]%
     {\scriptsize\insertdate}\vskip 5pt}%
