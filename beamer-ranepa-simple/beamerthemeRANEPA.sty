@@ -39,7 +39,10 @@
 \setbeamertemplate{bibliography entry location}{}
 \setbeamertemplate{bibliography entry note}{}
 
-% Настраиваем меркеры
+% Закрашенный квадрат как окончание доказательства
+\setbeamertemplate{qed symbol}{$\blacksquare$}
+
+% Настраиваем маркеры
 % Треугольники
 % \setbeamertemplate{bibliography item}[triangle]
 
@@ -132,12 +135,13 @@
         {~}%
         {.\insertsubsectionnumber~}}%
       \insertframetitle%
-      \ifnum\beamer@autobreakcount>0%
-      \else%
-        \ifnum\insertframeendpage>\insertframestartpage{}
-          (\insertoverlaynumber)%
-        \fi%
-      \fi}\fi%
+      %\ifnum\beamer@autobreakcount>0%
+      %\else%
+      %  \ifnum\insertframeendpage>\insertframestartpage{}
+      %    (\insertoverlaynumber)%
+      %  \fi%
+      %\fi%
+    }\fi%
     \par%
     {\ifx\insertframesubtitle\@empty%
       \else%
@@ -178,9 +182,8 @@
 
 % Номер слайда-продолжения
 \makeatletter
-\setbeamertemplate{frametitle continuation}{%
-  (\insertcontinuationcount)%
-}
+%\setbeamertemplate{frametitle continuation}{(\insertcontinuationcount)}
+\setbeamertemplate{frametitle continuation}{}
 \makeatother
 
 % Нумерация приложений буквами
@@ -307,7 +310,7 @@
 
 % Доказательства на несколько слайдов
 \makeatletter
-\newenvironment<>{proofs}[1][\proofname]{%
+\newenvironment<>{proof*}[1][\proofname]{%
     \par
     \def\insertproofname{#1\@addpunct{.}}%
     \usebeamertemplate{proof begin}#2}
@@ -316,7 +319,16 @@
 
 % Номер слайда для оверлеев
 \makeatletter
-\newcommand*{\slideinframe}{\number\beamer@slideinframe}
+%\newcommand*{\slideinframe}{\number\beamer@slideinframe}
+\newcommand*{\slideinframe}{
+	\ifnum\beamer@autobreakcount>0\relax%
+		\number\beamer@autobreakcount%
+	\else%
+		\ifnum\insertframeendpage>\insertframestartpage{}%
+			\number\beamer@slideinframe%
+		\fi%
+	\fi%
+}
 \makeatother
 
 \mode
