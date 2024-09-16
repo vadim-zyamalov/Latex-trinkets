@@ -1,0 +1,136 @@
+\mode<presentation>
+
+\useoutertheme{default}
+
+% Титульный лист
+
+\makeatletter
+\def\logos@list{}
+\newcommand{\logos}[1]{\gdef\logos@list{#1}}
+\makeatother
+
+\makeatletter
+\setbeamertemplate{title page}
+{\vbox{}
+  \vfill
+  \begingroup
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center]{title}
+    \usebeamerfont{title}\inserttitle\par%
+    \ifx\insertsubtitle\@empty%
+    \else%
+    \vskip0.25em%
+    {\usebeamerfont{subtitle}\usebeamercolor[fg]{subtitle}\insertsubtitle\par}%
+    \fi%
+  \end{beamercolorbox}%
+  \vskip1em\par
+  \begin{beamercolorbox}[sep=8pt,center]{author}
+    \usebeamerfont{author}\insertauthor
+  \end{beamercolorbox}
+  \begin{beamercolorbox}[sep=8pt,center]{institute}
+    \usebeamerfont{institute}\insertinstitute
+  \end{beamercolorbox}
+  {\usebeamercolor[fg]{titlegraphic}\inserttitlegraphic\par}
+  \endgroup
+  \vfill}
+
+\def\ps@navigation@titlepage{%
+  \setbeamertemplate{headline}%
+  {\vskip 5pt \hskip 5pt %
+    \ignoreemptyitems%
+    \readlist*\logos@list@entries{\logos@list}%
+    \foreachitem\logo\in\logos@list@entries{%
+    	\includegraphics[height=1cm]{logos/\logo.pdf} \hskip 5pt%
+    }%
+    \reademptyitems%
+  }%
+  \setbeamertemplate{footline}%
+  {\makebox[\paperwidth][c]%
+    {\scriptsize\insertdate}\vskip 5pt}%
+  \@nameuse{ps@navigation}}
+  \addtobeamertemplate{title page}{\thispagestyle{navigation@titlepage}}{}
+\makeatother
+
+% Заголовки с выравниванием номеров разделов и подразделов
+\makeatletter
+\setbeamertemplate{frametitle}%
+{\ifbeamercolorempty[bg]{frametitle}{}{\nointerlineskip}%
+  \@tempdima=\textwidth%
+  \advance\@tempdima by\beamer@leftmargin%
+  \advance\@tempdima by\beamer@rightmargin%
+  \begin{beamercolorbox}[sep=0.3cm,left,wd=\the\@tempdima]{frametitle}
+    \usebeamerfont{frametitle}%
+    \vbox{}\vskip-1ex%
+    \if@tempswa\else\csname beamer@fteleft\endcsname\fi%
+    \strut%
+    \ifx\insertframetitle\@empty%
+    \else%
+    {\ifnumequal{\thesection}{0}%
+      {}%
+      {\insertsectionnumber%
+        \ifnumequal{\thesubsection}{0}%
+        {~}%
+        {.\insertsubsectionnumber~}}%
+      \insertframetitle%
+      %\ifnum\beamer@autobreakcount>0%
+      %\else%
+      %  \ifnum\insertframeendpage>\insertframestartpage{}
+      %    (\insertoverlaynumber)%
+      %  \fi%
+      %\fi%
+    }\fi%
+    \par%
+    {\ifx\insertframesubtitle\@empty%
+      \else%
+      {\ifnumequal{\thesection}{0}%
+        {}%
+        {\hphantom{\insertsectionnumber}%
+          \ifnumequal{\insertsubsectionnumber}{0}%
+          {\hphantom{~}}%
+          {\hphantom{.\insertsubsectionnumber~}}}%
+        \usebeamerfont{framesubtitle}\usebeamercolor[fg]{framesubtitle}\strut\insertframesubtitle\par}\fi}%
+    \vskip-1ex%
+    \if@tempswa\else\vskip-.3cm\fi% set inside beamercolorbox... evil here...
+  \end{beamercolorbox}%
+}
+\makeatother
+
+% Номер слайдов в подвале слайда
+% https://tex.stackexchange.com/questions/387012/how-can-i-show-the-numbering-of-slides-of-each-frame
+\makeatletter
+\setbeamertemplate{footline}{%
+  \makebox[\paperwidth][r]{%
+  \ifnum\beamer@autobreakcount>0%
+    \tiny\insertframenumber\hskip 5pt%
+  \else%
+    \ifnum\insertframeendpage>\insertframestartpage{}
+      \tiny\insertframenumber{} -- \insertoverlaynumber\hskip 5pt%
+    \else
+      \tiny\insertframenumber\hskip 5pt%
+    \fi%
+  \fi%
+  }\vskip 5pt%
+}
+\makeatother
+
+%\setbeamertemplate{footline}
+%{\makebox[\paperwidth][r]
+%  {\tiny\insertframenumber\hskip 5pt}\vskip 5pt}
+
+% Номер слайда-продолжения
+\makeatletter
+%\setbeamertemplate{frametitle continuation}{(\insertcontinuationcount)}
+\setbeamertemplate{frametitle continuation}{}
+\makeatother
+
+% Нумерация приложений буквами
+\makeatletter
+\renewcommand<>\appendix{%
+  \setcounter{section}{0}%
+  \renewcommand\insertsectionnumber{\Alph{section}}%
+  \only#1{\part{\appendixname}
+    \addtocontents{nav}{\protect\headcommand{\protect\beamer@appendixpages{\the\c@page}}}}}
+\makeatother
+
+% Убираем управляющие кнопки
+\setbeamertemplate{navigation symbols}{}

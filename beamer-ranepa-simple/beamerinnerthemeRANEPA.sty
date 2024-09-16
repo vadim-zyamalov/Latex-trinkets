@@ -1,0 +1,30 @@
+\mode<presentation>
+
+\useinnertheme{circles}
+
+% Нет разных цветов в списке
+\setbeamertemplate{bibliography entry article}{}
+\setbeamertemplate{bibliography entry title}{}
+\setbeamertemplate{bibliography entry location}{}
+\setbeamertemplate{bibliography entry note}{}
+
+% Закрашенный квадрат как окончание доказательства
+\setbeamertemplate{qed symbol}{$\blacksquare$}
+
+% Настраиваем маркеры
+% Треугольники
+% \setbeamertemplate{bibliography item}[triangle]
+
+% или красивые иконки
+\setbeamertemplate{bibliography item}
+{\ifboolexpr{ test {\ifentrytype{book}}
+    or test {\ifentrytype{mvbook}}
+    or test {\ifentrytype{collection}}
+    or test {\ifentrytype{mvcollection}}
+    or test {\ifentrytype{reference}}
+    or test {\ifentrytype{mvreference}} }
+  {\setbeamertemplate{bibliography item}[book]}
+  {\ifentrytype{online}
+    {\setbeamertemplate{bibliography item}[online]}
+    {\setbeamertemplate{bibliography item}[article]}}%
+  \usebeamertemplate{bibliography item}}
