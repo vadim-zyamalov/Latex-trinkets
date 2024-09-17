@@ -1,0 +1,59 @@
+% Языковые настройки
+\usepackage{polyglossia}
+\setdefaultlanguage{russian}
+\setotherlanguage{english}
+
+\usepackage{paratype}
+\usepackage{csquotes}
+\usepackage{bookmark}
+\usepackage{parskip}
+
+\defaultfontfeatures{Ligatures={TeX}}
+\setmainfont{PT Astra Serif}
+\setsansfont{PT Sans}
+\setmonofont{PT Mono}
+\newfontfamily{\cyrillicfont}{PT Astra Serif}
+\newfontfamily{\cyrillicfontsf}{PT Sans}
+\newfontfamily{\cyrillicfonttt}{PT Mono}
+
+% Математические шрифты и символы
+% https://tex.stackexchange.com/q/552864/283103
+\let\normalunderbrace=\underbrace
+\usepackage{mathtools}
+\let\underbrace=\normalunderbrace
+
+\usepackage{amsmath}
+
+% unicode-math загружается LyX автоматически
+%\usepackage[mathrm=sym]{unicode-math}
+%\setmathfont{Fira Math}
+%\setmathfont[range={\vdots,\ddots}]{TeX Gyre DejaVu Math}
+%\setmathfont[range=\int]{Fira Math}
+
+% Рисунки
+\usepackage{graphics}
+\usepackage{setspace}
+\usepackage{color, colortbl}
+
+% Рисование графиков
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{pgfplotstable}
+
+% Таблицы
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{adjustbox}
+\usepackage{makecell}
+\usepackage{siunitx}[=v2]
+\sisetup{
+detect-all,
+table-number-alignment = center,
+table-figures-integer = 2,
+table-figures-decimal = 2
+}
+
+% Дополнительные настройки
+\usepackage{appendixnumberbeamer}
+
+\AtBeginDocument{\defbibheading{bibliography}[\bibname]{}}
