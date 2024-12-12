@@ -3,11 +3,26 @@
 \setdefaultlanguage{russian}
 \setotherlanguage{english}
 
-\usepackage{paratype}
 \usepackage{csquotes}
 \usepackage{bookmark}
 \usepackage{parskip}
 
+% Математические шрифты и символы
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+% https://tex.stackexchange.com/q/552864/283103
+\let\normalunderbrace=\underbrace
+\usepackage{mathtools}
+\let\underbrace=\normalunderbrace
+
+% unicode-math загружается LyX автоматически
+%\usepackage[mathrm=sym]{unicode-math}
+%\setmathfont{Fira Math}
+%\setmathfont[range={\vdots,\ddots}]{TeX Gyre DejaVu Math}
+%\setmathfont[range=\int]{Fira Math}
+
+% Шрифты
 \defaultfontfeatures{Ligatures={TeX}}
 \setmainfont{PT Astra Serif}
 \setsansfont{PT Sans}
@@ -15,20 +30,6 @@
 \newfontfamily{\cyrillicfont}{PT Astra Serif}
 \newfontfamily{\cyrillicfontsf}{PT Sans}
 \newfontfamily{\cyrillicfonttt}{PT Mono}
-
-% Математические шрифты и символы
-% https://tex.stackexchange.com/q/552864/283103
-\let\normalunderbrace=\underbrace
-\usepackage{mathtools}
-\let\underbrace=\normalunderbrace
-
-\usepackage{amsmath}
-
-% unicode-math загружается LyX автоматически
-%\usepackage[mathrm=sym]{unicode-math}
-%\setmathfont{Fira Math}
-%\setmathfont[range={\vdots,\ddots}]{TeX Gyre DejaVu Math}
-%\setmathfont[range=\int]{Fira Math}
 
 % Рисунки
 \usepackage{graphics}
@@ -56,4 +57,4 @@ table-figures-decimal = 2
 % Дополнительные настройки
 \usepackage{appendixnumberbeamer}
 
-\AtBeginDocument{\defbibheading{bibliography}[\bibname]{}}
+%\AtBeginDocument{\defbibheading{bibliography}[\bibname]{}}
