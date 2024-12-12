@@ -1,0 +1,46 @@
+\NeedsTeXFormat{LaTeX2e}[1994/06/01]
+\ProvidesPackage{trinkets}
+  [2011/01/11 v0.01 LaTeX package for my own purpose]
+
+\RequirePackage{iftex}
+\RequirePackage{amsmath}
+\iftutex
+  \RequirePackage{unicode-math}
+\fi
+\ifpdftex
+  \RequirePackage{bm}
+\fi
+
+%%% Команды для форматирования %%%
+
+% Компактные списки
+\providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+%%% Математические символы и функции %%%
+
+% Традиционные математические символы (Россия)
+\renewcommand{\le}{\leqslant}
+\renewcommand{\leq}{\leqslant}
+\renewcommand{\ge}{\geqslant}
+\renewcommand{\geq}{\geqslant}
+
+% Математические функции
+\newcommand{\E}{\ensuremath{\operatorname{E}}}
+\newcommand{\SE}{\ensuremath{\operatorname{SE}}}
+\newcommand{\Var}{\ensuremath{\operatorname{Var}}}
+\newcommand{\Cov}{\ensuremath{\operatorname{Cov}}}
+\newcommand{\Corr}{\ensuremath{\operatorname{Corr}}}
+
+\newcommand{\plim}{\ensuremath{\operatorname{plim}}}
+\newcommand{\diag}{\ensuremath{\operatorname{diag}}}
+\newcommand{\rank}{\ensuremath{\operatorname{rank}}}
+
+% Векторы
+\iftutex
+  \newcommand{\Vect}[1]{\ensuremath{\symbf{#1}}}
+\fi
+\ifpdftex
+  \newcommand{\Vect}[1]{\ensuremath{\bm{#1}}}
+\fi
+
+\endinput
