@@ -1,14 +1,15 @@
 \NeedsTeXFormat{LaTeX2e}[1994/06/01]
 \ProvidesPackage{trinkets}
-  [2011/01/11 v0.01 LaTeX package for my own purpose]
+[2011/01/11 v0.01 LaTeX package for my own purpose]
 
 \RequirePackage{iftex}
 \RequirePackage{amsmath}
+\RequirePackage{xspace}
 \iftutex
-  \RequirePackage{unicode-math}
+	\RequirePackage{unicode-math}
 \fi
 \ifpdftex
-  \RequirePackage{bm}
+	\RequirePackage{bm}
 \fi
 
 %%% Команды для форматирования %%%
@@ -25,27 +26,28 @@
 \renewcommand{\geq}{\geqslant}
 
 % Математические функции
-\newcommand{\D}{\ensuremath{\operatorname{d}}}
-\newcommand{\E}{\ensuremath{\operatorname{E}}}
-\newcommand{\SE}{\ensuremath{\operatorname{SE}}}
-\newcommand{\Var}{\ensuremath{\operatorname{Var}}}
-\newcommand{\Cov}{\ensuremath{\operatorname{Cov}}}
-\newcommand{\Corr}{\ensuremath{\operatorname{Corr}}}
+\newcommand{\D}{\ensuremath{\operatorname{d}}\xspace}
+\newcommand{\E}{\ensuremath{\operatorname{E}}\xspace}
+\newcommand{\SE}{\ensuremath{\operatorname{SE}}\xspace}
+\newcommand{\Var}{\ensuremath{\operatorname{Var}}\xspace}
+\newcommand{\Cov}{\ensuremath{\operatorname{Cov}}\xspace}
+\newcommand{\Corr}{\ensuremath{\operatorname{Corr}}\xspace}
 
-\newcommand{\plim}{\ensuremath{\operatorname{plim}}}
+\newcommand{\plim}{\ensuremath{\operatorname{plim}}\xspace}
 
-\newcommand{\diag}{\ensuremath{\operatorname{diag}}}
-\newcommand{\rank}{\ensuremath{\operatorname{rank}}}
-\newcommand{\tr}{\ensuremath{\operatorname{tr}}}
-\newcommand{\vecc}{\ensuremath{\operatorname{vec}}}
-\newcommand{\vech}{\ensuremath{\operatorname{vech}}}
+\newcommand{\diag}{\ensuremath{\operatorname{diag}}\xspace}
+\newcommand{\rank}{\ensuremath{\operatorname{rank}}\xspace}
+\newcommand{\tr}{\ensuremath{\operatorname{tr}}\xspace}
+\newcommand{\vecc}{\ensuremath{\operatorname{vec}}\xspace}
+\newcommand{\vech}{\ensuremath{\operatorname{vech}}\xspace}
+\newcommand{\sign}{\ensuremath{\operatorname{sign}}\xspace}
 
 % Векторы
 \iftutex
-  \newcommand{\Vect}[1]{\ensuremath{\symbf{#1}}}
+	\newcommand{\Vect}[1]{\ensuremath{\symbf{#1}}}
 \fi
 \ifpdftex
-  \newcommand{\Vect}[1]{\ensuremath{\bm{#1}}}
+	\newcommand{\Vect}[1]{\ensuremath{\bm{#1}}}
 \fi
 
 \endinput
