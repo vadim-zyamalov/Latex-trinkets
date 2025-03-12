@@ -3,6 +3,7 @@
 [2011/01/11 v0.01 LaTeX package for my own purpose]
 
 \RequirePackage{iftex}
+\RequirePackage{ifthen}
 \RequirePackage{amsmath}
 \RequirePackage{xspace}
 \iftutex
@@ -49,5 +50,27 @@
 \ifpdftex
 	\newcommand{\Vect}[1]{\ensuremath{\bm{#1}}}
 \fi
+
+%%% Упраженения %%%
+
+\newcounter{taskcounter}
+
+\newcommand*{\task}[1][]{%
+	\addtocounter{taskcounter}{1}%
+	\noindent%
+	\textbf{\textnumero\arabic{taskcounter}%
+	\ifthenelse{\equal{#1}{}}{}{ (#1)}:} %
+	\ignorespaces
+}
+
+\newcommand*{\answer}[1][]{%
+	\textbf{Ответ\ifthenelse{\equal{#1}{}}{}{ (#1)}:} %
+	\ignorespaces
+}
+
+\newcommand*{\solution}[1][]{%
+	\textbf{Решение\ifthenelse{\equal{#1}{}}{}{ (#1)}: }%
+	\ignorespaces
+}
 
 \endinput
