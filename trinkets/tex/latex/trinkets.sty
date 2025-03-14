@@ -25,52 +25,84 @@
 \renewcommand{\leq}{\leqslant}
 \renewcommand{\ge}{\geqslant}
 \renewcommand{\geq}{\geqslant}
+\renewcommand{\Pr}{\operatorname{P}\xspace}
 
 % Математические функции
-\newcommand{\D}{\ensuremath{\operatorname{d}}\xspace}
-\newcommand{\E}{\ensuremath{\operatorname{E}}\xspace}
-\newcommand{\SE}{\ensuremath{\operatorname{SE}}\xspace}
-\newcommand{\Var}{\ensuremath{\operatorname{Var}}\xspace}
-\newcommand{\Cov}{\ensuremath{\operatorname{Cov}}\xspace}
-\newcommand{\Corr}{\ensuremath{\operatorname{Corr}}\xspace}
+\newcommand*{\D}{\operatorname{d}\xspace}
+\newcommand*{\E}{\operatorname{E}\xspace}
+\newcommand*{\SE}{\operatorname{SE}\xspace}
+\newcommand*{\Var}{\operatorname{Var}\xspace}
+\newcommand*{\Cov}{\operatorname{Cov}\xspace}
+\newcommand*{\Corr}{\operatorname{Corr}\xspace}
 
-\newcommand{\plim}{\ensuremath{\operatorname{plim}}\xspace}
+\newcommand*{\plim}{\operatorname*{plim}\xspace}
 
-\newcommand{\diag}{\ensuremath{\operatorname{diag}}\xspace}
-\newcommand{\rank}{\ensuremath{\operatorname{rank}}\xspace}
-\newcommand{\tr}{\ensuremath{\operatorname{tr}}\xspace}
-\newcommand{\vecc}{\ensuremath{\operatorname{vec}}\xspace}
-\newcommand{\vech}{\ensuremath{\operatorname{vech}}\xspace}
-\newcommand{\sign}{\ensuremath{\operatorname{sign}}\xspace}
+\newcommand*{\diag}{\operatorname{diag}\xspace}
+\newcommand*{\rank}{\operatorname{rank}\xspace}
+\newcommand*{\tr}{\operatorname{tr}\xspace}
+\newcommand*{\vecc}{\operatorname{vec}\xspace}
+\newcommand*{\vech}{\operatorname{vech}\xspace}
+\newcommand*{\sign}{\operatorname{sign}\xspace}
 
 % Векторы
 \iftutex
-	\newcommand{\Vect}[1]{\ensuremath{\symbf{#1}}}
+	\newcommand*{\Vect}[1]{\symbf{#1}}
 \fi
 \ifpdftex
-	\newcommand{\Vect}[1]{\ensuremath{\bm{#1}}}
+	\newcommand*{\Vect}[1]{\bm{#1}}
 \fi
 
-%%% Упраженения %%%
+%%% Упражнения %%%
 
 \newcounter{taskcounter}
 
+% Взято отсюда:
+% https://tex.stackexchange.com/a/531040
+\makeatletter
+
+\newcommand*{\task@text}[1][]{%
+	\textnumero\arabic{taskcounter}%
+	\ifthenelse{\equal{#1}{}}%
+	{}%
+	{ (#1)}: %
+}
+
+\newcommand*{\answer@text}[1][]{%
+	Ответ%
+	\ifthenelse{\equal{#1}{}}%
+	{}%
+	{ (#1)}: %
+}
+
+\newcommand*{\solution@text}[1][]{%
+	Решение%
+	\ifthenelse{\equal{#1}{}}%
+	{}%
+	{ (#1)}: %
+}
+
 \newcommand*{\task}[1][]{%
 	\addtocounter{taskcounter}{1}%
-	\noindent%
-	\textbf{\textnumero\arabic{taskcounter}%
-	\ifthenelse{\equal{#1}{}}{}{ (#1)}:} %
-	\ignorespaces
+	\if@noskipsec\leavevmode\fi
+	\def\@svsechd{%
+		\textbf{\task@text[#1]}}%
+	\@xsect{-1em}%
 }
 
 \newcommand*{\answer}[1][]{%
-	\textbf{Ответ\ifthenelse{\equal{#1}{}}{}{ (#1)}:} %
-	\ignorespaces
+	\if@noskipsec\leavevmode\fi
+	\def\@svsechd{%
+		\textbf{\answer@text[#1]}}%
+	\@xsect{-1em}%
 }
 
 \newcommand*{\solution}[1][]{%
-	\textbf{Решение\ifthenelse{\equal{#1}{}}{}{ (#1)}: }%
-	\ignorespaces
+	\if@noskipsec\leavevmode\fi
+	\def\@svsechd{%
+		\textbf{\solution@text[#1]}}%
+	\@xsect{-1em}%
 }
+
+\makeatother
 
 \endinput
