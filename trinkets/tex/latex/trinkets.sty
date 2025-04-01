@@ -1,6 +1,5 @@
 \NeedsTeXFormat{LaTeX2e}[1994/06/01]
-\ProvidesPackage{trinkets}
-[2011/01/11 v0.01 LaTeX package for my own purpose]
+\ProvidesPackage{trinkets}[2025/03/26 LaTeX package for my own purpose]
 
 \RequirePackage{iftex}
 \RequirePackage{ifthen}
@@ -51,58 +50,5 @@
 \ifpdftex
 	\newcommand*{\Vect}[1]{\bm{#1}}
 \fi
-
-%%% Упражнения %%%
-
-\newcounter{taskcounter}
-
-% Взято отсюда:
-% https://tex.stackexchange.com/a/531040
-\makeatletter
-
-\newcommand*{\task@text}[1][]{%
-	\textnumero\arabic{taskcounter}%
-	\ifthenelse{\equal{#1}{}}%
-	{}%
-	{ (#1)}: %
-}
-
-\newcommand*{\answer@text}[1][]{%
-	Ответ%
-	\ifthenelse{\equal{#1}{}}%
-	{}%
-	{ (#1)}: %
-}
-
-\newcommand*{\solution@text}[1][]{%
-	Решение%
-	\ifthenelse{\equal{#1}{}}%
-	{}%
-	{ (#1)}: %
-}
-
-\newcommand*{\task}[1][]{%
-	\addtocounter{taskcounter}{1}%
-	\if@noskipsec\leavevmode\fi
-	\def\@svsechd{%
-		\textbf{\task@text[#1]}}%
-	\@xsect{-1em}%
-}
-
-\newcommand*{\answer}[1][]{%
-	\if@noskipsec\leavevmode\fi
-	\def\@svsechd{%
-		\textbf{\answer@text[#1]}}%
-	\@xsect{-1em}%
-}
-
-\newcommand*{\solution}[1][]{%
-	\if@noskipsec\leavevmode\fi
-	\def\@svsechd{%
-		\textbf{\solution@text[#1]}}%
-	\@xsect{-1em}%
-}
-
-\makeatother
 
 \endinput
