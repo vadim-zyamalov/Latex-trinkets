@@ -1,0 +1,66 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{bonbonpapier}[2025/03/26 My nice colorboxes for code listings]
+
+\RequirePackage[most]{tcolorbox}
+
+\newtcolorbox{Rbox}[1][R]{%
+	enhanced jigsaw,%
+	attach boxed title to top text left={yshift=-3mm,yshifttext=-1mm},%
+	colframe=black!75!white,%
+	coltitle=black!75!white,%
+	colback=blue!15!white,%
+	colbacktitle=blue!15!white,%
+	title={\texttt{#1}}%
+}
+\newtcolorbox{Rout}{%
+	enhanced jigsaw,%
+	colframe=black!75!white,%
+	colback=blue!15!white%
+}
+
+\newtcolorbox{pythonbox}[1][Python]{%
+	enhanced jigsaw,%
+	attach boxed title to top text left={yshift=-3mm,yshifttext=-1mm},%
+	colframe=blue!75!black,%
+	coltitle=blue!75!black,%
+	colback=yellow!15!white,%
+	colbacktitle=yellow!15!white,%
+	title={\texttt{#1}}%
+}
+\newtcolorbox{pythonout}{%
+	enhanced jigsaw,%
+	colframe=blue!75!black,%
+	colback=yellow!15!white%
+}
+
+\newtcolorbox{statabox}[1][Stata]{%
+	enhanced jigsaw,%
+	attach boxed title to top text left={yshift=-3mm,yshifttext=-1mm},%
+	colframe=blue!75!white,%
+	coltitle=blue!75!white,%
+	colback=white,%
+	colbacktitle=white,%
+	title={\texttt{#1}}%
+}
+\newtcolorbox{stataout}{%
+	enhanced jigsaw,%
+	colframe=blue!75!white,%
+	colback=white%
+}
+
+\newtcolorbox{bashbox}[1][Консоль]{%
+	enhanced jigsaw,%
+	attach boxed title to top text left={yshift=-3mm,yshifttext=-1mm},%
+	colframe=black,%
+	coltitle=black,%
+	colback=white!75!black,%
+	colbacktitle=white!75!black,%
+	title={\texttt{#1}}%
+}
+\newtcolorbox{bashout}{%
+	enhanced jigsaw,%
+	colframe=black,%
+	colback=white!75!black%
+}
+
+\endinput

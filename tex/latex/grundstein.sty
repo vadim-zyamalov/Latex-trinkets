@@ -1,0 +1,115 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{grundstein}[2025/03/26 My personal preamble]
+
+\RequirePackage{iftex}
+
+% Языковые настройки
+\iftutex
+	\RequirePackage{polyglossia}
+	\setdefaultlanguage{russian}
+	\setotherlanguage{english}
+\fi
+\ifpdftex
+	\RequirePackage{cmap}
+	\RequirePackage[utf8]{inputenc}
+	\RequirePackage[T2A,T1]{fontenc}
+	\RequirePackage[english, russian]{babel}
+\fi
+
+\RequirePackage{csquotes}
+\RequirePackage{bookmark}
+\RequirePackage{parskip}
+
+% ------ %
+% Шрифты %
+% ------ %
+\RequirePackage{moresize}
+
+\iftutex
+	\defaultfontfeatures{Ligatures={TeX}}
+	\setmainfont{PT Astra Serif}
+	\setsansfont{PT Astra Sans}
+	\setmonofont{Iosevka}
+	\newfontfamily{\cyrillicfont}{PT Astra Serif}
+	\newfontfamily{\cyrillicfontsf}{PT Astra Sans}
+	\newfontfamily{\cyrillicfonttt}{Iosevka}
+\fi
+\ifpdftex
+	\RequirePackage{paratype}
+\fi
+
+% ------------------------------- %
+% Математические шрифты и символы %
+% ------------------------------- %
+\RequirePackage{amsmath}
+\RequirePackage{amssymb}
+
+% https://tex.stackexchange.com/q/552864/283103
+\let\normalunderbrace=\underbrace
+\RequirePackage{mathtools}
+\let\underbrace=\normalunderbrace
+
+\iftutex
+	\RequirePackage{unicode-math}
+	\setmathfont{Asana-Math.otf}
+\fi
+
+% ------------------ %
+% Геометрия страницы %
+% ------------------ %
+\RequirePackage{setspace}
+\onehalfspacing
+
+\setlength{\parindent}{12.5mm}
+\righthyphenmin=2
+
+\widowpenalty=10000
+\tolerance=1000
+
+% --------- %
+% Коробочки %
+% --------- %
+\RequirePackage{adjustbox}
+\RequirePackage[most]{tcolorbox}
+
+% Списки %
+\RequirePackage{enumitem}
+
+% ------- %
+% Рисунки %
+% ------- %
+\RequirePackage{graphicx}
+
+% Рисование графиков
+\RequirePackage{tikz}
+\RequirePackage{pgfplots}
+\RequirePackage{pgfplotstable}
+\RequirePackage{xcolor, colortbl}
+
+% ------- %
+% Таблицы %
+% ------- %
+\RequirePackage{booktabs}
+\RequirePackage{multicol}
+\RequirePackage{multirow}
+\RequirePackage{makecell}
+
+\RequirePackage{siunitx}[=v2]
+\sisetup{
+	detect-all,
+	table-number-alignment = center,
+	table-figures-integer = 2,
+	table-figures-decimal = 2
+}
+
+% -------- %
+% Листинги %
+% -------- %
+\RequirePackage{minted}
+
+% Дополнительные настройки
+%\RequirePackage{appendixnumberbeamer}
+
+%\AtBeginDocument{\defbibheading{bibliography}[\bibname]{}}
+
+\endinput
