@@ -3,7 +3,9 @@
 
 \RequirePackage{iftex}
 
-% Языковые настройки
+% ------------------ %
+% Языковые настройки %
+% ------------------ %
 \iftutex
 	\RequirePackage{polyglossia}
 	\setdefaultlanguage{russian}
@@ -51,12 +53,15 @@
 
 \iftutex
 	\RequirePackage{unicode-math}
+	\defaultfontfeatures{Scale=MatchLowercase}
+	\defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
 	\setmathfont{Asana-Math.otf}
 \fi
 
 % ------------------ %
 % Геометрия страницы %
 % ------------------ %
+\RequirePackage[left=3cm, right=1.5cm, top=2cm, bottom=2cm]{geometry}
 \RequirePackage{setspace}
 \onehalfspacing
 
@@ -72,19 +77,51 @@
 \RequirePackage{adjustbox}
 \RequirePackage[most]{tcolorbox}
 
+% ------ %
 % Списки %
+% ------ %
 \RequirePackage{enumitem}
+\RequirePackage{lmodern}
+\providecommand{\tightlist}{%
+	\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+% ------ %
+% Прочее %
+% ------ %
+\RequirePackage{xcolor}
+
+\IfFileExists{microtype.sty}{
+	\RequirePackage[]{microtype}
+	\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+
+% Подзаголовок на титульном листе
+\RequirePackage{etoolbox}
+\makeatletter
+\providecommand{\subtitle}[1]{
+	\apptocmd{\@title}{\par {\large #1 \par}}{}{}
+}
+\makeatother
+
+% ----------------- %
+% Ссылки и закладки %
+% ----------------- %
+\RequirePackage{bookmark}
+\IfFileExists{xurl.sty}{\RequirePackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
 
 % ------- %
 % Рисунки %
 % ------- %
 \RequirePackage{graphicx}
 
-% Рисование графиков
+% ------------------ %
+% Рисование графиков %
+% ------------------ %
 \RequirePackage{tikz}
 \RequirePackage{pgfplots}
 \RequirePackage{pgfplotstable}
-\RequirePackage{xcolor, colortbl}
+\RequirePackage{colortbl}
 
 % ------- %
 % Таблицы %
@@ -111,5 +148,11 @@
 %\RequirePackage{appendixnumberbeamer}
 
 %\AtBeginDocument{\defbibheading{bibliography}[\bibname]{}}
+
+%\hypersetup{
+%	pdftitle={title},
+%	pdfauthor={authors},
+%	hidelinks,
+%	pdfcreator={XeLaTeX}}
 
 \endinput

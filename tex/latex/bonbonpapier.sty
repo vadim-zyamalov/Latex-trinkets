@@ -3,64 +3,44 @@
 
 \RequirePackage[most]{tcolorbox}
 
-\newtcolorbox{Rbox}[1][R]{%
+\def\bbp@R@fg{black!75!white}
+\def\bbp@R@bg{blue!15!white}
+\def\bbp@R@name{R}
+
+\def\bbp@python@fg{blue!75!black}
+\def\bbp@python@bg{yellow!15!white}
+\def\bbp@python@name{Python}
+
+\def\bbp@stata@fg{blue!75!white}
+\def\bbp@stata@bg{white}
+\def\bbp@stata@name{Stata}
+
+\def\bbp@bash@fg{black}
+\def\bbp@bash@bg{white!75!black}
+\def\bbp@bash@name{Консоль}
+
+\def\bbp@@fg{black}
+\def\bbp@@bg{white}
+\def\bbp@@name{???}
+
+\newcommand{\bbp@fg}[1]{\csname bbp@#1@fg\endcsname}
+\newcommand{\bbp@bg}[1]{\csname bbp@#1@bg\endcsname}
+\newcommand{\bbp@name}[1]{\csname bbp@#1@name\endcsname}
+
+\newtcolorbox{colorcode}[1]{%
 	enhanced jigsaw,%
 	attach boxed title to top text left={yshift=-3mm,yshifttext=-1mm},%
-	colframe=black!75!white,%
-	coltitle=black!75!white,%
-	colback=blue!15!white,%
-	colbacktitle=blue!15!white,%
-	title={\texttt{#1}}%
-}
-\newtcolorbox{Rout}{%
-	enhanced jigsaw,%
-	colframe=black!75!white,%
-	colback=blue!15!white%
+	colframe=\bbp@fg{#1},%
+	coltitle=\bbp@fg{#1},%
+	colback=\bbp@bg{#1},%
+	colbacktitle=\bbp@bg{#1},%
+	title={\texttt{\bbp@name{#1}}}%
 }
 
-\newtcolorbox{pythonbox}[1][Python]{%
+\newtcolorbox{colorout}[1]{%
 	enhanced jigsaw,%
-	attach boxed title to top text left={yshift=-3mm,yshifttext=-1mm},%
-	colframe=blue!75!black,%
-	coltitle=blue!75!black,%
-	colback=yellow!15!white,%
-	colbacktitle=yellow!15!white,%
-	title={\texttt{#1}}%
-}
-\newtcolorbox{pythonout}{%
-	enhanced jigsaw,%
-	colframe=blue!75!black,%
-	colback=yellow!15!white%
-}
-
-\newtcolorbox{statabox}[1][Stata]{%
-	enhanced jigsaw,%
-	attach boxed title to top text left={yshift=-3mm,yshifttext=-1mm},%
-	colframe=blue!75!white,%
-	coltitle=blue!75!white,%
-	colback=white,%
-	colbacktitle=white,%
-	title={\texttt{#1}}%
-}
-\newtcolorbox{stataout}{%
-	enhanced jigsaw,%
-	colframe=blue!75!white,%
-	colback=white%
-}
-
-\newtcolorbox{bashbox}[1][Консоль]{%
-	enhanced jigsaw,%
-	attach boxed title to top text left={yshift=-3mm,yshifttext=-1mm},%
-	colframe=black,%
-	coltitle=black,%
-	colback=white!75!black,%
-	colbacktitle=white!75!black,%
-	title={\texttt{#1}}%
-}
-\newtcolorbox{bashout}{%
-	enhanced jigsaw,%
-	colframe=black,%
-	colback=white!75!black%
+	colframe=\bbp@fg{#1},%
+	colback=\bbp@bg{#1},%
 }
 
 \endinput
