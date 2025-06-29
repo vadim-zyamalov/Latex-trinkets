@@ -3,16 +3,21 @@
 
 \RequirePackage{ifthen}
 
-%%% Упражнения %%%
-
 \newcounter{taskcounter}
+\renewcommand\thetaskcounter{\arabic{taskcounter}}
+
+%\DeclareOption{chapter}{\counterwihin{taskcounter}{chapter}}
+%\DeclareOption{section}{\counterwihin{taskcounter}{section}}
+\DeclareOption*{\counterwithin{taskcounter}{\CurrentOption}}
+\ProcessOptions\relax
+
+%%% Упражнения %%%
 
 % Взято отсюда:
 % https://tex.stackexchange.com/a/531040
-\makeatletter
 
 \newcommand*{\task@text}[1][]{%
-	\textnumero\arabic{taskcounter}%
+	\textnumero\thetaskcounter%
 	\ifthenelse{\equal{#1}{}}%
 	{}%
 	{ (#1)}: %
@@ -33,7 +38,7 @@
 }
 
 \newcommand*{\task}[1][]{%
-	\addtocounter{taskcounter}{1}%
+	\refstepcounter{taskcounter}%
 	\if@noskipsec\leavevmode\fi
 	\def\@svsechd{%
 		\textbf{\task@text[#1]}}%
@@ -53,7 +58,5 @@
 		\textbf{\solution@text[#1]}}%
 	\@xsect{-1em}%
 }
-
-\makeatother
 
 \endinput

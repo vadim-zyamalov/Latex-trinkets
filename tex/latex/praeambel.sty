@@ -1,5 +1,5 @@
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{praeamble}[2025/03/26 My personal preamble]
+\ProvidesPackage{praeambel}[2025/03/26 My personal preamble]
 
 \RequirePackage{iftex}
 
@@ -45,6 +45,8 @@
 % ------------------------------- %
 \RequirePackage{amsmath}
 \RequirePackage{amssymb}
+\RequirePackage{amsthm}
+\RequirePackage{nicefrac}
 
 % https://tex.stackexchange.com/q/552864/283103
 \let\normalunderbrace=\underbrace
@@ -55,8 +57,12 @@
 	\RequirePackage{unicode-math}
 	\defaultfontfeatures{Scale=MatchLowercase}
 	\defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
-	\setmathfont{Asana-Math.otf}
+	%\setmathfont{Asana-Math.otf}
 \fi
+
+\theoremstyle{definition}
+\newtheorem*{theorem}{Теорема}
+\newtheorem{example}{Пример}
 
 % ------------------ %
 % Геометрия страницы %
@@ -110,6 +116,8 @@
 \IfFileExists{xurl.sty}{\RequirePackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same}
 
+\RequirePackage[bibstyle=gost-inline,citestyle=gost-inline-min]{biblatex}
+
 % ------- %
 % Рисунки %
 % ------- %
@@ -126,6 +134,7 @@
 % ------- %
 % Таблицы %
 % ------- %
+\RequirePackage{longtable}
 \RequirePackage{booktabs}
 \RequirePackage{multicol}
 \RequirePackage{multirow}
@@ -142,7 +151,7 @@
 % -------- %
 % Листинги %
 % -------- %
-\RequirePackage{minted}
+\RequirePackage[highlightmode=immediate]{minted}
 
 % Дополнительные настройки
 %\RequirePackage{appendixnumberbeamer}
