@@ -87,6 +87,9 @@
 % Списки %
 % ------ %
 \RequirePackage{enumitem}
+\AddEnumerateCounter{\Asbuk}{\russian@alph}{Щ}
+\AddEnumerateCounter{\asbuk}{\russian@alph}{щ}
+
 \RequirePackage{lmodern}
 \providecommand{\tightlist}{%
 	\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
@@ -116,7 +119,16 @@
 \IfFileExists{xurl.sty}{\RequirePackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same}
 
-\RequirePackage[bibstyle=gost-inline,citestyle=gost-inline-min]{biblatex}
+\RequirePackage[
+	backend=biber,
+	bibstyle=gost-authoryear-min,
+	citestyle=gost-authoryear,
+	movenames=false
+]{biblatex}
+
+\DeclareFieldFormat{url}{%
+	\mkbibacro{URL}\addcolon\space
+	\href{#1}{\nolinkurl{\thefield{urlraw}}}}
 
 % ------- %
 % Рисунки %
@@ -151,7 +163,8 @@
 % -------- %
 % Листинги %
 % -------- %
-\RequirePackage[highlightmode=immediate]{minted}
+%\RequirePackage[highlightmode=immediate]{minted}
+\RequirePackage{minted}
 
 % Дополнительные настройки
 %\RequirePackage{appendixnumberbeamer}
