@@ -2,12 +2,15 @@
 \ProvidesPackage{uebungen}[2025/03/26 LaTeX package for my own purpose]
 
 \RequirePackage{ifthen}
+\RequirePackage[stable]{footmisc}
+
+\newif\if@taskonly
+\@taskonlyfalse
 
 \newcounter{taskcounter}
 \renewcommand\thetaskcounter{\arabic{taskcounter}}
 
-%\DeclareOption{chapter}{\counterwihin{taskcounter}{chapter}}
-%\DeclareOption{section}{\counterwihin{taskcounter}{section}}
+\DeclareOption{taskonly}{\@taskonlytrue}
 \DeclareOption*{\counterwithin{taskcounter}{\CurrentOption}}
 \ProcessOptions\relax
 
@@ -23,19 +26,22 @@
 	{ (#1)}: %
 }
 
-\newcommand*{\answer@text}[1][]{%
-	Ответ%
-	\ifthenelse{\equal{#1}{}}%
-	{}%
-	{ (#1)}: %
-}
+\if@taskonly
+\else
+	\newcommand*{\answer@text}[1][]{%
+		Ответ%
+		\ifthenelse{\equal{#1}{}}%
+		{}%
+		{ (#1)}: %
+	}
 
-\newcommand*{\solution@text}[1][]{%
-	Решение%
-	\ifthenelse{\equal{#1}{}}%
-	{}%
-	{ (#1)}: %
-}
+	\newcommand*{\solution@text}[1][]{%
+		Решение%
+		\ifthenelse{\equal{#1}{}}%
+		{}%
+		{ (#1)}: %
+	}
+\fi
 
 \newcommand*{\task}[1][]{%
 	\refstepcounter{taskcounter}%
@@ -45,18 +51,21 @@
 	\@xsect{-1em}%
 }
 
-\newcommand*{\answer}[1][]{%
-	\if@noskipsec\leavevmode\fi
-	\def\@svsechd{%
-		\textbf{\answer@text[#1]}}%
-	\@xsect{-1em}%
-}
+\if@taskonly
+\else
+	\newcommand*{\answer}[1][]{%
+		\if@noskipsec\leavevmode\fi
+		\def\@svsechd{%
+			\textbf{\answer@text[#1]}}%
+		\@xsect{-1em}%
+	}
 
-\newcommand*{\solution}[1][]{%
-	\if@noskipsec\leavevmode\fi
-	\def\@svsechd{%
-		\textbf{\solution@text[#1]}}%
-	\@xsect{-1em}%
-}
+	\newcommand*{\solution}[1][]{%
+		\if@noskipsec\leavevmode\fi
+		\def\@svsechd{%
+			\textbf{\solution@text[#1]}}%
+		\@xsect{-1em}%
+	}
+\fi
 
 \endinput
