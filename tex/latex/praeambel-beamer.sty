@@ -1,5 +1,5 @@
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{beamerpraeamble}[2025/03/26 My personal preamble]
+\ProvidesPackage{praeambel-beamer}[2025/03/26 My personal preamble for Beamer]
 
 \RequirePackage{iftex}
 
@@ -7,15 +7,15 @@
 % Языковые настройки %
 % ------------------ %
 \iftutex
-  \RequirePackage{polyglossia}
-  \setdefaultlanguage{russian}
-  \setotherlanguage{english}
+	\RequirePackage{polyglossia}
+	\setdefaultlanguage{russian}
+	\setotherlanguage{english}
 \fi
 \ifpdftex
-  \RequirePackage{cmap}
-  \RequirePackage[utf8]{inputenc}
-  \RequirePackage[T2A,T1]{fontenc}
-  \RequirePackage[english, russian]{babel}
+	\RequirePackage{cmap}
+	\RequirePackage[utf8]{inputenc}
+	\RequirePackage[T2A,T1]{fontenc}
+	\RequirePackage[english, russian]{babel}
 \fi
 
 \RequirePackage{csquotes}
@@ -28,16 +28,16 @@
 \RequirePackage{moresize}
 
 \iftutex
-  \defaultfontfeatures{Ligatures={TeX}}
-  \setmainfont{PT Astra Serif}
-  \setsansfont{PT Astra Sans}
-  \setmonofont{Iosevka}
-  \newfontfamily{\cyrillicfont}{PT Astra Serif}
-  \newfontfamily{\cyrillicfontsf}{PT Astra Sans}
-  \newfontfamily{\cyrillicfonttt}{Iosevka}
+	\defaultfontfeatures{Ligatures={TeX}}
+	\setmainfont{PT Astra Serif}
+	\setsansfont{PT Astra Sans}
+	\setmonofont{Iosevka}
+	\newfontfamily{\cyrillicfont}{PT Astra Serif}
+	\newfontfamily{\cyrillicfontsf}{PT Astra Sans}
+	\newfontfamily{\cyrillicfonttt}{Iosevka}
 \fi
 \ifpdftex
-  \RequirePackage{paratype}
+	\RequirePackage{paratype}
 \fi
 
 % ------------------------------- %
@@ -52,10 +52,10 @@
 \let\underbrace=\normalunderbrace
 
 \iftutex
-  \RequirePackage{unicode-math}
-  \defaultfontfeatures{Scale=MatchLowercase}
-  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
-  \setmathfont{Asana-Math.otf}
+	\RequirePackage{unicode-math}
+	\defaultfontfeatures{Scale=MatchLowercase}
+	\defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+	\setmathfont{Asana-Math.otf}
 \fi
 
 % ------ %
@@ -65,8 +65,8 @@
 \RequirePackage{xcolor}
 
 \IfFileExists{microtype.sty}{
-  \RequirePackage[]{microtype}
-  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+	\RequirePackage[]{microtype}
+	\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
 }{}
 
 % ----------------- %
@@ -99,10 +99,10 @@
 
 \RequirePackage{siunitx}[=v2]
 \sisetup{
-  detect-all,
-  table-number-alignment = center,
-  table-figures-integer = 2,
-  table-figures-decimal = 2
+	detect-all,
+	table-number-alignment = center,
+	table-figures-integer = 2,
+	table-figures-decimal = 2
 }
 
 \endinput
