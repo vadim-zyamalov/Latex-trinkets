@@ -3,50 +3,85 @@
 
 \RequirePackage{iftex}
 
-% ------------------ %
-% Языковые настройки %
-% ------------------ %
-\iftutex
-	\RequirePackage{polyglossia}
-	\setdefaultlanguage{russian}
-	\setotherlanguage{english}
-\fi
-\ifpdftex
-	\RequirePackage{cmap}
-	\RequirePackage[utf8]{inputenc}
-	\RequirePackage[T2A,T1]{fontenc}
-	\RequirePackage[english, russian]{babel}
+\newif\ifpraeambel@beamer
+\praeambel@beamerfalse
+\newif\ifpraeambel@markdown
+\praeambel@markdownfalse
+
+\def\praeambel@language{russian}
+\def\praeambel@nativelng{russian}
+
+\DeclareOption{beamer}{%
+	\praeambel@beamertrue
+	\praeambel@markdownfalse
+}
+\DeclareOption{markdown}{%
+	\praeambel@beamerfalse
+	\praeambel@markdowntrue
+}
+\DeclareOption*{\edef\praeambel@language{\CurrentOption}}
+\ProcessOptions\relax
+
+% --------------------------- %
+% Языковые настройки и шрифты %
+% --------------------------- %
+\ifpraeambel@markdown
+\else
+	\iftutex
+		\RequirePackage{polyglossia}
+		\ifx\praeambel@language\praeambel@nativelng
+			\setdefaultlanguage{russian}
+			\setotherlanguage{english}
+		\else
+			\setdefaultlanguage{\praeambel@language}
+			\setotherlanguage{russian}
+		\fi
+
+		\defaultfontfeatures{Ligatures={TeX}}
+		\setmainfont{PT Astra Serif}
+		\setsansfont{PT Astra Sans}
+		\setmonofont{Iosevka}
+
+		\newfontfamily{\cyrillicfont}{PT Astra Serif}
+		\newfontfamily{\cyrillicfontsf}{PT Astra Sans}
+		\newfontfamily{\cyrillicfonttt}{Iosevka}
+
+		\ifx\praeambel@language\praeambel@nativelng
+		\else
+			\expandafter\newfontfamily\csname\praeambel@language font\endcsname{PT Astra Serif}
+			\expandafter\newfontfamily\csname\praeambel@language fontsf\endcsname{PT Astra Sans}
+			\expandafter\newfontfamily\csname\praeambel@language fonttt\endcsname{Iosevka}
+		\fi
+	\fi
+	\ifpdftex
+		\RequirePackage{cmap}
+		\RequirePackage[utf8]{inputenc}
+		\RequirePackage[T2A,T1]{fontenc}
+		\RequirePackage[english, russian]{babel}
+		\RequirePackage{paratype}
+	\fi
 \fi
 
 \RequirePackage{csquotes}
 \RequirePackage{bookmark}
 \RequirePackage{parskip}
-
-% ------ %
-% Шрифты %
-% ------ %
 \RequirePackage{moresize}
-
-\iftutex
-	\defaultfontfeatures{Ligatures={TeX}}
-	\setmainfont{PT Astra Serif}
-	\setsansfont{PT Astra Sans}
-	\setmonofont{Iosevka}
-	\newfontfamily{\cyrillicfont}{PT Astra Serif}
-	\newfontfamily{\cyrillicfontsf}{PT Astra Sans}
-	\newfontfamily{\cyrillicfonttt}{Iosevka}
-\fi
-\ifpdftex
-	\RequirePackage{paratype}
-\fi
 
 % ------------------------------- %
 % Математические шрифты и символы %
 % ------------------------------- %
 \RequirePackage{amsmath}
 \RequirePackage{amssymb}
-\RequirePackage{amsthm}
-\RequirePackage{nicefrac}
+
+\ifpraeambel@beamer
+\else
+	\RequirePackage{amsthm}
+	\RequirePackage{nicefrac}
+
+	\theoremstyle{definition}
+	\newtheorem*{theorem}{Теорема}
+	\newtheorem{example}{Пример}
+\fi
 
 % https://tex.stackexchange.com/q/552864/283103
 \let\normalunderbrace=\underbrace
@@ -57,40 +92,38 @@
 	\RequirePackage{unicode-math}
 	\defaultfontfeatures{Scale=MatchLowercase}
 	\defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
-	%\setmathfont{Asana-Math.otf}
 \fi
 
-\theoremstyle{definition}
-\newtheorem*{theorem}{Теорема}
-\newtheorem{example}{Пример}
+% ------------------------------ %
+% Геометрия страницы и коробочки %
+% ------------------------------ %
+\ifpraeambel@beamer
+	\RequirePackage{adjustbox}
+\else
+	\RequirePackage[left=3cm, right=1.5cm, top=2cm, bottom=2cm]{geometry}
+	\RequirePackage{setspace}
+	\onehalfspacing
 
-% ------------------ %
-% Геометрия страницы %
-% ------------------ %
-\RequirePackage[left=3cm, right=1.5cm, top=2cm, bottom=2cm]{geometry}
-\RequirePackage{setspace}
-\onehalfspacing
+	\setlength{\parindent}{12.5mm}
+	\righthyphenmin=2
 
-\setlength{\parindent}{12.5mm}
-\righthyphenmin=2
+	\widowpenalty=10000
+	\tolerance=1000
 
-\widowpenalty=10000
-\tolerance=1000
-
-% --------- %
-% Коробочки %
-% --------- %
-\RequirePackage{adjustbox}
-\RequirePackage[most]{tcolorbox}
+	\RequirePackage{adjustbox}
+	\RequirePackage[most]{tcolorbox}
+\fi
 
 % ------ %
 % Списки %
 % ------ %
-\RequirePackage{enumitem}
-\AddEnumerateCounter{\Asbuk}{\russian@alph}{Щ}
-\AddEnumerateCounter{\asbuk}{\russian@alph}{щ}
+\ifpraeambel@beamer
+\else
+	\RequirePackage{enumitem}
+	\AddEnumerateCounter{\Asbuk}{\russian@alph}{Щ}
+	\AddEnumerateCounter{\asbuk}{\russian@alph}{щ}
+\fi
 
-\RequirePackage{lmodern}
 \providecommand{\tightlist}{%
 	\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 
@@ -104,13 +137,14 @@
 	\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
 }{}
 
-% Подзаголовок на титульном листе
-\RequirePackage{etoolbox}
-\makeatletter
-\providecommand{\subtitle}[1]{
-	\apptocmd{\@title}{\par {\large #1 \par}}{}{}
-}
-\makeatother
+\ifpraeambel@beamer
+\else
+	% Подзаголовок на титульном листе
+	\RequirePackage{etoolbox}
+	\providecommand{\subtitle}[1]{
+		\apptocmd{\@title}{\par {\large #1 \par}}{}{}
+	}
+\fi
 
 % ----------------- %
 % Ссылки и закладки %
@@ -146,7 +180,9 @@
 % ------- %
 % Таблицы %
 % ------- %
-\RequirePackage{longtable}
+\ifpraeambel@beamer\else
+	\RequirePackage{longtable}
+\fi
 \RequirePackage{booktabs}
 \RequirePackage{multicol}
 \RequirePackage{multirow}
@@ -163,18 +199,13 @@
 % -------- %
 % Листинги %
 % -------- %
-%\RequirePackage[highlightmode=immediate]{minted}
 \RequirePackage[cache=true]{minted}
 
-% Дополнительные настройки
-%\RequirePackage{appendixnumberbeamer}
-
-%\AtBeginDocument{\defbibheading{bibliography}[\bibname]{}}
-
-%\hypersetup{
-%	pdftitle={title},
-%	pdfauthor={authors},
-%	hidelinks,
-%	pdfcreator={XeLaTeX}}
+% ------------------- %
+% Приложения в Beamer %
+% ------------------- %
+\ifpraeambel@beamer
+	\RequirePackage{appendixnumberbeamer}
+\fi
 
 \endinput
