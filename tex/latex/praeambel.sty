@@ -2,66 +2,64 @@
 \ProvidesPackage{praeambel}[2025/03/26 My personal preamble]
 
 \RequirePackage{iftex}
+\ifpdftex
+	\PackageError{praeambel}{pdftex is not supported}{Use XeTeX or LuaTeX instead}
+	\@@end
+\fi
 
-\newif\ifpraeambel@beamer
-\praeambel@beamerfalse
-\newif\ifpraeambel@markdown
-\praeambel@markdownfalse
+\RequirePackage{kvoptions}
 
-\def\praeambel@language{russian}
+\DeclareBoolOption{beamer}
+\DeclareBoolOption{babel}
+
+\DeclareStringOption[PT Astra Serif]{mainfont}
+\DeclareStringOption[PT Astra Sans]{sansfont}
+\DeclareStringOption[Cascadia Code]{monofont}
+
 \def\praeambel@nativelng{russian}
+\DeclareDefaultOption{\edef\praeambel@language{\CurrentOption}}
 
-\DeclareOption{beamer}{%
-	\praeambel@beamertrue
-	\praeambel@markdownfalse
-}
-\DeclareOption{markdown}{%
-	\praeambel@beamerfalse
-	\praeambel@markdowntrue
-}
-\DeclareOption*{\edef\praeambel@language{\CurrentOption}}
-\ProcessOptions\relax
+\ProcessKeyvalOptions*
 
 % --------------------------- %
 % Языковые настройки и шрифты %
 % --------------------------- %
-\ifpraeambel@markdown
-\else
-	\iftutex
-		\RequirePackage{polyglossia}
-		\ifx\praeambel@language\praeambel@nativelng
-			\setdefaultlanguage{russian}
-			\setotherlanguage{english}
-		\else
-			\setdefaultlanguage{\praeambel@language}
-			\setotherlanguage{russian}
-		\fi
 
-		\defaultfontfeatures{Ligatures={TeX}}
-		\setmainfont{PT Astra Serif}
-		\setsansfont{PT Astra Sans}
-		\setmonofont{Iosevka}
-
-		\newfontfamily{\cyrillicfont}{PT Astra Serif}
-		\newfontfamily{\cyrillicfontsf}{PT Astra Sans}
-		\newfontfamily{\cyrillicfonttt}{Iosevka}
-
-		\ifx\praeambel@language\praeambel@nativelng
-		\else
-			\expandafter\newfontfamily\csname\praeambel@language font\endcsname{PT Astra Serif}
-			\expandafter\newfontfamily\csname\praeambel@language fontsf\endcsname{PT Astra Sans}
-			\expandafter\newfontfamily\csname\praeambel@language fonttt\endcsname{Iosevka}
-		\fi
+\ifpraeambel@babel
+	\usepackage{fontspec}
+	\ifx\praeambel@language\praeambel@nativelng
+		\RequirePackage[russian, english]{babel}
+	\else
+		\RequirePackage[\praeambel@language, russian]{babel}
 	\fi
-	\ifpdftex
-		\RequirePackage{cmap}
-		\RequirePackage[utf8]{inputenc}
-		\RequirePackage[T2A,T1]{fontenc}
-		\RequirePackage[english, russian]{babel}
-		\RequirePackage{paratype}
+\else
+	\RequirePackage{polyglossia}
+	\ifx\praeambel@language\praeambel@nativelng
+		\setdefaultlanguage{russian}
+		\setotherlanguage{english}
+	\else
+		\setdefaultlanguage{\praeambel@language}
+		\setotherlanguage{russian}
 	\fi
 \fi
 
+\defaultfontfeatures{Ligatures={TeX}}
+\setmainfont{\praeambel@mainfont}
+\setsansfont{\praeambel@sansfont}
+\setmonofont{\praeambel@monofont}
+
+\newfontfamily{\cyrillicfont}{\praeambel@mainfont}
+\newfontfamily{\cyrillicfontsf}{\praeambel@sansfont}
+\newfontfamily{\cyrillicfonttt}{\praeambel@monofont}
+
+\ifx\praeambel@language\praeambel@nativelng
+\else
+	\expandafter\newfontfamily\csname\praeambel@language font\endcsname{\praeambel@mainfont}
+	\expandafter\newfontfamily\csname\praeambel@language fontsf\endcsname{\praeambel@sansfont}
+	\expandafter\newfontfamily\csname\praeambel@language fonttt\endcsname{\praeambel@monofont}
+\fi
+
+\RequirePackage{cmap}
 \RequirePackage{csquotes}
 \RequirePackage{bookmark}
 \RequirePackage{parskip}
@@ -88,11 +86,9 @@
 \RequirePackage{mathtools}
 \let\underbrace=\normalunderbrace
 
-\iftutex
-	\RequirePackage{unicode-math}
-	\defaultfontfeatures{Scale=MatchLowercase}
-	\defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
-\fi
+\RequirePackage{unicode-math}
+\defaultfontfeatures{Scale=MatchLowercase}
+\defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
 
 % ------------------------------ %
 % Геометрия страницы и коробочки %
