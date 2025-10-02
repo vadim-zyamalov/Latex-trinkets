@@ -15,6 +15,7 @@
 \DeclareStringOption[PT Astra Serif]{mainfont}
 \DeclareStringOption[PT Astra Sans]{sansfont}
 \DeclareStringOption[Cascadia Code]{monofont}
+\DeclareStringOption[TeX Gyre Termes Math]{mathfont}
 
 \def\praeambel@language{russian}
 \def\praeambel@nativelng{russian}
@@ -74,6 +75,7 @@
 
 \ifpraeambel@beamer
 \else
+	% В beamer уже есть свои окружения для теорем
 	\RequirePackage{amsthm}
 	\RequirePackage{nicefrac}
 
@@ -82,12 +84,14 @@
 	\newtheorem{example}{Пример}
 \fi
 
+% mathtools что-то делает с горизонтальными фигурными скобками
 % https://tex.stackexchange.com/q/552864/283103
 \let\normalunderbrace=\underbrace
 \RequirePackage{mathtools}
+\RequirePackage{unicode-math}
 \let\underbrace=\normalunderbrace
 
-\RequirePackage{unicode-math}
+\setmathfont{\praeambel@mathfont}
 \defaultfontfeatures{Scale=MatchLowercase}
 \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
 
@@ -95,8 +99,8 @@
 % Геометрия страницы и коробочки %
 % ------------------------------ %
 \ifpraeambel@beamer
-	\RequirePackage{adjustbox}
 \else
+	% Эти настройки не нужны в beamer
 	\RequirePackage[left=3cm, right=1.5cm, top=2cm, bottom=2cm]{geometry}
 	\RequirePackage{setspace}
 	\onehalfspacing
@@ -106,16 +110,17 @@
 
 	\widowpenalty=10000
 	\tolerance=1000
-
-	\RequirePackage{adjustbox}
-	\RequirePackage[most]{tcolorbox}
 \fi
+
+\RequirePackage{adjustbox}
+\RequirePackage[most]{tcolorbox}
 
 % ------ %
 % Списки %
 % ------ %
 \ifpraeambel@beamer
 \else
+	% enumitem конфликтует с beamer
 	\RequirePackage{enumitem}
 	\AddEnumerateCounter{\Asbuk}{\russian@alph}{Щ}
 	\AddEnumerateCounter{\asbuk}{\russian@alph}{щ}
@@ -147,19 +152,18 @@
 % Ссылки и закладки %
 % ----------------- %
 \RequirePackage{bookmark}
-\IfFileExists{xurl.sty}{\RequirePackage{xurl}}{} % add URL line breaks if available
-\urlstyle{same}
-
 \RequirePackage[
 	backend=biber,
 	bibstyle=gost-authoryear-min,
 	citestyle=gost-authoryear,
 	movenames=false
 ]{biblatex}
+\RequirePackage{xurl}
+\urlstyle{same}
 
-\DeclareFieldFormat{url}{%
-	\mkbibacro{URL}\addcolon\space
-	\href{#1}{\nolinkurl{\thefield{urlraw}}}}
+\setcounter{biburllcpenalty}{100}
+\setcounter{biburlucpenalty}{200}
+\setcounter{biburlnumpenalty}{100}
 
 % ------- %
 % Рисунки %
@@ -177,7 +181,8 @@
 % ------- %
 % Таблицы %
 % ------- %
-\ifpraeambel@beamer\else
+\ifpraeambel@beamer
+\else
 	\RequirePackage{longtable}
 \fi
 \RequirePackage{booktabs}
@@ -188,22 +193,21 @@
 \RequirePackage{siunitx}[=v2]
 \sisetup{
 	detect-all,
-	table-number-alignment = center,
-	table-figures-integer = 2,
-	table-figures-decimal = 2
+	table-number-alignment=center,
+	table-figures-integer=2,
+	table-figures-decimal=2
 }
 
 % -------- %
 % Листинги %
 % -------- %
-\RequirePackage[cache=true]{minted}
+\RequirePackage{minted}
 
 % ------------------- %
 % Приложения в Beamer %
 % ------------------- %
 \ifpraeambel@beamer
 	\RequirePackage{appendixnumberbeamer}
-
 	\newcommand\makebeamertitle{\frame{\maketitle}}
 \fi
 
