@@ -1,6 +1,38 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{praeambel}[2025/03/26 My personal preamble]
 
+% Код для выделения головы и хвоста разделенного запятыми списка
+% Взято здесь (с моими модификациями):
+% https://tex.stackexchange.com/a/115848/221857
+
+% Просто пустой макрос-заглушкаю
+\def\@{}
+% Макрос, принимающий на вход список и вызывающий новый макрос,
+% которому передается список, к которому присоединены запятая и заглушкаю
+\def\spliceList#1{\expandafter\@spliceList #1,\@}
+% Тот самый макрос, который принимает на вход список с запятой и заглушкой и
+% производит сравнение с образцом, выделяя первый элемент и все остальные
+% вплоть до заглушки (не включительно).
+% Если все остальные элементы представляют собой непустой список,
+% то передаем его в еще один вспомогательный макрос, отсекающий лишнюю запятую.
+\def\@spliceList#1,#2\@{%
+	\def\@listhead{#1}
+	% Проверяем список на непустоту.
+	\ifx\@#2\@
+		\def\@listtail{}
+	\else
+		% Удаляем лишнюю запятую из конца списка.
+		\expandafter\@@spliceList #2\@
+	\fi
+}
+% Удаляем лишнюю запятую из конца списка.
+\def\@@spliceList#1,\@{\def\@listtail{#1}}
+
+% ---------------- %
+% Параметры пакета %
+% ---------------- %
+
+% Данная преамбула не предназначена для работы с pdfLaTeX.
 \RequirePackage{iftex}
 \ifpdftex
 	\PackageError{praeambel}{pdftex is not supported}{Use XeTeX or LuaTeX instead}
@@ -9,61 +41,70 @@
 
 \RequirePackage{kvoptions}
 
+% Опция для использования преамбулы в beamer.
 \DeclareBoolOption{beamer}
+
+% Опция для использования babel вместо polyglossia.
 \DeclareBoolOption{babel}
 
+% Список языков.
+% Если опция не указана, то используется русский язык.
+\DeclareStringOption[russian]{language}
+
+% Опции для выбора основных шрифтов:
+% - Основного,
+% - Без засечек,
+% - Моноширинного,
+% - Математического.
 \DeclareStringOption[PT Astra Serif]{mainfont}
 \DeclareStringOption[PT Astra Sans]{sansfont}
 \DeclareStringOption[Cascadia Code]{monofont}
 \DeclareStringOption[TeX Gyre Termes Math]{mathfont}
 
-\def\praeambel@language{russian}
-\def\praeambel@nativelng{russian}
-\DeclareDefaultOption{\edef\praeambel@language{\CurrentOption}}
-
+% Обрабатываем опции.
 \ProcessKeyvalOptions*
+
+% Обработка списка языков.
+\spliceList{\praeambel@language}
 
 % --------------------------- %
 % Языковые настройки и шрифты %
 % --------------------------- %
 
+% Основные языковые пакеты:
+% - Polyglossia,
+% - или Babel.
 \ifpraeambel@babel
 	\usepackage{fontspec}
-	\ifx\praeambel@language\praeambel@nativelng
-		\RequirePackage[russian, english]{babel}
-	\else
-		\RequirePackage[\praeambel@language, russian]{babel}
-	\fi
+	\RequirePackage[\praeambel@language]{babel}
 \else
 	\RequirePackage{polyglossia}
-	\ifx\praeambel@language\praeambel@nativelng
-		\setdefaultlanguage{russian}
-		\setotherlanguage{english}
+	\setdefaultlanguage{\@listhead}
+	\ifx\@listtail\empty
 	\else
-		\setdefaultlanguage{\praeambel@language}
-		\setotherlanguage{russian}
+		\setotherlanguages{\@listtail}
 	\fi
+
+	% В цикле перебираем все языки и задаем соответствующие семейства.
+	% Детальнее в разделе 2.1 справки к пакету fontspec.
+	\@for\@lang:=\praeambel@language\do{%
+		\expandafter\newfontfamily\csname\@lang font\endcsname{\praeambel@mainfont}
+		\expandafter\newfontfamily\csname\@lang fontsf\endcsname{\praeambel@sansfont}
+		\expandafter\newfontfamily\csname\@lang fonttt\endcsname{\praeambel@monofont}
+	}
 \fi
 
-\defaultfontfeatures{Ligatures={TeX}}
+% Назначаем все шрифты.
 \setmainfont{\praeambel@mainfont}
 \setsansfont{\praeambel@sansfont}
 \setmonofont{\praeambel@monofont}
 
-\newfontfamily{\cyrillicfont}{\praeambel@mainfont}
-\newfontfamily{\cyrillicfontsf}{\praeambel@sansfont}
-\newfontfamily{\cyrillicfonttt}{\praeambel@monofont}
+\defaultfontfeatures{Ligatures={TeX},Scale=MatchLowercase}
+\defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
 
-\ifx\praeambel@language\praeambel@nativelng
-\else
-	\expandafter\newfontfamily\csname\praeambel@language font\endcsname{\praeambel@mainfont}
-	\expandafter\newfontfamily\csname\praeambel@language fontsf\endcsname{\praeambel@sansfont}
-	\expandafter\newfontfamily\csname\praeambel@language fonttt\endcsname{\praeambel@monofont}
-\fi
-
+% Прочие пакеты
 \RequirePackage{cmap}
 \RequirePackage{csquotes}
-\RequirePackage{bookmark}
 \RequirePackage{parskip}
 \RequirePackage{moresize}
 
@@ -91,20 +132,22 @@
 \RequirePackage{unicode-math}
 \let\underbrace=\normalunderbrace
 
+% Устанавливаем математический шрифт.
 \setmathfont{\praeambel@mathfont}
-\defaultfontfeatures{Scale=MatchLowercase}
-\defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
 
 % ------------------------------ %
 % Геометрия страницы и коробочки %
 % ------------------------------ %
 \ifpraeambel@beamer
 \else
-	% Эти настройки не нужны в beamer
+	% Эти настройки не нужны в beamer.
 	\RequirePackage[left=3cm, right=1.5cm, top=2cm, bottom=2cm]{geometry}
+
+	% Полуторный интервал.
 	\RequirePackage{setspace}
 	\onehalfspacing
 
+	% Настройка красной строки.
 	\setlength{\parindent}{12.5mm}
 	\righthyphenmin=2
 
@@ -120,28 +163,39 @@
 % ------ %
 \ifpraeambel@beamer
 \else
-	% enumitem конфликтует с beamer
+	% enumitem конфликтует с beamer, поэтому совместно их не используем.
+	% Вообще, говорят, что это можно обойти, но зачем...
 	\RequirePackage{enumitem}
 	\AddEnumerateCounter{\Asbuk}{\russian@alph}{Щ}
 	\AddEnumerateCounter{\asbuk}{\russian@alph}{щ}
 \fi
 
+% Команда для локального сжатия списков.
 \providecommand{\tightlist}{%
-	\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+	\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}
+}
 
 % ------ %
 % Прочее %
 % ------ %
+
+% Пакет для работы с цветами.
 \RequirePackage{xcolor}
 
+% Пакет для микротипографики.
+% В XeTeX работает не до конца, в LuaTeX все отлично,
+% что неудивительно, если учесть, что послений является официально признанным
+% преемником pdfLaTeX!
 \IfFileExists{microtype.sty}{
 	\RequirePackage[]{microtype}
 	\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
 }{}
 
 \ifpraeambel@beamer
+	% Команда для слайда с заголовком.
+	\newcommand\makebeamertitle{\frame{\maketitle}}
 \else
-	% Подзаголовок на титульном листе
+	% Подзаголовок на титульном листе.
 	\RequirePackage{etoolbox}
 	\providecommand{\subtitle}[1]{
 		\apptocmd{\@title}{\par {\large #1 \par}}{}{}
@@ -151,6 +205,7 @@
 % ----------------- %
 % Ссылки и закладки %
 % ----------------- %
+
 \RequirePackage{bookmark}
 \RequirePackage[
 	backend=biber,
@@ -158,21 +213,32 @@
 	citestyle=gost-authoryear,
 	movenames=false
 ]{biblatex}
+
+% Этот пакет позволяет автоматически разбивать длинные ссылки
+% в произвольном месте.
 \RequirePackage{xurl}
 \urlstyle{same}
 
+% Установка штрафов для biblatex, поскольку этот пакет сам обрабатывает ссылки.
 \setcounter{biburllcpenalty}{100}
 \setcounter{biburlucpenalty}{200}
 \setcounter{biburlnumpenalty}{100}
 
+\ifpraeambel@beamer
+	% Нумерация заголовков в приложениях в beamer.
+	\RequirePackage{appendixnumberbeamer}
+\fi
+
 % ------- %
 % Рисунки %
 % ------- %
+
 \RequirePackage{graphicx}
 
 % ------------------ %
 % Рисование графиков %
 % ------------------ %
+
 \RequirePackage{tikz}
 \RequirePackage{pgfplots}
 \RequirePackage{pgfplotstable}
@@ -181,15 +247,24 @@
 % ------- %
 % Таблицы %
 % ------- %
+
 \ifpraeambel@beamer
 \else
+	% longtable не очень хорошо работает в beamer.
 	\RequirePackage{longtable}
 \fi
+
+% Красивые горизонтальные линии.
 \RequirePackage{booktabs}
+
+% Ячейки на несколько строк и столбцов.
 \RequirePackage{multicol}
 \RequirePackage{multirow}
+
+% Пакет для создания ячеек с переносами строк.
 \RequirePackage{makecell}
 
+% Работа с единицами измерения.
 \RequirePackage{siunitx}[=v2]
 \sisetup{
 	detect-all,
@@ -201,14 +276,7 @@
 % -------- %
 % Листинги %
 % -------- %
-\RequirePackage{minted}
 
-% ------------------- %
-% Приложения в Beamer %
-% ------------------- %
-\ifpraeambel@beamer
-	\RequirePackage{appendixnumberbeamer}
-	\newcommand\makebeamertitle{\frame{\maketitle}}
-\fi
+\RequirePackage{minted}
 
 \endinput
