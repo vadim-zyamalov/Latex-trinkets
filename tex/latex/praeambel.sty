@@ -5,10 +5,10 @@
 % Взято здесь (с моими модификациями):
 % https://tex.stackexchange.com/a/115848/221857
 
-% Просто пустой макрос-заглушкаю
+% Просто пустой макрос-заглушка.
 \def\@{}
 % Макрос, принимающий на вход список и вызывающий новый макрос,
-% которому передается список, к которому присоединены запятая и заглушкаю
+% которому передается список, к которому присоединены запятая и заглушка.
 \def\spliceList#1{\expandafter\@spliceList #1,\@}
 % Тот самый макрос, который принимает на вход список с запятой и заглушкой и
 % производит сравнение с образцом, выделяя первый элемент и все остальные
@@ -35,7 +35,9 @@
 % Данная преамбула не предназначена для работы с pdfLaTeX.
 \RequirePackage{iftex}
 \ifpdftex
-	\PackageError{praeambel}{pdftex is not supported}{Use XeTeX or LuaTeX instead}
+	\PackageError{praeambel}{%
+		pdftex is not supported}{%
+		Use XeTeX or LuaTeX instead}
 	\@@end
 \fi
 
@@ -59,7 +61,7 @@
 \DeclareStringOption[PT Astra Serif]{mainfont}
 \DeclareStringOption[PT Astra Sans]{sansfont}
 \DeclareStringOption[Cascadia Code]{monofont}
-\DeclareStringOption[TeX Gyre Termes Math]{mathfont}
+\DeclareStringOption[Libertinus Math]{mathfont}
 
 % Обрабатываем опции.
 \ProcessKeyvalOptions*
@@ -70,6 +72,7 @@
 % --------------------------- %
 % Языковые настройки и шрифты %
 % --------------------------- %
+
 
 % Основные языковые пакеты:
 % - Polyglossia,
@@ -84,23 +87,24 @@
 	\else
 		\setotherlanguages{\@listtail}
 	\fi
-
-	% В цикле перебираем все языки и задаем соответствующие семейства.
-	% Детальнее в разделе 2.1 справки к пакету fontspec.
-	\@for\@lang:=\praeambel@language\do{%
-		\expandafter\newfontfamily\csname\@lang font\endcsname{\praeambel@mainfont}
-		\expandafter\newfontfamily\csname\@lang fontsf\endcsname{\praeambel@sansfont}
-		\expandafter\newfontfamily\csname\@lang fonttt\endcsname{\praeambel@monofont}
-	}
 \fi
+
+% Стандартные опции для шрифтов.
+\defaultfontfeatures{Ligatures={TeX},Scale=MatchLowercase}
+\defaultfontfeatures[\rmfamily]{Ligatures={TeX},Scale=1}
 
 % Назначаем все шрифты.
 \setmainfont{\praeambel@mainfont}
 \setsansfont{\praeambel@sansfont}
 \setmonofont{\praeambel@monofont}
 
-\defaultfontfeatures{Ligatures={TeX},Scale=MatchLowercase}
-\defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+% В цикле перебираем все языки и задаем соответствующие семейства.
+% Детальнее в разделе 2.1 справки к пакету fontspec.
+\@for\@lang:=\praeambel@language\do{%
+	\expandafter\newfontfamily\csname\@lang font\endcsname{\praeambel@mainfont}
+	\expandafter\newfontfamily\csname\@lang fontsf\endcsname{\praeambel@sansfont}
+	\expandafter\newfontfamily\csname\@lang fonttt\endcsname{\praeambel@monofont}
+}
 
 % Прочие пакеты
 \RequirePackage{cmap}
