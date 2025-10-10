@@ -1,29 +1,38 @@
 \NeedsTeXFormat{LaTeX2e}[1994/06/01]
 \ProvidesPackage{aufgaben}[2025/09/18 LaTeX package for easy tasks numbering]
 
-\RequirePackage{ifthen}
-\RequirePackage[stable]{footmisc}
-
 \newif\if@taskonly
 \@taskonlyfalse
 
-\newcounter{taskcounter}
-\renewcommand\thetaskcounter{\arabic{taskcounter}}
-
 \DeclareOption{taskonly}{\@taskonlytrue}
-\DeclareOption*{\counterwithin{taskcounter}{\CurrentOption}}
 \ProcessOptions\relax
+
+\RequirePackage{enumitem}
+\RequirePackage{calc}
 
 %%% Упражнения %%%
 
-% Взято отсюда:
-% https://tex.stackexchange.com/a/531040
-
-\newcommand*{\task@text}[1][]{%
-	\textnumero\thetaskcounter%
-	\ifthenelse{\equal{#1}{}}%
-	{}%
-	{ (#1)}: %
+\newlist{tasks}{enumerate}{3}
+\setlist[tasks,1]{%
+	label={\textbf{№\arabic{chapter}.\arabic*:}},
+	ref={\arabic{chapter}.\arabic*},
+	align=left,
+	labelindent=0pt,
+	labelwidth=\widthof{№\ref{enum-\EnumitemId}:},
+	leftmargin={\labelwidth+\itemindent},
+	after={\label{enum-\EnumitemId}}
+}
+\setlist[tasks,2]{%
+	label={\arabic*.},
+	ref={(\arabic*)},
+	align=left,
+	labelindent=0pt
+}
+\setlist[tasks,3]{%
+	label={\asbuk*.},
+	ref={(\asbuk*)},
+	align=left,
+	labelindent=0pt,
 }
 
 \if@taskonly
@@ -41,18 +50,7 @@
 		{}%
 		{ (#1)}: %
 	}
-\fi
 
-\newcommand*{\task}[1][]{%
-	\refstepcounter{taskcounter}%
-	\if@noskipsec\leavevmode\fi
-	\def\@svsechd{%
-		\textbf{\task@text[#1]}}%
-	\@xsect{-1em}%
-}
-
-\if@taskonly
-\else
 	\newcommand*{\answer}[1][]{%
 		\if@noskipsec\leavevmode\fi
 		\def\@svsechd{%
