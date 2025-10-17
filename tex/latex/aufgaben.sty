@@ -18,21 +18,33 @@
 	ref={\arabic{chapter}.\arabic*},
 	align=left,
 	labelindent=0pt,
-	labelwidth=\widthof{№\ref{enum-\EnumitemId}:},
-	leftmargin={\labelwidth+\itemindent},
-	after={\label{enum-\EnumitemId}}
+	labelsep*=.25em,
+	labelwidth=\widthof{№\ref{tasksi-\EnumitemId}:},
+	itemindent=0pt,
+	leftmargin=!,
+	after={\label{tasksi-\EnumitemId}}
 }
 \setlist[tasks,2]{%
 	label={\arabic*.},
 	ref={(\arabic*)},
 	align=left,
-	labelindent=0pt
+	labelindent=0pt,
+	labelsep*=.25em,
+	labelwidth=\widthof{\ref{tasksii-\EnumitemId}.},
+	itemindent=0pt,
+	leftmargin=!,
+	after={\label{tasksii-\EnumitemId}}
 }
 \setlist[tasks,3]{%
 	label={\asbuk*.},
 	ref={(\asbuk*)},
 	align=left,
 	labelindent=0pt,
+	labelsep*=.25em,
+	labelwidth=\widthof{\ref{tasksiii-\EnumitemId}.},
+	itemindent=0pt,
+	leftmargin=!,
+	after={\label{tasksiii-\EnumitemId}}
 }
 
 \if@taskonly
