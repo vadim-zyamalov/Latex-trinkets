@@ -4,22 +4,27 @@
 \newif\if@taskonly
 \@taskonlyfalse
 
+\newif\if@chapter
+\@chapterfalse
+
 \DeclareOption{taskonly}{\@taskonlytrue}
+\DeclareOption{chapter}{\@chaptertrue}
 \ProcessOptions\relax
 
 \RequirePackage{enumitem}
+\RequirePackage{xstring}
 \RequirePackage{calc}
 
 %%% Упражнения %%%
 
 \newlist{tasks}{enumerate}{3}
 \setlist[tasks,1]{%
-	label={\textbf{№\arabic{chapter}.\arabic*:}},
-	ref={\arabic{chapter}.\arabic*},
+	label={\textbf{№\if@chapter\arabic{chapter}.\else\fi\arabic*}},
+	ref={\if@chapter\arabic{chapter}.\else\fi\arabic*},
 	align=left,
 	labelindent=0pt,
-	labelsep*=.25em,
-	labelwidth=\widthof{№\ref{tasksi-\EnumitemId}:},
+	labelsep*=.5em,
+	labelwidth=\widthof{№\ref{tasksi-\EnumitemId}},
 	itemindent=0pt,
 	leftmargin=!,
 	after={\label{tasksi-\EnumitemId}}
@@ -29,8 +34,8 @@
 	ref={(\arabic*)},
 	align=left,
 	labelindent=0pt,
-	labelsep*=.25em,
-	labelwidth=\widthof{\ref{tasksii-\EnumitemId}.},
+	labelsep*=.5em,
+	labelwidth=\widthof{\StrBetween\expandafter{\ref{tasksii-\EnumitemId}}{(}{)}.},
 	itemindent=0pt,
 	leftmargin=!,
 	after={\label{tasksii-\EnumitemId}}
@@ -40,8 +45,8 @@
 	ref={(\asbuk*)},
 	align=left,
 	labelindent=0pt,
-	labelsep*=.25em,
-	labelwidth=\widthof{\ref{tasksiii-\EnumitemId}.},
+	labelsep*=.5em,
+	labelwidth=\widthof{\StrBetween\expandafter{\ref{tasksiii-\EnumitemId}}{(}{)}.},
 	itemindent=0pt,
 	leftmargin=!,
 	after={\label{tasksiii-\EnumitemId}}
