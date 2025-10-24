@@ -43,8 +43,16 @@
 
 \RequirePackage{kvoptions}
 
-% Опция для использования преамбулы в beamer.
-\DeclareBoolOption{beamer}
+% Проверка использования преамбулы в beamer.
+\newif\ifpraeambel@beamer
+\praeambel@beamerfalse
+\@ifclassloaded{beamer}{\praeambel@beamertrue}{\praeambel@beamerfalse}
+
+% Проверка использования преамбулы в book и extbook.
+\newif\ifpraeambel@book
+\praeambel@bookfalse
+\@ifclassloaded{book}{\praeambel@booktrue}{\praeambel@bookfalse}
+\@ifclassloaded{extbook}{\praeambel@booktrue}{\praeambel@bookfalse}
 
 % Опция для использования babel вместо polyglossia.
 \DeclareBoolOption{babel}
@@ -129,7 +137,7 @@
 	\newtheorem{example}{Пример}
 \fi
 
-% mathtools что-то делает с горизонтальными фигурными скобками
+% mathtools что-то делает с горизонтальными фигурными скобками (ломает)
 % https://tex.stackexchange.com/q/552864/283103
 \let\normalunderbrace=\underbrace
 \RequirePackage{mathtools}
@@ -204,6 +212,16 @@
 	\providecommand{\subtitle}[1]{
 		\apptocmd{\@title}{\par {\large #1 \par}}{}{}
 	}
+
+	\ifpraeambel@book
+		\RequirePackage{titlesec}
+		\titleformat{\chapter}{\normalfont\Large\bfseries}{\thechapter}{1em}{}
+		\titlespacing{\chapter}{0pt}{0pt}{0pt}
+		\titleformat{\section}{\normalfont\Large\bfseries}{\thesection}{1em}{}
+		\titlespacing{\section}{0pt}{0pt}{0pt}
+		\titleformat{\subsection}{\normalfont\large\bfseries}{\thesubsection}{1em}{}
+		\titlespacing{\subsection}{0pt}{0pt}{0pt}
+	\fi
 \fi
 
 % ----------------- %
@@ -220,6 +238,7 @@
 
 % Этот пакет позволяет автоматически разбивать длинные ссылки
 % в произвольном месте.
+\PassOptionsToPackage{hyphens}{url}
 \RequirePackage{xurl}
 \urlstyle{same}
 
@@ -246,6 +265,7 @@
 \RequirePackage{tikz}
 \RequirePackage{pgfplots}
 \RequirePackage{pgfplotstable}
+\pgfplotsset{compat=1.18}
 \RequirePackage{colortbl}
 
 % ------- %
@@ -282,5 +302,11 @@
 % -------- %
 
 \RequirePackage{minted}
+\RequirePackage{fancyvrb}
+
+% ------------------------- %
+% Передаем опции в hyperref %
+% ------------------------- %
+\PassOptionsToPackage{unicode}{hyperref}
 
 \endinput
