@@ -216,11 +216,11 @@
 	\ifpraeambel@book
 		\RequirePackage{titlesec}
 		\titleformat{\chapter}{\normalfont\Large\bfseries}{\thechapter}{1em}{}
-		\titlespacing{\chapter}{0pt}{0pt}{0pt}
+		\titlespacing{\chapter}{0pt}{0pt}{\parskip}
 		\titleformat{\section}{\normalfont\Large\bfseries}{\thesection}{1em}{}
-		\titlespacing{\section}{0pt}{0pt}{0pt}
+		\titlespacing{\section}{0pt}{1.5ex plus .2ex minus .1ex}{\parskip}
 		\titleformat{\subsection}{\normalfont\large\bfseries}{\thesubsection}{1em}{}
-		\titlespacing{\subsection}{0pt}{0pt}{0pt}
+		\titlespacing{\subsection}{0pt}{1ex plus .2ex minus .1ex}{\parskip}
 	\fi
 \fi
 
