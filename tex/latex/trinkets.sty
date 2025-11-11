@@ -6,10 +6,10 @@
 \RequirePackage{amsmath}
 \RequirePackage{xspace}
 \iftutex
-	\RequirePackage{unicode-math}
+  \RequirePackage{unicode-math}
 \fi
 \ifpdftex
-	\RequirePackage{bm}
+  \RequirePackage{bm}
 \fi
 
 %%% Команды для форматирования %%%
@@ -19,38 +19,44 @@
 
 %%% Математические символы и функции %%%
 
-% Традиционные математические символы (Россия)
-\renewcommand{\le}{\leqslant}
-\renewcommand{\leq}{\leqslant}
-\renewcommand{\ge}{\geqslant}
-\renewcommand{\geq}{\geqslant}
-\renewcommand{\Pr}{\operatorname{P}\xspace}
+\AtBeginDocument{%
+  % Традиционные математические символы (Россия)
+  \renewcommand{\le}{\leqslant}
+  \renewcommand{\leq}{\leqslant}
+  \renewcommand{\ge}{\geqslant}
+  \renewcommand{\geq}{\geqslant}
+  \renewcommand{\Pr}{\operatorname{P}}
 
-% Математические функции
-\newcommand*{\Lag}{\operatorname{L}}
-\newcommand*{\dd}{\mathop{}\!d}
-\newcommand*{\E}{\operatorname{E}}
-\newcommand*{\med}{\operatorname{med}}
-\newcommand*{\SE}{\operatorname{SE}}
-\newcommand*{\Var}{\operatorname{Var}}
-\newcommand*{\Cov}{\operatorname{Cov}}
-\newcommand*{\Corr}{\operatorname{Corr}}
+  \let\OrigRe\Re\let\Re\relax\DeclareMathOperator{\Re}{Re}
+  \let\OrigIm\Im\let\Im\relax\DeclareMathOperator{\Im}{Im}
 
-\newcommand*{\plim}{\operatorname*{plim}}
 
-\newcommand*{\diag}{\operatorname{diag}}
-\newcommand*{\rank}{\operatorname{rank}}
-\newcommand*{\tr}{\operatorname{tr}}
-\newcommand*{\vecc}{\operatorname{vec}}
-\newcommand*{\vech}{\operatorname{vech}}
-\newcommand*{\sign}{\operatorname{sign}}
+  % Математические функции
+  \DeclareMathOperator{\Lag}{L}
+  \newcommand*{\dd}{\mathop{}\!d}
+  \DeclareMathOperator{\E}{E}
+  \DeclareMathOperator{\med}{med}
+  \DeclareMathOperator{\SE}{SE}
+  \DeclareMathOperator{\Var}{Var}
+  \DeclareMathOperator{\Cov}{Cov}
+  \DeclareMathOperator{\Corr}{Corr}
 
-% Векторы
-\iftutex
-	\newcommand*{\Vect}[1]{\symbf{#1}}
-\fi
-\ifpdftex
-	\newcommand*{\Vect}[1]{\bm{#1}}
-\fi
+  \DeclareMathOperator*{\plim}{plim}
+
+  \DeclareMathOperator{\diag}{diag}
+  \DeclareMathOperator{\rank}{rank}
+  \DeclareMathOperator{\tr}{tr}
+  \DeclareMathOperator{\vecc}{vec}
+  \DeclareMathOperator{\vech}{vech}
+  \DeclareMathOperator{\sign}{sign}
+
+  % Векторы
+  \iftutex
+    \newcommand*{\Vect}[1]{\symbf{#1}}
+  \fi
+  \ifpdftex
+    \newcommand*{\Vect}[1]{\bm{#1}}
+  \fi
+}
 
 \endinput

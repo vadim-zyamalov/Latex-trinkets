@@ -6,27 +6,27 @@
 % https://tex.stackexchange.com/a/115848/221857
 
 % Просто пустой макрос-заглушка.
-\def\@{}
+\def\DUMMY{}
 % Макрос, принимающий на вход список и вызывающий новый макрос,
 % которому передается список, к которому присоединены запятая и заглушка.
-\def\spliceList#1{\expandafter\@spliceList #1,\@}
+\def\spliceList#1{\expandafter\@spliceList #1,\DUMMY}
 % Тот самый макрос, который принимает на вход список с запятой и заглушкой и
 % производит сравнение с образцом, выделяя первый элемент и все остальные
 % вплоть до заглушки (не включительно).
 % Если все остальные элементы представляют собой непустой список,
 % то передаем его в еще один вспомогательный макрос, отсекающий лишнюю запятую.
-\def\@spliceList#1,#2\@{%
-	\def\@listhead{#1}
-	% Проверяем список на непустоту.
-	\ifx\@#2\@
-		\def\@listtail{}
-	\else
-		% Удаляем лишнюю запятую из конца списка.
-		\expandafter\@@spliceList #2\@
-	\fi
+\def\@spliceList#1,#2\DUMMY{%
+  \def\@listhead{#1}
+  % Проверяем список на непустоту.
+  \ifx\DUMMY#2\DUMMY
+    \def\@listtail{}
+  \else
+    % Удаляем лишнюю запятую из конца списка.
+    \expandafter\@@spliceList #2\DUMMY
+  \fi
 }
 % Удаляем лишнюю запятую из конца списка.
-\def\@@spliceList#1,\@{\def\@listtail{#1}}
+\def\@@spliceList#1,\DUMMY{\def\@listtail{#1}}
 
 % ---------------- %
 % Параметры пакета %
@@ -35,10 +35,10 @@
 % Данная преамбула не предназначена для работы с pdfLaTeX.
 \RequirePackage{iftex}
 \ifpdftex
-	\PackageError{praeambel}{%
-		pdftex is not supported}{%
-		Use XeTeX or LuaTeX instead}
-	\@@end
+  \PackageError{praeambel}{%
+    pdftex is not supported}{%
+    Use XeTeX or LuaTeX instead}
+  \@@end
 \fi
 
 \RequirePackage{kvoptions}
@@ -86,15 +86,15 @@
 % - Polyglossia,
 % - или Babel.
 \ifpraeambel@babel
-	\usepackage{fontspec}
-	\RequirePackage[\praeambel@language]{babel}
+  \usepackage{fontspec}
+  \RequirePackage[\praeambel@language]{babel}
 \else
-	\RequirePackage{polyglossia}
-	\setdefaultlanguage{\@listhead}
-	\ifx\@listtail\empty
-	\else
-		\setotherlanguages{\@listtail}
-	\fi
+  \RequirePackage{polyglossia}
+  \setdefaultlanguage{\@listhead}
+  \ifx\@listtail\empty
+  \else
+    \setotherlanguages{\@listtail}
+  \fi
 \fi
 
 % Стандартные опции для шрифтов.
@@ -109,9 +109,9 @@
 % В цикле перебираем все языки и задаем соответствующие семейства.
 % Детальнее в разделе 2.1 справки к пакету fontspec.
 \@for\@lang:=\praeambel@language\do{%
-	\expandafter\newfontfamily\csname\@lang font\endcsname{\praeambel@mainfont}
-	\expandafter\newfontfamily\csname\@lang fontsf\endcsname{\praeambel@sansfont}
-	\expandafter\newfontfamily\csname\@lang fonttt\endcsname{\praeambel@monofont}
+  \expandafter\newfontfamily\csname\@lang font\endcsname{\praeambel@mainfont}
+  \expandafter\newfontfamily\csname\@lang fontsf\endcsname{\praeambel@sansfont}
+  \expandafter\newfontfamily\csname\@lang fonttt\endcsname{\praeambel@monofont}
 }
 
 % Прочие пакеты
@@ -128,13 +128,13 @@
 
 \ifpraeambel@beamer
 \else
-	% В beamer уже есть свои окружения для теорем
-	\RequirePackage{amsthm}
-	\RequirePackage{nicefrac}
+  % В beamer уже есть свои окружения для теорем
+  \RequirePackage{amsthm}
+  \RequirePackage{nicefrac}
 
-	\theoremstyle{definition}
-	\newtheorem*{theorem}{Теорема}
-	\newtheorem{example}{Пример}
+  \theoremstyle{definition}
+  \newtheorem*{theorem}{Теорема}
+  \newtheorem{example}{Пример}
 \fi
 
 % mathtools что-то делает с горизонтальными фигурными скобками (ломает)
@@ -152,19 +152,19 @@
 % ------------------------------ %
 \ifpraeambel@beamer
 \else
-	% Эти настройки не нужны в beamer.
-	\RequirePackage[left=3cm, right=1.5cm, top=2cm, bottom=2cm]{geometry}
+  % Эти настройки не нужны в beamer.
+  \RequirePackage[left=3cm, right=1.5cm, top=2cm, bottom=2cm]{geometry}
 
-	% Полуторный интервал.
-	\RequirePackage{setspace}
-	\onehalfspacing
+  % Полуторный интервал.
+  \RequirePackage{setspace}
+  \onehalfspacing
 
-	% Настройка красной строки.
-	\setlength{\parindent}{12.5mm}
-	\righthyphenmin=2
+  % Настройка красной строки.
+  \setlength{\parindent}{12.5mm}
+  \righthyphenmin=2
 
-	\widowpenalty=10000
-	\tolerance=1000
+  \widowpenalty=10000
+  \tolerance=1000
 \fi
 
 \RequirePackage{adjustbox}
@@ -175,16 +175,16 @@
 % ------ %
 \ifpraeambel@beamer
 \else
-	% enumitem конфликтует с beamer, поэтому совместно их не используем.
-	% Вообще, говорят, что это можно обойти, но зачем...
-	\RequirePackage[inline]{enumitem}
-	\AddEnumerateCounter{\Asbuk}{\russian@alph}{Щ}
-	\AddEnumerateCounter{\asbuk}{\russian@alph}{щ}
+  % enumitem конфликтует с beamer, поэтому совместно их не используем.
+  % Вообще, говорят, что это можно обойти, но зачем...
+  \RequirePackage[inline]{enumitem}
+  \AddEnumerateCounter{\Asbuk}{\russian@alph}{Щ}
+  \AddEnumerateCounter{\asbuk}{\russian@alph}{щ}
 \fi
 
 % Команда для локального сжатия списков.
 \providecommand{\tightlist}{%
-	\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}
 }
 
 % ------ %
@@ -199,29 +199,52 @@
 % что неудивительно, если учесть, что послений является официально признанным
 % преемником pdfLaTeX!
 \IfFileExists{microtype.sty}{
-	\RequirePackage[]{microtype}
-	\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+  \RequirePackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
 }{}
 
 \ifpraeambel@beamer
-	% Команда для слайда с заголовком.
-	\newcommand\makebeamertitle{\frame{\maketitle}}
+  % Команда для слайда с заголовком.
+  \newcommand\makebeamertitle{\frame{\maketitle}}
 \else
-	% Подзаголовок на титульном листе.
-	\RequirePackage{etoolbox}
-	\providecommand{\subtitle}[1]{
-		\apptocmd{\@title}{\par {\large #1 \par}}{}{}
-	}
-
-	\ifpraeambel@book
-		\RequirePackage{titlesec}
-		\titleformat{\chapter}{\normalfont\Large\bfseries}{\thechapter}{1em}{}
-		\titlespacing{\chapter}{0pt}{0pt}{\parskip}
-		\titleformat{\section}{\normalfont\Large\bfseries}{\thesection}{1em}{}
-		\titlespacing{\section}{0pt}{1.5ex plus .2ex minus .1ex}{\parskip}
-		\titleformat{\subsection}{\normalfont\large\bfseries}{\thesubsection}{1em}{}
-		\titlespacing{\subsection}{0pt}{1ex plus .2ex minus .1ex}{\parskip}
-	\fi
+  % Подзаголовок на титульном листе.
+  \RequirePackage{etoolbox}
+  \providecommand{\subtitle}[1]{
+    \apptocmd{\@title}{\par {\large #1 \par}}{}{}
+  }
+\fi
+\ifpraeambel@book
+    % \RequirePackage{titlesec}
+    % \titleformat{\chapter}{\normalfont\Large\bfseries}{\chaptername~\thechapter}{% 1em}{}
+    % \titlespacing{\chapter}{0pt}{0pt}{\parskip}
+    % \titleformat{\section}{\normalfont\Large\bfseries}{\thesection}{1em}{}
+    % \titlespacing{\section}{0pt}{1.5ex plus .2ex minus .1ex}{\parskip}
+    % \titleformat{\subsection}{\normalfont\large\bfseries}{\thesubsection}{1em}{}
+    % \titlespacing{\subsection}{0pt}{1ex plus .2ex minus .1ex}{\parskip}
+  \def\@makechapterhead#1{%
+    \vspace*{10\p@}%
+    {\raggedright \normalfont
+      \ifnum \c@secnumdepth >\m@ne
+        \Large\bfseries \@chapapp\space \thechapter\quad
+      \fi
+      \interlinepenalty\@M
+      \Large \bfseries #1\par\nobreak
+    }}
+  \def\@makeschapterhead#1{%
+    \vspace*{10\p@}%
+    {\raggedright
+      \normalfont
+      \interlinepenalty\@M
+      \Large \bfseries  #1\par\nobreak
+    }}
+  \renewcommand\section{\@startsection {section}{1}{\z@}%
+    {1.5ex plus .2ex minus .1ex}%
+    {\parskip}%
+    {\normalfont\Large\bfseries}}
+  \renewcommand\subsection{\@startsection{subsection}{2}{\z@}%
+    {1ex plus .2ex minus .1ex}%
+    {\parskip}%
+    {\normalfont\large\bfseries}}
 \fi
 
 % ----------------- %
@@ -230,10 +253,10 @@
 
 \RequirePackage{bookmark}
 \RequirePackage[
-	backend=biber,
-	bibstyle=gost-authoryear-min,
-	citestyle=gost-authoryear,
-	movenames=false
+  backend=biber,
+  bibstyle=gost-authoryear-min,
+  citestyle=gost-authoryear,
+  movenames=false
 ]{biblatex}
 
 % Этот пакет позволяет автоматически разбивать длинные ссылки
@@ -248,8 +271,8 @@
 \setcounter{biburlnumpenalty}{100}
 
 \ifpraeambel@beamer
-	% Нумерация заголовков в приложениях в beamer.
-	\RequirePackage{appendixnumberbeamer}
+  % Нумерация заголовков в приложениях в beamer.
+  \RequirePackage{appendixnumberbeamer}
 \fi
 
 % ------- %
@@ -274,8 +297,8 @@
 
 \ifpraeambel@beamer
 \else
-	% longtable не очень хорошо работает в beamer.
-	\RequirePackage{longtable}
+  % longtable не очень хорошо работает в beamer.
+  \RequirePackage{longtable}
 \fi
 
 % Красивые горизонтальные линии.
@@ -291,10 +314,10 @@
 % Работа с единицами измерения.
 \RequirePackage{siunitx}[=v2]
 \sisetup{
-	detect-all,
-	table-number-alignment=center,
-	table-figures-integer=2,
-	table-figures-decimal=2
+  detect-all,
+  table-number-alignment=center,
+  table-figures-integer=2,
+  table-figures-decimal=2
 }
 
 % -------- %
