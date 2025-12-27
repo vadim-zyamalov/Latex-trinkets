@@ -1,0 +1,32 @@
+\NeedsTeXFormat{LaTeX2e}[1994/06/01]
+\ProvidesPackage{xaufgaben}[2025/12/27 LaTeX package for easy tasks numbering]
+
+\RequirePackage{xsim}
+\RequirePackage{tasks}
+
+\loadxsimstyle{layouts}
+\xsimsetup{
+  exercise/template=runin,
+  solution/template=runin
+}
+
+\DeclareInstance{tasks}{alphabetize}{default}{label = \asbuk*)}
+\DeclareInstance{tasks}{itemize}{default}{}
+\DeclareInstance{tasks}{enumerate}{default}{label=\arabic*.}
+
+\DeclareExerciseTranslation{Russian}{exercise}{№}
+\DeclareExerciseTranslation{Russian}{exercises}{упражнения}
+\DeclareExerciseTranslation{Russian}{question}{вопрос}
+\DeclareExerciseTranslation{Russian}{questions}{вопросы}
+\DeclareExerciseTranslation{Russian}{solution}{решение №}
+\DeclareExerciseTranslation{Russian}{solutions}{решения}
+\DeclareExerciseTranslation{Russian}{point-abbr}{б.}
+\DeclareExerciseTranslation{Russian}{point}{балл}
+\DeclareExerciseTranslation{Russian}{points}{баллы}
+\DeclareExerciseTranslation{Russian}{reached}{получено}
+\DeclareExerciseTranslation{Russian}{default-heading}{Решения упражнений}
+\DeclareExerciseTranslation{Russian}{collection-heading}{Упражнения}
+\DeclareExerciseTranslation{Russian}{per-section-heading}{Решения упражнений раздела\nobreakspace \ExerciseSection}
+\DeclareExerciseTranslation{Russian}{per-chapter-heading}{Решения упражнений главы\nobreakspace \ExerciseChapter}
+
+\endinput
