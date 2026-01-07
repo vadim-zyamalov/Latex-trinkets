@@ -1,6 +1,13 @@
 \NeedsTeXFormat{LaTeX2e}[1994/06/01]
 \ProvidesPackage{xaufgaben}[2025/12/27 LaTeX package for easy tasks numbering]
 
+\newif\if@chapter\@chapterfalse
+\newif\if@section\@sectionfalse
+
+\DeclareOption{chapter}{\@chaptertrue\@sectionfalse}
+\DeclareOption{section}{\@chapterfalse\@sectiontrue}
+\ProcessOptions\relax
+
 \RequirePackage{xsim}
 \RequirePackage{tasks}
 
@@ -9,6 +16,9 @@
   exercise/template=runin,
   solution/template=runin
 }
+
+\if@chapter\xsimsetup{exercise/within={chapter}}\else\fi
+\if@section\xsimsetup{exercise/within={section}}\else\fi
 
 \DeclareInstance{tasks}{alphabetize}{default}{label = \asbuk*)}
 \DeclareInstance{tasks}{itemize}{default}{}
