@@ -28,20 +28,16 @@
 % Удаляем лишнюю запятую из конца списка.
 \def\@@spliceList#1,\DUMMY{\def\@listtail{#1}}
 
-% ---------------- %
-% Параметры пакета %
-% ---------------- %
+% ---------------------------------------------------------------------------- %
+% Предварительные проверки                                                     %
+% ---------------------------------------------------------------------------- %
 
 % Данная преамбула не предназначена для работы с pdfLaTeX.
 \RequirePackage{iftex}
 \ifpdftex
-  \PackageError{praeambel}{%
-    pdftex is not supported}{%
-    Use XeTeX or LuaTeX instead}
+  \PackageError{praeambel}{pdftex is not supported}{Use XeTeX or LuaTeX instead}
   \@@end
 \fi
-
-\RequirePackage{kvoptions}
 
 % Проверка использования преамбулы в beamer.
 \newif\ifpraeambel@beamer
@@ -54,8 +50,23 @@
 \@ifclassloaded{book}{\praeambel@booktrue}{\praeambel@bookfalse}
 \@ifclassloaded{extbook}{\praeambel@booktrue}{\praeambel@bookfalse}
 
+% Проверка использования преамбулы в article и extarticle.
+\newif\ifpraeambel@article
+\praeambel@articlefalse
+\@ifclassloaded{article}{\praeambel@articletrue}{\praeambel@articlefalse}
+\@ifclassloaded{extarticle}{\praeambel@articletrue}{\praeambel@articlefalse}
+
+% ---------------------------------------------------------------------------- %
+% Параметры пакета                                                             %
+% ---------------------------------------------------------------------------- %
+
+\RequirePackage{kvoptions}
+
 % Опция для использования babel вместо polyglossia.
 \DeclareBoolOption{babel}
+
+% Опция для включения пакетов для создания графиков.
+\DeclareBoolOption{plots}
 
 % Список языков.
 % Если опция не указана, то используется русский язык.
@@ -63,33 +74,29 @@
 
 % Опции для выбора основных шрифтов:
 % - Основного,
-% - Без засечек,
-% - Моноширинного,
-% - Математического.
 \DeclareStringOption[PT Astra Serif]{mainfont}
+% - Без засечек,
 \DeclareStringOption[PT Astra Sans]{sansfont}
+% - Моноширинного,
 \DeclareStringOption[Cascadia Code]{monofont}
+% - Математического.
 \DeclareStringOption[Libertinus Math]{mathfont}
 
 % Обрабатываем опции.
 \ProcessKeyvalOptions*
 
-% Обработка списка языков.
-\spliceList{\praeambel@language}
+% ---------------------------------------------------------------------------- %
+% Языковые настройки и шрифты                                                  %
+% ---------------------------------------------------------------------------- %
 
-% --------------------------- %
-% Языковые настройки и шрифты %
-% --------------------------- %
-
-
-% Основные языковые пакеты:
-% - Polyglossia,
-% - или Babel.
+% Основные языковые пакеты: babel или polyglossia.
 \ifpraeambel@babel
-  \usepackage{fontspec}
+  \RequirePackage{fontspec}
   \RequirePackage[\praeambel@language]{babel}
 \else
+  % Обработка списка языков.
   \RequirePackage{polyglossia}
+  \spliceList{\praeambel@language}
   \setdefaultlanguage{\@listhead}
   \ifx\@listtail\empty
   \else
@@ -114,15 +121,15 @@
   \expandafter\newfontfamily\csname\@lang fonttt\endcsname{\praeambel@monofont}
 }
 
-% Прочие пакеты
+% Прочие шрифтовые пакеты
 \RequirePackage{cmap}
 \RequirePackage{csquotes}
-\RequirePackage{parskip}
 \RequirePackage{moresize}
 
 % ------------------------------- %
 % Математические шрифты и символы %
 % ------------------------------- %
+
 \RequirePackage{amsmath}
 \RequirePackage{amssymb}
 
@@ -147,14 +154,22 @@
 % Устанавливаем математический шрифт.
 \setmathfont{\praeambel@mathfont}
 
-% ------------------------------ %
-% Геометрия страницы и коробочки %
-% ------------------------------ %
+% ---------------------------------------------------------------------------- %
+% Геометрия страницы                                                           %
+% ---------------------------------------------------------------------------- %
+
 \ifpraeambel@beamer
 \else
-  % Эти настройки не нужны в beamer.
   \RequirePackage[left=3cm, right=1.5cm, top=2cm, bottom=2cm]{geometry}
+\fi
 
+% ---------------------------------------------------------------------------- %
+% Размещение текста: красная строка, штрафы                                    %
+% ---------------------------------------------------------------------------- %
+
+\RequirePackage{parskip}
+\ifpraeambel@beamer
+\else
   % Полуторный интервал.
   \RequirePackage{setspace}
   \onehalfspacing
@@ -167,41 +182,9 @@
   \tolerance=1000
 \fi
 
-\RequirePackage{adjustbox}
-\RequirePackage[most]{tcolorbox}
-
-% ------ %
-% Списки %
-% ------ %
-\ifpraeambel@beamer
-\else
-  % enumitem конфликтует с beamer, поэтому совместно их не используем.
-  % Вообще, говорят, что это можно обойти, но зачем...
-  \RequirePackage[inline]{enumitem}
-  \AddEnumerateCounter{\Asbuk}{\russian@alph}{Щ}
-  \AddEnumerateCounter{\asbuk}{\russian@alph}{щ}
-\fi
-
-% Команда для локального сжатия списков.
-\providecommand{\tightlist}{%
-  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}
-}
-
-% ------ %
-% Прочее %
-% ------ %
-
-% Пакет для работы с цветами.
-\RequirePackage{xcolor}
-
-% Пакет для микротипографики.
-% В XeTeX работает не до конца, в LuaTeX все отлично,
-% что неудивительно, если учесть, что послений является официально признанным
-% преемником pdfLaTeX!
-\IfFileExists{microtype.sty}{
-  \RequirePackage[]{microtype}
-  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
-}{}
+% ---------------------------------------------------------------------------- %
+% Титульная страница                                                           %
+% ---------------------------------------------------------------------------- %
 
 \ifpraeambel@beamer
   % Команда для слайда с заголовком.
@@ -213,43 +196,65 @@
     \apptocmd{\@title}{\par {\large #1 \par}}{}{}
   }
 \fi
-\ifpraeambel@book
-    % \RequirePackage{titlesec}
-    % \titleformat{\chapter}{\normalfont\Large\bfseries}{\chaptername~\thechapter}{% 1em}{}
-    % \titlespacing{\chapter}{0pt}{0pt}{\parskip}
-    % \titleformat{\section}{\normalfont\Large\bfseries}{\thesection}{1em}{}
-    % \titlespacing{\section}{0pt}{1.5ex plus .2ex minus .1ex}{\parskip}
-    % \titleformat{\subsection}{\normalfont\large\bfseries}{\thesubsection}{1em}{}
-    % \titlespacing{\subsection}{0pt}{1ex plus .2ex minus .1ex}{\parskip}
-  \def\@makechapterhead#1{%
-    \vspace*{10\p@}%
-    {\raggedright \normalfont
-      \ifnum \c@secnumdepth >\m@ne
-        \Large\bfseries \@chapapp\space \thechapter\quad
-      \fi
-      \interlinepenalty\@M
-      \Large \bfseries #1\par\nobreak
-    }}
-  \def\@makeschapterhead#1{%
-    \vspace*{10\p@}%
-    {\raggedright
-      \normalfont
-      \interlinepenalty\@M
-      \Large \bfseries  #1\par\nobreak
-    }}
-  \renewcommand\section{\@startsection {section}{1}{\z@}%
-    {1.5ex plus .2ex minus .1ex}%
-    {\parskip}%
-    {\normalfont\Large\bfseries}}
-  \renewcommand\subsection{\@startsection{subsection}{2}{\z@}%
-    {1ex plus .2ex minus .1ex}%
-    {\parskip}%
-    {\normalfont\large\bfseries}}
+
+% Более компактный заголовок статьи.
+\ifpraeambel@article
+  \def\@maketitle{%
+    \newpage
+    \null
+    \begin{center}%
+      \let \footnote \thanks
+      {\Large \@title \par}%
+      \ifx\@author\empty
+      \else
+      {\large
+        \lineskip .5em%
+        \begin{tabular}[t]{c}%
+          \@author
+        \end{tabular}\par}%
+      \fi%
+      {\large \@date}%
+    \end{center}%
+    \par}
 \fi
 
-% ----------------- %
-% Ссылки и закладки %
-% ----------------- %
+% ---------------------------------------------------------------------------- %
+% Заголовки глав и разделов в книгах                                           %
+% ---------------------------------------------------------------------------- %
+
+\ifpraeambel@book
+  \RequirePackage{titlesec}
+
+  \titleformat{\chapter}{\normalfont\Large\bfseries}{\chaptername~\thechapter}{1em}{}
+  \titlespacing{\chapter}{0pt}{0pt}{\parskip}
+
+  \titleformat{\section}{\normalfont\Large\bfseries}{\thesection}{1em}{}
+  \titlespacing{\section}{0pt}{0pt}{\parskip}
+
+  \titleformat{\subsection}{\normalfont\large\bfseries}{\thesubsection}{1em}{}
+  \titlespacing{\subsection}{0pt}{0pt}{\parskip}
+
+  \renewcommand\appendix{\par
+    \setcounter{chapter}{0}%
+    \setcounter{section}{0}%
+    \gdef\@chapapp{\appendixname}%
+    \gdef\thechapter{\Asbuk{chapter}}%
+    \titleformat{\chapter}{\normalfont\Large\bfseries}{\thechapter}{1em}{}
+  }
+\fi
+
+\ifpraeambel@article
+  \renewcommand\appendix{\par
+    \setcounter{section}{0}%
+    \setcounter{subsection}{0}%
+    \gdef\thesection{\Asbuk{section}}%
+    \titleformat{\section}{\normalfont\large\bfseries}{\thesection}{1em}{}
+  }
+\fi
+
+% ---------------------------------------------------------------------------- %
+% Ссылки и закладки                                                            %
+% ---------------------------------------------------------------------------- %
 
 \RequirePackage{bookmark}
 \RequirePackage[
@@ -275,26 +280,37 @@
   \RequirePackage{appendixnumberbeamer}
 \fi
 
-% ------- %
-% Рисунки %
-% ------- %
+% ---------------------------------------------------------------------------- %
+% Списки                                                                       %
+% ---------------------------------------------------------------------------- %
+
+\ifpraeambel@beamer
+\else
+  % enumitem конфликтует с beamer, поэтому совместно их не используем.
+  % Вообще, говорят, что это можно обойти, но зачем...
+  \RequirePackage[inline]{enumitem}
+  \AddEnumerateCounter{\Asbuk}{\russian@alph}{Щ}
+  \AddEnumerateCounter{\asbuk}{\russian@alph}{щ}
+\fi
+
+% Команда для локального сжатия списков.
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}%
+  \setlength{\parskip}{0pt}
+}
+
+% ---------------------------------------------------------------------------- %
+% Подписи плавающих объектов                                                   %
+% ---------------------------------------------------------------------------- %
 
 \RequirePackage{caption}
-\RequirePackage{graphicx}
 
-% ------------------ %
-% Рисование графиков %
-% ------------------ %
+% Данный пакет добавляет возможность создавать вложенные объекты с подписями.
+\RequirePackage{subcaption}
 
-\RequirePackage{tikz}
-\RequirePackage{pgfplots}
-\RequirePackage{pgfplotstable}
-\pgfplotsset{compat=1.18}
-\RequirePackage{colortbl}
-
-% ------- %
-% Таблицы %
-% ------- %
+% ---------------------------------------------------------------------------- %
+% Таблицы                                                                      %
+% ---------------------------------------------------------------------------- %
 
 \ifpraeambel@beamer
 \else
@@ -312,6 +328,9 @@
 % Пакет для создания ячеек с переносами строк.
 \RequirePackage{makecell}
 
+% Пакет для раскрашивания столбцов, строк, ячеек и линий.
+\RequirePackage{colortbl}
+
 % Работа с единицами измерения.
 \RequirePackage{siunitx}[=v2]
 \sisetup{
@@ -321,12 +340,43 @@
   table-figures-decimal=2
 }
 
-% -------- %
-% Листинги %
-% -------- %
+% ---------------------------------------------------------------------------- %
+% Рисунки и графики                                                            %
+% ---------------------------------------------------------------------------- %
+
+\RequirePackage{graphicx}
+
+\ifpraeambel@plots
+  \RequirePackage{tikz}
+  \RequirePackage{pgfplots}
+  \RequirePackage{pgfplotstable}
+  \pgfplotsset{compat=1.18}
+\fi
+
+% ---------------------------------------------------------------------------- %
+% Листинги                                                                     %
+% ---------------------------------------------------------------------------- %
 
 \RequirePackage{minted}
 \RequirePackage{fancyvrb}
+
+% ---------------------------------------------------------------------------- %
+% Прочее                                                                       %
+% ---------------------------------------------------------------------------- %
+
+% Пакет для работы с цветами.
+\RequirePackage{xcolor}
+
+% Пакет для микротипографики.
+% В XeTeX работает не до конца, в LuaTeX все отлично,
+% что неудивительно, если учесть, что послений является официально признанным
+% преемником pdfLaTeX!
+\RequirePackage{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+
+% Разные коробочки.
+\RequirePackage{adjustbox}
+\RequirePackage[most]{tcolorbox}
 
 % ------------------------- %
 % Передаем опции в hyperref %
