@@ -11,7 +11,44 @@
 \RequirePackage{xsim}
 \RequirePackage{tasks}
 
-\loadxsimstyle{layouts}
+\let\Sectionmark\sectionmark
+\def\sectionmark#1{\def\Sectionname{#1}\Sectionmark{#1}}
+
+% Взято из официального мануала к пакету xsim.
+% Модифицировано под мои нужды.
+% Также см. https://tex.stackexchange.com/a/160035
+% Также см. https://tex.stackexchange.com/a/62252
+\DeclareExerciseEnvironmentTemplate{runin}{%
+  \IfInsideSolutionTF{%
+    \protected@write\@auxout{}{%
+      \string\newlabel{sol:\GetExerciseProperty{ID}}{%
+        {\GetExerciseProperty{counter}}%
+        {\thepage}%
+        {\Sectionname}%
+        {solution.\GetExerciseProperty{ID}}{}%
+      }%
+    }%
+    \hypertarget{solution.\GetExerciseProperty{ID}}{}%
+  }{%
+    \label{ex:\GetExerciseProperty{ID}}}
+  \par%
+  \noindent
+  \textbf{\XSIMmixedcase{\GetExerciseName}~\GetExerciseProperty{counter}}%
+  \GetExercisePropertyT{subtitle}{ \textit{#1}} % <<< notice the space
+  \IfInsideSolutionF{%
+    \GetExercisePropertyT{points}{%
+      \marginpar{%
+        \printgoal{\PropertyValue}%
+        \GetExercisePropertyT{bonus-points}{+\printgoal{\PropertyValue}}%
+        \,\IfExerciseGoalSingularTF{points}
+        {\XSIMtranslate{point}}
+        {\XSIMtranslate{points}}%
+      }%
+    }%
+  }%
+}
+{}
+
 \xsimsetup{
   exercise/template=runin,
   solution/template=runin
