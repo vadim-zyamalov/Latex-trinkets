@@ -42,19 +42,19 @@
 % Проверка использования преамбулы в beamer.
 \newif\ifpraeambel@beamer
 \praeambel@beamerfalse
-\@ifclassloaded{beamer}{\praeambel@beamertrue}{\praeambel@beamerfalse}
+\@ifclassloaded{beamer}{\praeambel@beamertrue}{}
 
 % Проверка использования преамбулы в book и extbook.
 \newif\ifpraeambel@book
 \praeambel@bookfalse
-\@ifclassloaded{book}{\praeambel@booktrue}{\praeambel@bookfalse}
-\@ifclassloaded{extbook}{\praeambel@booktrue}{\praeambel@bookfalse}
+\@ifclassloaded{book}{\praeambel@booktrue}{}
+\@ifclassloaded{extbook}{\praeambel@booktrue}{}
 
 % Проверка использования преамбулы в article и extarticle.
 \newif\ifpraeambel@article
 \praeambel@articlefalse
-\@ifclassloaded{article}{\praeambel@articletrue}{\praeambel@articlefalse}
-\@ifclassloaded{extarticle}{\praeambel@articletrue}{\praeambel@articlefalse}
+\@ifclassloaded{article}{\praeambel@articletrue}{}
+\@ifclassloaded{extarticle}{\praeambel@articletrue}{}
 
 % ---------------------------------------------------------------------------- %
 % Параметры пакета                                                             %
@@ -223,16 +223,22 @@
 % ---------------------------------------------------------------------------- %
 
 \ifpraeambel@book
-  \RequirePackage{titlesec}
+  \RequirePackage[compact]{titlesec}
+  \RequirePackage{titletoc}
 
-  \titleformat{\chapter}{\normalfont\Large\bfseries}{\chaptername~\thechapter}{1em}{}
-  \titlespacing{\chapter}{0pt}{0pt}{\parskip}
+  \titlecontents{part}[0pt]{\bfseries}{\partname\ \thecontentslabel:\quad}{}{\hfill\contentspage}
+  \titlecontents{chapter}[0pt]{\bfseries}{\chaptername\ \thecontentslabel:\quad}{}{\hfill\contentspage}
+
+  \gdef\thepart{\Roman{part}}
+
+  \titleformat{\chapter}[display]{\normalfont\Large\bfseries}{\chaptername~\thechapter}{0pt}{}
+  \titlespacing{\chapter}{0pt}{\parskip}{\parskip}
 
   \titleformat{\section}{\normalfont\Large\bfseries}{\thesection}{1em}{}
-  \titlespacing{\section}{0pt}{0pt}{\parskip}
+  \titlespacing{\section}{0pt}{\parskip}{\parskip}
 
   \titleformat{\subsection}{\normalfont\large\bfseries}{\thesubsection}{1em}{}
-  \titlespacing{\subsection}{0pt}{0pt}{\parskip}
+  \titlespacing{\subsection}{0pt}{\parskip}{\parskip}
 
   \renewcommand\appendix{\par
     \setcounter{chapter}{0}%
