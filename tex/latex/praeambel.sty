@@ -62,6 +62,9 @@
 
 \RequirePackage{kvoptions}
 
+% Опция для указания, что преамбула будет работать в LyX.
+\DeclareBoolOption{lyx}
+
 % Опция для использования babel вместо polyglossia.
 \DeclareBoolOption{babel}
 
@@ -89,9 +92,11 @@
 % Языковые настройки и шрифты                                                  %
 % ---------------------------------------------------------------------------- %
 
+% Пакет для работы с системными шрифтами
+\ifpraeambel@lyx\else\RequirePackage{fontspec}\fi
+
 % Основные языковые пакеты: babel или polyglossia.
 \ifpraeambel@babel
-  \RequirePackage{fontspec}
   \RequirePackage[\praeambel@language]{babel}
 \else
   % Обработка списка языков.
@@ -147,7 +152,7 @@
 % mathtools что-то делает с горизонтальными фигурными скобками (ломает)
 % https://tex.stackexchange.com/q/552864/283103
 \let\normalunderbrace=\underbrace
-\RequirePackage{mathtools}
+\ifpraeambel@lyx\else\RequirePackage{mathtools}\fi
 \RequirePackage{unicode-math}
 \let\underbrace=\normalunderbrace
 
@@ -264,23 +269,27 @@
 % ---------------------------------------------------------------------------- %
 
 \RequirePackage{bookmark}
-\RequirePackage[
-  backend=biber,
-  bibstyle=gost-authoryear-min,
-  citestyle=gost-authoryear,
-  movenames=false
-]{biblatex}
+
+\ifpraeambel@lyx
+\else
+  \RequirePackage[
+    backend=biber,
+    bibstyle=gost-authoryear-min,
+    citestyle=gost-authoryear,
+    movenames=false
+  ]{biblatex}
+
+  % Установка штрафов для biblatex, поскольку этот пакет сам обрабатывает ссылки.
+  \setcounter{biburllcpenalty}{100}
+  \setcounter{biburlucpenalty}{200}
+  \setcounter{biburlnumpenalty}{100}
+\fi
 
 % Этот пакет позволяет автоматически разбивать длинные ссылки
 % в произвольном месте.
 \PassOptionsToPackage{hyphens}{url}
 \RequirePackage{xurl}
 \urlstyle{same}
-
-% Установка штрафов для biblatex, поскольку этот пакет сам обрабатывает ссылки.
-\setcounter{biburllcpenalty}{100}
-\setcounter{biburlucpenalty}{200}
-\setcounter{biburlnumpenalty}{100}
 
 \ifpraeambel@beamer
   % Нумерация заголовков в приложениях в beamer.
@@ -351,7 +360,7 @@
 % Рисунки и графики                                                            %
 % ---------------------------------------------------------------------------- %
 
-\RequirePackage{graphicx}
+\ifpraeambel@lyx\else\RequirePackage{graphicx}\fi
 
 \ifpraeambel@plots
   \RequirePackage{tikz}
@@ -378,7 +387,8 @@
 % В XeTeX работает не до конца, в LuaTeX все отлично,
 % что неудивительно, если учесть, что послений является официально признанным
 % преемником pdfLaTeX!
-\RequirePackage{microtype}
+\ifpraeambel@lyx\else\RequirePackage{microtype}\fi
+
 \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
 
 % Разные коробочки.

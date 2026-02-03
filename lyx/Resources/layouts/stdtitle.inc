@@ -1,0 +1,105 @@
+# Standard textclass definition file. Taken from initial LyX source code
+# Author : Matthias Ettrich <ettrich@informatik.uni-tuebingen.de>
+# Transposed by Pascal André <andre@via.ecp.fr>
+# Heavily modifed and enhanced by several developers.
+# Split from stdstruct.inc by Hartmut Goebel <hartmut@noris.net>
+
+# This include files contains all layouts that handle the title area
+# a document, like title, author and such.
+
+
+Format 104
+
+Style Title
+	Margin                Static
+	LatexType             Command
+	Category              FrontMatter
+	InTitle               1
+	LatexName             title
+	ParSkip               0.4
+	ItemSep               0
+	TopSep                0
+	BottomSep             1
+	ParSep                1
+	Align                 Center
+	LabelType             No_Label
+	Font
+	  Size                Largest
+	EndFont
+	HTMLTag               h1
+	HTMLTitle             true
+	DocBookTag            title
+	DocBookTagType        paragraph
+	DocBookInInfo         maybe
+End
+
+Style SubTitle
+	Margin                Static
+	LatexType             Command
+	Category              FrontMatter
+	InTitle               1
+	LatexName             subtitle
+	ParSkip               0.4
+	ItemSep               0
+	TopSep                0
+	BottomSep             1
+	ParSep                1
+	Align                 Center
+	LabelType             No_Label
+	Font
+	  Size                Large
+	EndFont
+	HTMLTag               h2
+	HTMLTitle             true
+	DocBookTag            title
+	DocBookTagType        paragraph
+	DocBookInInfo         maybe
+End
+
+
+Style Author
+	Margin                Static
+	LatexType             Command
+	Category              FrontMatter
+	InTitle               1
+	LatexName             author
+	LabelSep              xxx
+	ParSkip               0.4
+	TopSep                1.3
+	BottomSep             0.7
+	ParSep                0.7
+	Align                 Center
+	LabelType             No_Label
+	Font
+	  Size                Large
+	EndFont
+	DocBookTag            personname
+	DocBookTagType        paragraph
+	DocBookWrapperTag     author
+	DocBookWrapperTagType block
+	DocBookInInfo         always
+	DocBookNoFontInside   true
+End
+
+
+Style Date
+	Margin                Dynamic
+	LatexType             Command
+	Category              FrontMatter
+	InTitle               1
+	LatexName             date
+	LabelSep              xxx
+	ParSkip               0.4
+	TopSep                0.9
+	BottomSep             0.5
+	ParSep                1
+	Align                 Center
+	LabelType             No_Label
+	Font
+	  Size                Large
+	EndFont
+	DocBookTag            date
+	DocBookTagType        paragraph
+	DocBookInInfo         always
+    DocBookNoFontInside   true
+End
