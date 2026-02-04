@@ -28,12 +28,31 @@
 % Удаляем лишнюю запятую из конца списка.
 \def\@@spliceList#1,\DUMMY{\def\@listtail{#1}}
 
+% Собственная команда для загрузки пакетов, проверяющая,
+% не были ли они загружены ранее.
+% Это нужно для предотвращения ситуации несовпадения использованных опций пакета.
+\@ifpackageloaded{xparse}{}{\RequirePackage{xparse}}
+
+\NewDocumentCommand{\package@add}{omo}{%
+  \@ifpackageloaded{#2}{}{%
+    \IfValueTF{#1}{%
+      \IfValueTF{#3}%
+      {\RequirePackage[#1]{#2}[#3]}%
+      {\RequirePackage[#1]{#2}}
+    }{%
+      \IfValueTF{#3}%
+      {\RequirePackage{#2}[#3]}%
+      {\RequirePackage{#2}}
+    }
+  }%
+}
+
 % ---------------------------------------------------------------------------- %
 % Предварительные проверки                                                     %
 % ---------------------------------------------------------------------------- %
 
 % Данная преамбула не предназначена для работы с pdfLaTeX.
-\RequirePackage{iftex}
+\package@add{iftex}
 \ifpdftex
   \PackageError{praeambel}{pdftex is not supported}{Use XeTeX or LuaTeX instead}
   \@@end
@@ -60,16 +79,19 @@
 % Параметры пакета                                                             %
 % ---------------------------------------------------------------------------- %
 
-\RequirePackage{kvoptions}
-
-% Опция для указания, что преамбула будет работать в LyX.
-\DeclareBoolOption{lyx}
+\package@add{kvoptions}
 
 % Опция для использования babel вместо polyglossia.
 \DeclareBoolOption{babel}
 
 % Опция для включения пакетов для создания графиков.
 \DeclareBoolOption{plots}
+
+% Опция для включения пакетов для фиксации изменений.
+\DeclareBoolOption{changes}
+
+% Опция для указания, что преамбула будет работать в LyX.
+%\DeclareBoolOption{lyx}
 
 % Список языков.
 % Если опция не указана, то используется русский язык.
@@ -93,14 +115,14 @@
 % ---------------------------------------------------------------------------- %
 
 % Пакет для работы с системными шрифтами
-\ifpraeambel@lyx\else\RequirePackage{fontspec}\fi
+\package@add{fontspec}
 
 % Основные языковые пакеты: babel или polyglossia.
 \ifpraeambel@babel
-  \RequirePackage[\praeambel@language]{babel}
+  \package@add[\praeambel@language]{babel}
 \else
   % Обработка списка языков.
-  \RequirePackage{polyglossia}
+  \package@add{polyglossia}
   \spliceList{\praeambel@language}
   \setdefaultlanguage{\@listhead}
   \ifx\@listtail\empty
@@ -127,22 +149,22 @@
 }
 
 % Прочие шрифтовые пакеты
-\RequirePackage{cmap}
-\RequirePackage{csquotes}
-\RequirePackage{moresize}
+\package@add{cmap}
+\package@add{csquotes}
+\package@add{moresize}
 
 % ------------------------------- %
 % Математические шрифты и символы %
 % ------------------------------- %
 
-\RequirePackage{amsmath}
-\RequirePackage{amssymb}
+\package@add{amsmath}
+\package@add{amssymb}
 
 \ifpraeambel@beamer
 \else
   % В beamer уже есть свои окружения для теорем
-  \RequirePackage{amsthm}
-  \RequirePackage{nicefrac}
+  \package@add{amsthm}
+  \package@add{nicefrac}
 
   \theoremstyle{definition}
   \newtheorem*{theorem}{Теорема}
@@ -152,8 +174,8 @@
 % mathtools что-то делает с горизонтальными фигурными скобками (ломает)
 % https://tex.stackexchange.com/q/552864/283103
 \let\normalunderbrace=\underbrace
-\ifpraeambel@lyx\else\RequirePackage{mathtools}\fi
-\RequirePackage{unicode-math}
+\package@add{mathtools}
+\package@add{unicode-math}
 \let\underbrace=\normalunderbrace
 
 % Устанавливаем математический шрифт.
@@ -165,18 +187,18 @@
 
 \ifpraeambel@beamer
 \else
-  \RequirePackage[left=3cm, right=1.5cm, top=2cm, bottom=2cm]{geometry}
+  \package@add[left=3cm, right=1.5cm, top=2cm, bottom=2cm]{geometry}
 \fi
 
 % ---------------------------------------------------------------------------- %
 % Размещение текста: красная строка, штрафы                                    %
 % ---------------------------------------------------------------------------- %
 
-\RequirePackage{parskip}
+\package@add{parskip}
 \ifpraeambel@beamer
 \else
   % Полуторный интервал.
-  \RequirePackage{setspace}
+  \package@add{setspace}
   \onehalfspacing
   \setdisplayskipstretch{}
 
@@ -197,7 +219,7 @@
   \newcommand\makebeamertitle{\frame{\maketitle}}
 \else
   % Подзаголовок на титульном листе.
-  \RequirePackage{etoolbox}
+  \package@add{etoolbox}
   \providecommand{\subtitle}[1]{
     \apptocmd{\@title}{\par {\large #1 \par}}{}{}
   }
@@ -229,8 +251,8 @@
 % ---------------------------------------------------------------------------- %
 
 \ifpraeambel@book
-  \RequirePackage[compact]{titlesec}
-  \RequirePackage{titletoc}
+  \package@add[compact]{titlesec}
+  \package@add{titletoc}
 
   \titlecontents{part}[0pt]{\bfseries}{\partname\ \thecontentslabel:\quad}{}{\hfill\contentspage}
   \titlecontents{chapter}[0pt]{\bfseries}{\chaptername\ \thecontentslabel:\quad}{}{\hfill\contentspage}
@@ -256,6 +278,7 @@
 \fi
 
 \ifpraeambel@article
+  \package@add[compact]{titlesec}
   \renewcommand\appendix{\par
     \setcounter{section}{0}%
     \setcounter{subsection}{0}%
@@ -268,32 +291,29 @@
 % Ссылки и закладки                                                            %
 % ---------------------------------------------------------------------------- %
 
-\RequirePackage{bookmark}
+\package@add{bookmark}
 
-\ifpraeambel@lyx
-\else
-  \RequirePackage[
-    backend=biber,
-    bibstyle=gost-authoryear-min,
-    citestyle=gost-authoryear,
-    movenames=false
-  ]{biblatex}
+\package@add[
+  backend=biber,
+  bibstyle=gost-authoryear-min,
+  citestyle=gost-authoryear,
+  movenames=false
+]{biblatex}
 
-  % Установка штрафов для biblatex, поскольку этот пакет сам обрабатывает ссылки.
-  \setcounter{biburllcpenalty}{100}
-  \setcounter{biburlucpenalty}{200}
-  \setcounter{biburlnumpenalty}{100}
-\fi
+% Установка штрафов для biblatex, поскольку этот пакет сам обрабатывает ссылки.
+\setcounter{biburllcpenalty}{100}
+\setcounter{biburlucpenalty}{200}
+\setcounter{biburlnumpenalty}{100}
 
 % Этот пакет позволяет автоматически разбивать длинные ссылки
 % в произвольном месте.
 \PassOptionsToPackage{hyphens}{url}
-\RequirePackage{xurl}
+\package@add{xurl}
 \urlstyle{same}
 
 \ifpraeambel@beamer
   % Нумерация заголовков в приложениях в beamer.
-  \RequirePackage{appendixnumberbeamer}
+  \package@add{appendixnumberbeamer}
 \fi
 
 % ---------------------------------------------------------------------------- %
@@ -304,7 +324,7 @@
 \else
   % enumitem конфликтует с beamer, поэтому совместно их не используем.
   % Вообще, говорят, что это можно обойти, но зачем...
-  \RequirePackage[inline]{enumitem}
+  \package@add[inline]{enumitem}
   \AddEnumerateCounter{\Asbuk}{\russian@alph}{Щ}
   \AddEnumerateCounter{\asbuk}{\russian@alph}{щ}
 \fi
@@ -319,10 +339,10 @@
 % Подписи плавающих объектов                                                   %
 % ---------------------------------------------------------------------------- %
 
-\RequirePackage{caption}
+\package@add{caption}
 
 % Данный пакет добавляет возможность создавать вложенные объекты с подписями.
-\RequirePackage{subcaption}
+\package@add{subcaption}
 
 % ---------------------------------------------------------------------------- %
 % Таблицы                                                                      %
@@ -331,24 +351,24 @@
 \ifpraeambel@beamer
 \else
   % longtable не очень хорошо работает в beamer.
-  \RequirePackage{longtable}
+  \package@add{longtable}
 \fi
 
 % Красивые горизонтальные линии.
-\RequirePackage{booktabs}
+\package@add{booktabs}
 
 % Ячейки на несколько строк и столбцов.
-\RequirePackage{multicol}
-\RequirePackage{multirow}
+\package@add{multicol}
+\package@add{multirow}
 
 % Пакет для создания ячеек с переносами строк.
-\RequirePackage{makecell}
+\package@add{makecell}
 
 % Пакет для раскрашивания столбцов, строк, ячеек и линий.
-\RequirePackage{colortbl}
+\package@add{colortbl}
 
 % Работа с единицами измерения.
-\RequirePackage{siunitx}[=v2]
+\package@add{siunitx}[=v2]
 \sisetup{
   detect-all,
   table-number-alignment=center,
@@ -360,12 +380,12 @@
 % Рисунки и графики                                                            %
 % ---------------------------------------------------------------------------- %
 
-\ifpraeambel@lyx\else\RequirePackage{graphicx}\fi
+\package@add{graphicx}
 
 \ifpraeambel@plots
-  \RequirePackage{tikz}
-  \RequirePackage{pgfplots}
-  \RequirePackage{pgfplotstable}
+  \package@add{tikz}
+  \package@add{pgfplots}
+  \package@add{pgfplotstable}
   \pgfplotsset{compat=1.18}
 \fi
 
@@ -373,27 +393,34 @@
 % Листинги                                                                     %
 % ---------------------------------------------------------------------------- %
 
-\RequirePackage{minted}
-\RequirePackage{fancyvrb}
+\package@add{minted}
+\package@add{fancyvrb}
 
 % ---------------------------------------------------------------------------- %
 % Прочее                                                                       %
 % ---------------------------------------------------------------------------- %
 
+% Пакеты для фиксации изменений
+\ifpraeambel@changes
+  \package@add{cancel}
+  \package@add[commandnameprefix=always]{changes}
+  \newcommand{\stkout}[1]{\ifmmode\xcancel{#1}\else\sout{#1}\fi}
+  \setdeletedmarkup{\stkout{#1}}
+\fi
+
 % Пакет для работы с цветами.
-\RequirePackage{xcolor}
+\package@add{xcolor}
 
 % Пакет для микротипографики.
 % В XeTeX работает не до конца, в LuaTeX все отлично,
 % что неудивительно, если учесть, что послений является официально признанным
 % преемником pdfLaTeX!
-\ifpraeambel@lyx\else\RequirePackage{microtype}\fi
-
+\package@add{microtype}
 \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
 
 % Разные коробочки.
-\RequirePackage{adjustbox}
-\RequirePackage[most]{tcolorbox}
+\package@add{adjustbox}
+\package@add[most]{tcolorbox}
 
 % ------------------------- %
 % Передаем опции в hyperref %
