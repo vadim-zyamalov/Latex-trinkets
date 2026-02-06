@@ -101,15 +101,6 @@
 
 \begin_layout Standard
 \begin_inset FormulaMacro
-\renewcommand{\coloneqq}{\coloneqq}
-{:=}
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset FormulaMacro
 \newcommand{\Re}{\operatorname Re}
 {\mathrm{Re}}
 \end_inset
