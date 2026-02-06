@@ -1,146 +1,133 @@
 #\DeclareLyXModule{Exercise Environments}
+#\DeclareCategory{Academic Field Specifics}
 #DescriptionBegin
-#Defines exercise environments with the xsim package
-#
-#Source - https://tex.stackexchange.com/a/632209
-#Posted by tush
-#Retrieved 2026-02-05, License - CC BY-SA 4.0
-#
+#Defines exercise environments with the xsim package.
+#Based on the post by tush (License - CC BY-SA 4.0):
+#https://tex.stackexchange.com/a/632209.
 #DescriptionEnd
 
 Format 60
 
+AddToPreamble
+  \usepackage{xsim}
+  \xsimsetup{exercise/within={section}}
+
+  \DeclareExerciseEnvironmentTemplate{runin}{%
+    \par%
+    \noindent
+    \textbf{\XSIMmixedcase{\GetExerciseName}~\GetExerciseProperty{counter}}%
+    \GetExercisePropertyT{subtitle}{ \textit{#1}} % <<< notice the space
+    \IfInsideSolutionF{%
+      \GetExercisePropertyT{points}{%
+        \marginpar{%
+          \printgoal{\PropertyValue}%
+          \GetExercisePropertyT{bonus-points}{+\printgoal{\PropertyValue}}%
+          \,\IfExerciseGoalSingularTF{points}
+          {\XSIMtranslate{point}}
+          {\XSIMtranslate{points}}%
+        }%
+      }%
+    }%
+  }
+  {}
+ 
+  \xsimsetup{
+    exercise/template=runin,
+    solution/template=runin
+  }
+
+  \DeclareExerciseTranslation{Russian}{exercise}{№}
+  \DeclareExerciseTranslation{Russian}{exercises}{упражнения}
+  \DeclareExerciseTranslation{Russian}{question}{вопрос}
+  \DeclareExerciseTranslation{Russian}{questions}{вопросы}
+  \DeclareExerciseTranslation{Russian}{solution}{решение №}
+  \DeclareExerciseTranslation{Russian}{solutions}{решения}
+  \DeclareExerciseTranslation{Russian}{point-abbr}{б.}
+  \DeclareExerciseTranslation{Russian}{point}{балл}
+  \DeclareExerciseTranslation{Russian}{points}{баллы}
+  \DeclareExerciseTranslation{Russian}{reached}{получено}
+  \DeclareExerciseTranslation{Russian}{default-heading}{Решения упражнений}
+  \DeclareExerciseTranslation{Russian}{collection-heading}{Упражнения}
+  \DeclareExerciseTranslation{Russian}{per-section-heading}{Решения упражнений раздела\nobreakspace \ExerciseSection}
+  \DeclareExerciseTranslation{Russian}{per-chapter-heading}{Решения упражнений главы\nobreakspace \ExerciseChapter}
+EndPreamble
+
 Counter exercise
-    Within         section
-    PrettyFormat   ##
-    LabelString    \thesection.\theexercise
+  Within         section
+  PrettyFormat   ##
+  LabelString    \thesection.\theexercise
 End
 
 Style Exercise
-    Category              Reasoning
-    Margin                Dynamic
-    LatexType             Environment
-    LatexName             exercise
-    ParagraphGroup        1
-    NextNoIndent          0
-    ResetArgs             1
-    Argument 1
-        LabelString   "Optional parameters"
-        Decoration    Minimalistic
-    EndArgument
-    AddToToc              Exercises
-    IsTocCaption          1
-    LabelSep              xx
-    ParIndent             MMM
-    AutoNests
-      Standard,Itemize,Enumerate,Description,Tasks
-    EndAutoNests
-    Preamble
-		\usepackage{xsim}
-		\xsimsetup{exercise/within={section}}
-		
-		\let\Sectionmark\sectionmark
-		\def\sectionmark#1{\def\Sectionname{#1}\Sectionmark{#1}}
-		
-		\DeclareExerciseEnvironmentTemplate{runin}{%
-		  \IfInsideSolutionTF{%
-		    \protected@write\@auxout{}{%
-		      \string\newlabel{sol:\GetExerciseProperty{ID}}{%
-		        {\GetExerciseProperty{counter}}%
-		          {\thepage}%
-		          {\Sectionname}%
-		          {solution.\GetExerciseProperty{ID}}{}%
-		      }%
-		    }%
-		    \hypertarget{solution.\GetExerciseProperty{ID}}{}%
-		  }{%
-		    \label{ex:\GetExerciseProperty{ID}}}
-		  \par%
-		  \noindent
-		  \textbf{\XSIMmixedcase{\GetExerciseName}~\GetExerciseProperty{counter}}%
-		  \GetExercisePropertyT{subtitle}{ \textit{#1}} % <<< notice the space
-		  \IfInsideSolutionF{%
-		    \GetExercisePropertyT{points}{%
-		      \marginpar{%
-		        \printgoal{\PropertyValue}%
-		        \GetExercisePropertyT{bonus-points}{+\printgoal{\PropertyValue}}%
-		        \,\IfExerciseGoalSingularTF{points}
-		        {\XSIMtranslate{point}}
-		        {\XSIMtranslate{points}}%
-		      }%
-		    }%
-		  }%
-		}
-		{}
-		
-		\xsimsetup{
-		  exercise/template=runin,
-		  solution/template=runin
-		}
-		
-		\DeclareExerciseTranslation{Russian}{exercise}{№}
-		\DeclareExerciseTranslation{Russian}{exercises}{упражнения}
-		\DeclareExerciseTranslation{Russian}{question}{вопрос}
-		\DeclareExerciseTranslation{Russian}{questions}{вопросы}
-		\DeclareExerciseTranslation{Russian}{solution}{решение №}
-		\DeclareExerciseTranslation{Russian}{solutions}{решения}
-		\DeclareExerciseTranslation{Russian}{point-abbr}{б.}
-		\DeclareExerciseTranslation{Russian}{point}{балл}
-		\DeclareExerciseTranslation{Russian}{points}{баллы}
-		\DeclareExerciseTranslation{Russian}{reached}{получено}
-		\DeclareExerciseTranslation{Russian}{default-heading}{Решения упражнений}
-		\DeclareExerciseTranslation{Russian}{collection-heading}{Упражнения}
-		\DeclareExerciseTranslation{Russian}{per-section-heading}{Решения упражнений раздела\nobreakspace \ExerciseSection}
-		\DeclareExerciseTranslation{Russian}{per-chapter-heading}{Решения упражнений главы\nobreakspace \ExerciseChapter}
-	EndPreamble
-	ParSep                0.5
-	Parskip               0.7
-    Align                 Block
-    AlignPossible         Left
-    LabelType             Static
-    LabelCounter          exercise
-    LabelString           "Ex. \theexercise"
-    Font
-      Shape               Up
-      Size                Normal
-    EndFont
-    LabelFont
-      Shape               Up
-      Series              Bold
-    EndFont
-    RefPrefix             ex:
-    Requires              xsim
+  Category              Reasoning
+  Margin                First_Dynamic
+  LatexType             Environment
+  LatexName             exercise
+  ParagraphGroup        1
+  NextNoIndent          1
+  ResetArgs             1
+  Argument 1
+    LabelString   "Optional parameter"
+    Decoration    Minimalistic
+  EndArgument
+  AddToToc              Exercises
+  IsTocCaption          1
+  AutoNests
+    Standard,Itemize,Enumerate,Description,Tasks
+  EndAutoNests
+  ParIndent             MMM
+  ParSep                0.5
+  Parskip               1
+  Align                 Block
+  AlignPossible         Block,Left,Right,Center
+  LabelSep              xx
+  LabelType             Static
+  LabelCounter          exercise
+  LabelString           "Ex. \theexercise"
+  Font
+    Shape               Up
+    Size                Normal
+  EndFont
+  LabelFont
+    Shape               Up
+    Series              Bold
+  EndFont
+  RefPrefix             ex:
+  Requires              xsim
 End
 
 Style Solution
-    Category              Reasoning
-    Margin                Dynamic
-    LatexType             Environment
-    LatexName             solution
-    ParagraphGroup        1
-    NextNoIndent          0
-    ResetArgs             1
-    Argument 1
-        LabelString   "Optional parameters"
-        Decoration    Minimalistic
-    EndArgument
-    IsTocCaption          1
-    LabelSep              xx
-    ParIndent             MMM
-    Align                 Block
-    AlignPossible         Left
-    LabelType             Static
-    LabelString           "Sol. \theexercise"
-    Font
-      Shape               Up
-      Size                Normal
-    EndFont
-    LabelFont
-      Shape               Up
-      Series              Bold
-    EndFont
-    RefPrefix             sol:
-    Requires              xsim
+  Category              Reasoning
+  Margin                Dynamic
+  LatexType             Environment
+  LatexName             solution
+  ParagraphGroup        1
+  NextNoIndent          1
+  ResetArgs             1
+  Argument 1
+    LabelString   "Optional parameter"
+    Decoration    Minimalistic
+  EndArgument
+  IsTocCaption          1
+  AutoNests
+    Standard,Itemize,Enumerate,Description,Tasks
+  EndAutoNests
+  LabelSep              xx
+  ParIndent             MMM
+  Align                 Block
+  AlignPossible         Block,Left,Right,Center
+  LabelType             Static
+  LabelString           "Sol. \theexercise"
+  Font
+    Shape               Up
+    Size                Normal
+  EndFont
+  LabelFont
+    Shape               Up
+    Series              Bold
+  EndFont
+  RefPrefix             sol:
+  Requires              xsim
 End
 
 Style Tasks
@@ -159,7 +146,7 @@ Style Tasks
         LabelString   "Optional parameters"
         Decoration    Minimalistic
     EndArgument
-    LabelType			  Enumerate
+    LabelType        Enumerate
     LabelSep              xx
     ParIndent             MMM
     Align                 Block
@@ -177,7 +164,7 @@ Style Tasks
     Preamble
       \usepackage{tasks}
       \DeclareInstance{tasks}{alphabetize}{default}{label = \asbuk*)}
-	  \DeclareInstance{tasks}{itemize}{default}{}
-	  \DeclareInstance{tasks}{enumerate}{default}{label=\arabic*.}
+      \DeclareInstance{tasks}{itemize}{default}{}
+      \DeclareInstance{tasks}{enumerate}{default}{label=\arabic*.}
     EndPreamble
 End
