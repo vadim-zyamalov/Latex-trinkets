@@ -4,13 +4,9 @@
 \begin_header
 \save_transient_properties true
 \origin unavailable
-\textclass article
+\textclass extarticle
 \begin_preamble
 \usepackage{praeambel}
-\usepackage{subcaption}
-\usepackage[mathb]{mathabx}
-\usepackage{icomma}
-\usepackage{trinkets}
 \VerbatimFootnotes
 \raggedbottom
 \end_preamble
@@ -23,9 +19,9 @@ enumitem
 \language_package default
 \inputencoding utf8
 \fontencoding auto
-\font_roman "default" "default"
-\font_sans "default" "default"
-\font_typewriter "default" "default"
+\font_roman "default" "PT Astra Serif"
+\font_sans "default" "PT Astra Sans"
+\font_typewriter "default" "Cascadia Code"
 \font_math "auto" "auto"
 \font_default_family default
 \use_non_tex_fonts true
@@ -36,7 +32,7 @@ enumitem
 \font_sf_scale 100 100
 \font_tt_scale 100 100
 \use_microtype true
-\use_dash_ligatures true
+\use_dash_ligatures false
 \graphics default
 \default_output_format default
 \output_sync 0
@@ -44,8 +40,8 @@ enumitem
 \index_command default
 \float_placement class
 \float_alignment class
-\paperfontsize default
-\spacing single
+\paperfontsize 12
+\spacing onehalf
 \use_hyperref true
 \pdf_bookmarks true
 \pdf_bookmarksnumbered false
@@ -56,7 +52,7 @@ enumitem
 \pdf_colorlinks false
 \pdf_backref false
 \pdf_pdfusetitle true
-\papersize default
+\papersize a4
 \use_geometry false
 \use_package amsmath 1
 \use_package amssymb 1
@@ -98,6 +94,8 @@ enumitem
 \papersides 1
 \paperpagestyle default
 \tablestyle default
+\bullet 0 0 0 -1
+\bullet 1 0 8 -1
 \tracking_changes false
 \output_changes false
 \change_bars false
