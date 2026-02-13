@@ -1,4 +1,4 @@
-#\DeclareLyXModule{Exercise Environments}
+#\DeclareLyXModule{Chapter-wise Exercise Environments}
 #\DeclareCategory{Academic Field Specifics}
 #DescriptionBegin
 #Defines exercise environments with the xsim package.
@@ -8,9 +8,11 @@
 
 Format 60
 
+Input tasks.module
+
 AddToPreamble
   \usepackage{xsim}
-  \xsimsetup{exercise/within={section}}
+  \xsimsetup{exercise/within={chapter}}
 
   \DeclareExerciseEnvironmentTemplate{runin}{%
     \par%
@@ -53,9 +55,9 @@ AddToPreamble
 EndPreamble
 
 Counter exercise
-  Within         section
+  Within         chapter
   PrettyFormat   ##
-  LabelString    \thesection.\theexercise
+  LabelString    \thechapter.\theexercise
 End
 
 Style Exercise
@@ -128,43 +130,4 @@ Style Solution
   EndFont
   RefPrefix             sol:
   Requires              xsim
-End
-
-Style Tasks
-    Category              Reasoning
-    Margin                Dynamic
-    LatexType             Item_Environment
-    LatexName             tasks
-    ItemCommand           task
-    ParagraphGroup        0
-    NextNoIndent          0
-    ResetArgs             1
-    IsAutoNestedBy
-      Exercise
-    EndIsAutoNestedBy
-    Argument 1
-        LabelString   "Optional parameters"
-        Decoration    Minimalistic
-    EndArgument
-    LabelType        Enumerate
-    LabelSep              xx
-    ParIndent             MMM
-    Align                 Block
-    AlignPossible         Left
-    Font
-      Shape               Up
-      Size                Normal
-    EndFont
-    LabelFont
-      Shape               Up
-      Series              Bold
-    EndFont
-    RefPrefix             task:
-    Requires              tasks
-    Preamble
-      \usepackage{tasks}
-      \DeclareInstance{tasks}{alphabetize}{default}{label = \asbuk*)}
-      \DeclareInstance{tasks}{itemize}{default}{}
-      \DeclareInstance{tasks}{enumerate}{default}{label=\arabic*.}
-    EndPreamble
 End

@@ -1,0 +1,46 @@
+#\DeclareLyXModule{Tasks Environment}
+#\DeclareCategory{Academic Field Specifics}
+#DescriptionBegin
+#Defines tasks environment with the tasks package.
+#DescriptionEnd
+
+Format 60
+
+Style Tasks
+    Category              Reasoning
+    Margin                Dynamic
+    LatexType             Item_Environment
+    LatexName             tasks
+    ItemCommand           task
+    ParagraphGroup        0
+    NextNoIndent          0
+    ResetArgs             1
+    IsAutoNestedBy
+      Exercise
+    EndIsAutoNestedBy
+    Argument 1
+        LabelString   "Optional parameters"
+        Decoration    Minimalistic
+    EndArgument
+    LabelType        Enumerate
+    LabelSep              xx
+    ParIndent             MMM
+    Align                 Block
+    AlignPossible         Left
+    Font
+      Shape               Up
+      Size                Normal
+    EndFont
+    LabelFont
+      Shape               Up
+      Series              Bold
+    EndFont
+    RefPrefix             task:
+    Requires              tasks
+    Preamble
+      \usepackage{tasks}
+      \DeclareInstance{tasks}{alphabetize}{default}{label = \asbuk*)}
+      \DeclareInstance{tasks}{itemize}{default}{}
+      \DeclareInstance{tasks}{enumerate}{default}{label=\arabic*.}
+    EndPreamble
+End
