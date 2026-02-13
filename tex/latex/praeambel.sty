@@ -269,23 +269,15 @@
   \titleformat{\subsection}{\normalfont\large\bfseries}{\thesubsection}{1em}{}
   \titlespacing{\subsection}{0pt}{\parskip}{\parskip}
 
-  \renewcommand\appendix{\par
-    \setcounter{chapter}{0}%
-    \setcounter{section}{0}%
+  \AddToHook{cmd/appendix/after}{%
     \gdef\@chapapp{\appendixname}%
+    \gdef\chaptername{\appendixname}%
     \gdef\thechapter{\Asbuk{chapter}}%
-    \titleformat{\chapter}{\normalfont\Large\bfseries}{\thechapter}{1em}{}
-  }
+    \titleformat{\chapter}{\normalfont\Large\bfseries}{\thechapter}{1em}{}}
 \fi
 
 \ifpraeambel@article
-  \package@add[compact]{titlesec}
-  \renewcommand\appendix{\par
-    \setcounter{section}{0}%
-    \setcounter{subsection}{0}%
-    \gdef\thesection{\Asbuk{section}}%
-    \titleformat{\section}{\normalfont\large\bfseries}{\thesection}{1em}{}
-  }
+  \AddToHook{cmd/appendix/after}{\gdef\thesection{\Asbuk{section}}}
 \fi
 
 % ---------------------------------------------------------------------------- %
