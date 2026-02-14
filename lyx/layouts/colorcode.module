@@ -1,0 +1,38 @@
+#\DeclareLyXModule{ColorCode}
+#\DeclareCategory{Boxes}
+#DescriptionBegin
+#Nice color boxes for code wrapping.
+#Based on original module by Jürgen Spitzmüller and Uwe Stöhr.
+#DescriptionEnd
+#
+#Author: Vadim Zyamalov <vadim@zyamalov.ru>
+
+Format 104
+
+InsetLayout Flex:Colorcode
+	LyXType		custom
+	LatexType   Environment
+	Decoration	classic
+	LabelString	Colorcode
+	LatexName	colorcode
+	Argument 1
+	  LabelString	"Language"
+	  Tooltip	"Select inner programming language"
+	  Mandatory	1
+	  DefaultArg	"R"
+	  AutoInsert	1
+	EndArgument
+	LabelFont
+	  Family	Roman
+	  Color		textlabel3
+	EndFont
+	ResetsFont	0
+	Requires	bonbonpapier
+	MultiPar	0
+End
+
+InsetLayout Flex:Coloroutput
+	CopyStyle	Flex:Colorcode
+	LabelString	Coloroutput
+	LatexName	colorout
+End
