@@ -1,0 +1,87 @@
+#\DeclareLyXModule{ColorCode}
+#\DeclareCategory{Boxes}
+#DescriptionBegin
+#Nice color boxes for code wrapping.
+#Based on original module by Jürgen Spitzmüller and Uwe Stöhr.
+#DescriptionEnd
+#
+#Author: Vadim Zyamalov <vadim@zyamalov.ru>
+
+Format 104
+
+PackageOptions tcolorbox most
+
+AddToPreamble
+\usepackage[most]{tcolorbox}
+\def\bbp@R@fg{black!75!white}
+\def\bbp@R@bg{blue!15!white}
+\def\bbp@R@name{R}
+
+\def\bbp@python@fg{blue!75!black}
+\def\bbp@python@bg{yellow!15!white}
+\def\bbp@python@name{Python}
+
+\def\bbp@stata@fg{blue!75!white}
+\def\bbp@stata@bg{white}
+\def\bbp@stata@name{Stata}
+
+\def\bbp@bash@fg{black}
+\def\bbp@bash@bg{white!75!black}
+\def\bbp@bash@name{Консоль}
+
+\def\bbp@@fg{black}
+\def\bbp@@bg{white}
+\def\bbp@@name{???}
+
+\newcommand{\bbp@fg}[1]{\csname bbp@#1@fg\endcsname}
+\newcommand{\bbp@bg}[1]{\csname bbp@#1@bg\endcsname}
+\newcommand{\bbp@name}[1]{\csname bbp@#1@name\endcsname}
+
+\newtcolorbox{colorcode}[1]{%
+	enhanced jigsaw,%
+	attach boxed title to top text left={yshift=-3mm,yshifttext=-1mm},%
+	colframe=\bbp@fg{#1},%
+	coltitle=\bbp@fg{#1},%
+	colback=\bbp@bg{#1},%
+	colbacktitle=\bbp@bg{#1},%
+	title={\texttt{\bbp@name{#1}}}%
+}
+
+\newtcolorbox{colorout}[1]{%
+	enhanced jigsaw,%
+	colframe=\bbp@fg{#1},%
+	colback=\bbp@bg{#1},%
+}
+EndPreamble
+
+InsetLayout Flex:Colorcode
+	LyXType		custom
+	LatexType   Environment
+	Decoration	classic
+	LabelString	Colorcode
+	LatexName	colorcode
+	Argument 1
+	  LabelString	"Language"
+	  Tooltip	"Select inner programming language"
+	  Mandatory	1
+	  DefaultArg	"R"
+	  AutoInsert	1
+	EndArgument
+	LabelFont
+	  Family	Roman
+	  Color		textlabel1
+	EndFont
+	ResetsFont	0
+	Requires	tcolorbox
+	MultiPar	0
+End
+
+InsetLayout Flex:Coloroutput
+	CopyStyle	Flex:Colorcode
+	LabelString	Coloroutput
+	LatexName	colorout
+	LabelFont
+	  Family	Roman
+	  Color		textlabel2
+	EndFont
+End

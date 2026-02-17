@@ -62,7 +62,7 @@ End
 
 Style Exercise
   Category              Reasoning
-  Margin                First_Dynamic
+  Margin                Dynamic
   LatexType             Environment
   LatexName             exercise
   ParagraphGroup        1
@@ -82,6 +82,7 @@ Style Exercise
   Parskip               1
   Align                 Block
   AlignPossible         Block,Left,Right,Center
+  BottomSep             1.0
   LabelSep              xx
   LabelType             Static
   LabelCounter          exercise
@@ -99,35 +100,9 @@ Style Exercise
 End
 
 Style Solution
-  Category              Reasoning
-  Margin                Dynamic
-  LatexType             Environment
+  CopyStyle             Exercise
   LatexName             solution
-  ParagraphGroup        1
-  NextNoIndent          1
-  ResetArgs             1
-  Argument 1
-    LabelString   "Optional parameter"
-    Decoration    Minimalistic
-  EndArgument
-  IsTocCaption          1
-  AutoNests
-    Standard,Itemize,Enumerate,Description,Tasks
-  EndAutoNests
-  LabelSep              xx
-  ParIndent             MMM
-  Align                 Block
-  AlignPossible         Block,Left,Right,Center
-  LabelType             Static
   LabelString           "Sol. \theexercise"
-  Font
-    Shape               Up
-    Size                Normal
-  EndFont
-  LabelFont
-    Shape               Up
-    Series              Bold
-  EndFont
   RefPrefix             sol:
   Requires              xsim
 End
