@@ -1,0 +1,22 @@
+#\DeclareLyXModule{Exercise Environments (Section-wise)}
+#\DeclareCategory{Academic Field Specifics}
+#DescriptionBegin
+#Defines exercise environments with the xsim package.
+#Based on the post by tush (License - CC BY-SA 4.0):
+#https://tex.stackexchange.com/a/632209.
+#DescriptionEnd
+
+Format 104
+
+Input tasks.module
+Input xsim.module
+
+AddToPreamble
+  \xsimsetup{exercise/within={section}}
+EndPreamble
+
+Counter exercise
+  Within         section
+  PrettyFormat   "##"
+  LabelString    "\thesection.\arabic{exercise}"
+End

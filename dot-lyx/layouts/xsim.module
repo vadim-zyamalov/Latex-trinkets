@@ -1,4 +1,4 @@
-#\DeclareLyXModule{Chapter-wise Exercise Environments}
+#\DeclareLyXModule{Exercise Environments (Continuous)}
 #\DeclareCategory{Academic Field Specifics}
 #DescriptionBegin
 #Defines exercise environments with the xsim package.
@@ -12,7 +12,6 @@ Input tasks.module
 
 AddToPreamble
   \usepackage{xsim}
-  \xsimsetup{exercise/within={chapter}}
 
   \DeclareExerciseEnvironmentTemplate{runin}{%
     \par%
@@ -55,25 +54,21 @@ AddToPreamble
 EndPreamble
 
 Counter exercise
-  Within         chapter
-  PrettyFormat   ##
-  LabelString    \thechapter.\theexercise
+  PrettyFormat   "##"
+  LabelString    "\arabic{exercise}"
 End
 
-Style Exercise
-  Category              Reasoning
+Style ExSolCommon
   Margin                Dynamic
   LatexType             Environment
-  LatexName             exercise
   ParagraphGroup        1
   NextNoIndent          1
   ResetArgs             1
+  KeepEmpty             1
   Argument 1
     LabelString   "Optional parameter"
     Decoration    Minimalistic
   EndArgument
-  AddToToc              Exercises
-  IsTocCaption          1
   AutoNests
     Standard,Itemize,Enumerate,Description,Tasks
   EndAutoNests
@@ -82,11 +77,9 @@ Style Exercise
   Parskip               1
   Align                 Block
   AlignPossible         Block,Left,Right,Center
-  BottomSep             1.0
+  BottomSep             2.0
   LabelSep              xx
   LabelType             Static
-  LabelCounter          exercise
-  LabelString           "Ex. \theexercise"
   Font
     Shape               Up
     Size                Normal
@@ -95,14 +88,26 @@ Style Exercise
     Shape               Up
     Series              Bold
   EndFont
-  RefPrefix             ex:
   Requires              xsim
 End
 
+Style Exercise
+  CopyStyle             ExSolCommon
+  Category              Reasoning
+  LatexName             exercise
+  AddToToc              Exercises
+  IsTocCaption          1
+  LabelCounter          exercise
+  LabelString           "Ex. \theexercise"
+  RefPrefix             ex:
+End
+
 Style Solution
-  CopyStyle             Exercise
+  CopyStyle             ExSolCommon
+  Category              Reasoning
   LatexName             solution
   LabelString           "Sol. \theexercise"
   RefPrefix             sol:
-  Requires              xsim
 End
+
+NoStyle ExSolCommon
