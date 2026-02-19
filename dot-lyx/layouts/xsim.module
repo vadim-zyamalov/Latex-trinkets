@@ -70,7 +70,7 @@ Style ExSolCommon
     Decoration    Minimalistic
   EndArgument
   AutoNests
-    Standard,Itemize,Enumerate,Description,Tasks
+    Itemize,Enumerate,Description,Tasks
   EndAutoNests
   ParIndent             MMM
   ParSep                0.5
