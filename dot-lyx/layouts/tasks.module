@@ -4,7 +4,7 @@
 #Defines tasks environment with the tasks package.
 #DescriptionEnd
 
-Format 60
+Format 104
 
 Style Tasks
     Category              Reasoning
