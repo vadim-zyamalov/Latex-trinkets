@@ -76,4 +76,28 @@
 \DeclareExerciseTranslation{Russian}{per-section-heading}{Решения упражнений раздела\nobreakspace \ExerciseSection}
 \DeclareExerciseTranslation{Russian}{per-chapter-heading}{Решения упражнений главы\nobreakspace \ExerciseChapter}
 
+% ============================================================================ %
+% Код для печати решений по главам. Оставляю здесь, чтобы не искать потом      %
+% ============================================================================ %
+%
+% \newcounter{chapterqty}
+% \newcounter{chaptercnt}
+%
+% ============================================================================ %
+%
+% \setcounter{chapterqty}{\value{chapter}}
+% \setcounter{chaptercnt}{0}
+%
+% ============================================================================ %
+%
+% \addcontentsline{toc}{chapter}{Решения задач и упражнений}
+% \markboth{Решения задач и упражнений}{}
+%
+% \whileboolexpr
+%   { test {\ifnumless{\value{chaptercnt}}{\value{chapterqty}}} }
+%   {
+%     \stepcounter{chaptercnt}
+%     \printsolutions[chapter=\value{chaptercnt},headings-template=per-chapter]
+%   }
+
 \endinput
