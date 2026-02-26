@@ -98,6 +98,9 @@
 \DeclareStringOption[russian]{language}
 
 % Опции для выбора основных шрифтов:
+% Не назначать шрифты. Это нужно, например, для LyX, в котором есть встроенные
+% инструменты настройки шрифтов.
+\DeclareBoolOption{nofonts}
 % - Основного,
 \DeclareStringOption[PT Astra Serif]{mainfont}
 % - Без засечек,
@@ -136,20 +139,22 @@
 \defaultfontfeatures[\rmfamily]{Ligatures={TeX},Scale=1}
 
 % Назначаем все шрифты.
-\setmainfont{\praeambel@mainfont}
-\setsansfont{\praeambel@sansfont}
-\setmonofont{\praeambel@monofont}
+\ifpraeambel@nofonts
+\else
+  \setmainfont{\praeambel@mainfont}
+  \setsansfont{\praeambel@sansfont}
+  \setmonofont{\praeambel@monofont}
 
-% В цикле перебираем все языки и задаем соответствующие семейства.
-% Детальнее в разделе 2.1 справки к пакету fontspec.
-\@for\@lang:=\praeambel@language\do{%
-  \expandafter\newfontfamily\csname\@lang font\endcsname{\praeambel@mainfont}
-  \expandafter\newfontfamily\csname\@lang fontsf\endcsname{\praeambel@sansfont}
-  \expandafter\newfontfamily\csname\@lang fonttt\endcsname{\praeambel@monofont}
-}
+  % В цикле перебираем все языки и задаем соответствующие семейства.
+  % Детальнее в разделе 2.1 справки к пакету fontspec.
+  \@for\@lang:=\praeambel@language\do{%
+    \expandafter\newfontfamily\csname\@lang font\endcsname{\praeambel@mainfont}
+    \expandafter\newfontfamily\csname\@lang fontsf\endcsname{\praeambel@sansfont}
+    \expandafter\newfontfamily\csname\@lang fonttt\endcsname{\praeambel@monofont}
+  }
+\fi
 
 % Прочие шрифтовые пакеты
-\package@add{cmap}
 \package@add{csquotes}
 \package@add{moresize}
 
@@ -159,17 +164,18 @@
 
 \package@add{amsmath}
 \package@add{amssymb}
+\package@add{nicefrac}
 
-\ifpraeambel@beamer
-\else
-  % В beamer уже есть свои окружения для теорем
-  \package@add{amsthm}
-  \package@add{nicefrac}
-
-  \theoremstyle{definition}
-  \newtheorem*{theorem}{Теорема}
-  \newtheorem{example}{Пример}
-\fi
+% \ifpraeambel@beamer
+% \else
+%   % В beamer уже есть свои окружения для теорем
+%   \package@add{amsthm}
+%
+%
+%   \theoremstyle{definition}
+%   %\newtheorem*{theorem}{Теорема}
+%   %\newtheorem{example}{Пример}
+% \fi
 
 % mathtools что-то делает с горизонтальными фигурными скобками (ломает)
 % https://tex.stackexchange.com/q/552864/283103
