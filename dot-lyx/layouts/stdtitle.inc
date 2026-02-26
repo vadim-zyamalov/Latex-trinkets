@@ -10,6 +10,14 @@
 
 Format 104
 
+Requires etoolbox
+
+AddToPreamble
+\providecommand{\subtitle}[1]{
+	\apptocmd{\@title}{\par {\large #1 \par}}{}{}
+}
+EndPreamble
+
 Style Title
 	Margin                Static
 	LatexType             Command
