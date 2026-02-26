@@ -12,8 +12,15 @@ Format 104
 PackageOptions tcolorbox most
 
 AddToPreamble
+\usepackage[most]{tcolorbox}
+EndPreamble
+
+Input colorcode_colors.inc
+
+AddToPreamble
 \newtcolorbox{colorcode}[1]{%
-	enhanced jigsaw,%
+	skin=enhanced,%
+	breakable,%
 	attach boxed title to top text left={yshift=-3mm,yshifttext=-1mm},%
 	colframe=\bbp@fg{#1},%
 	coltitle=\bbp@fg{#1},%
@@ -23,13 +30,12 @@ AddToPreamble
 }
 
 \newtcolorbox{colorout}[1]{%
-	enhanced jigsaw,%
+	skin=enhanced,%
+	breakable,%
 	colframe=\bbp@fg{#1},%
-	colback=\bbp@bg{#1},%
+	colback=\bbp@bg{#1}%
 }
 EndPreamble
-
-Input colorcode_colors.inc
 
 InsetLayout Flex:Colorcode
 	LyXType		custom
@@ -49,7 +55,6 @@ InsetLayout Flex:Colorcode
 	  Color		textlabel1
 	EndFont
 	ResetsFont	0
-	Requires	tcolorbox
 	MultiPar	0
 End
 

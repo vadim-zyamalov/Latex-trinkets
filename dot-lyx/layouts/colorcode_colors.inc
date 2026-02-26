@@ -3,7 +3,6 @@ format 104
 Requires xcolor
 
 AddToPreamble
-\@ifpackageloaded{tcolorbox}{
 \def\bbp@R@fg{black!75!white}
 \def\bbp@R@bg{blue!15!white}
 \def\bbp@R@name{R}
@@ -27,5 +26,4 @@ AddToPreamble
 \newcommand{\bbp@fg}[1]{\csname bbp@#1@fg\endcsname}
 \newcommand{\bbp@bg}[1]{\csname bbp@#1@bg\endcsname}
 \newcommand{\bbp@name}[1]{\csname bbp@#1@name\endcsname}
-}{}
 EndPreamble
