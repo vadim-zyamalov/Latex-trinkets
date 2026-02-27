@@ -1,0 +1,16 @@
+#\DeclareLyXModule{Asbuk}
+#\DeclareCategory{List Enhancements}
+#DescriptionBegin
+#Cyrillic numbering styles.
+#DescriptionEnd
+#
+#Author: Vadim Zyamalov <vadim@zyamalov.ru>
+
+Format 104
+
+Requires enumitem
+
+AddToPreamble
+\AddEnumerateCounter{\Asbuk}{\russian@alph}{Щ}
+\AddEnumerateCounter{\asbuk}{\russian@alph}{щ}
+EndPreamble
