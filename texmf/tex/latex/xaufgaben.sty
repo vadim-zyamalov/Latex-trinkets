@@ -11,26 +11,11 @@
 \RequirePackage{xsim}
 \RequirePackage{tasks}
 
-\let\Sectionmark\sectionmark
-\def\sectionmark#1{\def\Sectionname{#1}\Sectionmark{#1}}
-
 % Взято из официального мануала к пакету xsim.
 % Модифицировано под мои нужды.
 % Также см. https://tex.stackexchange.com/a/160035
 % Также см. https://tex.stackexchange.com/a/62252
 \DeclareExerciseEnvironmentTemplate{runin}{%
-  \IfInsideSolutionTF{%
-    \protected@write\@auxout{}{%
-      \string\newlabel{sol:\GetExerciseProperty{ID}}{%
-        {\GetExerciseProperty{counter}}%
-          {\thepage}%
-          {\Sectionname}%
-          {solution.\GetExerciseProperty{ID}}{}%
-      }%
-    }%
-    \hypertarget{solution.\GetExerciseProperty{ID}}{}%
-  }{%
-    \label{ex:\GetExerciseProperty{ID}}}
   \par%
   \noindent
   \textbf{\XSIMmixedcase{\GetExerciseName}~\GetExerciseProperty{counter}}%
@@ -47,17 +32,31 @@
     }%
   }%
 }
-{}
+{\par}
+
 
 \xsimsetup{
   exercise/template=runin,
-  solution/template=runin
+  exercise/begin-hook = \onehalfspacing,
+  exercise/end-hook = \par,
+  solution/template=runin,
+  solution/begin-hook = \onehalfspacing,
+  solution/end-hook = \par,
 }
 
-\if@chapter\xsimsetup{exercise/within={chapter}}\else\fi
-\if@section\xsimsetup{exercise/within={section}}\else\fi
+\if@chapter
+  \xsimsetup{
+    exercise/within=chapter,
+    exercise/the-counter=\thechapter.\arabic{exercise}
+  }\else\fi
+\if@section
+  \xsimsetup{
+    exercise/within=section,
+    exercise/the-counter=\thesection.\arabic{exercise}
+  }
+\else\fi
 
-\DeclareInstance{tasks}{alphabetize}{default}{label = \asbuk*)}
+\DeclareInstance{tasks}{alphabetize}{default}{label=\asbuk*)}
 \DeclareInstance{tasks}{itemize}{default}{}
 \DeclareInstance{tasks}{enumerate}{default}{label=\arabic*.}
 
