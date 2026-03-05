@@ -28,19 +28,21 @@
 \newcommand{\bbp@name}[1]{\csname bbp@#1@name\endcsname}
 
 \newtcolorbox{colorcode}[1]{%
-	enhanced jigsaw,%
-	attach boxed title to top text left={yshift=-3mm,yshifttext=-1mm},%
-	colframe=\bbp@fg{#1},%
-	coltitle=\bbp@fg{#1},%
-	colback=\bbp@bg{#1},%
-	colbacktitle=\bbp@bg{#1},%
-	title={\texttt{\bbp@name{#1}}}%
+  enhanced,%
+  breakable,%
+  attach boxed title to top text left={yshift=-3mm,yshifttext=-1mm},%
+  colframe=\bbp@fg{#1},%
+  coltitle=\bbp@fg{#1},%
+  colback=\bbp@bg{#1},%
+  colbacktitle=\bbp@bg{#1},%
+  title={\texttt{\bbp@name{#1}}}%
 }
 
 \newtcolorbox{colorout}[1]{%
-	enhanced jigsaw,%
-	colframe=\bbp@fg{#1},%
-	colback=\bbp@bg{#1},%
+  enhanced jigsaw,%
+  breakable,%
+  colframe=\bbp@fg{#1},%
+  colback=\bbp@bg{#1},%
 }
 
 \endinput
