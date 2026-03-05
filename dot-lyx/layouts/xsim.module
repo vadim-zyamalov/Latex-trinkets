@@ -8,6 +8,8 @@
 
 Format 104
 
+Requires setspace
+
 Input tasks.module
 
 AddToPreamble
@@ -30,11 +32,13 @@ AddToPreamble
       }%
     }%
   }
-  {}
+  {\par}
  
   \xsimsetup{
     exercise/template=runin,
-    solution/template=runin
+    solution/template=runin,
+    exercise/begin-hook = \onehalfspacing,
+  	exercise/end-hook = \par
   }
 
   \DeclareExerciseTranslation{Russian}{exercise}{№}
