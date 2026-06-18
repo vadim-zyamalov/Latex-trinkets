@@ -6,41 +6,47 @@
 
 Format 104
 
+Counter tasksi
+	GuiName              Tasks
+    Within               exercise
+	LabelString          "\alph{tasksi}"
+	PrettyFormat         "##"
+End
+
 Style Tasks
     Category              Reasoning
     Margin                Dynamic
     LatexType             Item_Environment
     LatexName             tasks
-    ItemCommand           task
-    ParagraphGroup        0
-    NextNoIndent          0
-    ResetArgs             1
     IsAutoNestedBy
       Exercise
     EndIsAutoNestedBy
     Argument 1
-        LabelString   "Optional parameters"
-        Decoration    Minimalistic
-    EndArgument
-    LabelType        Enumerate
+		LabelString   "Itemize Options"
+		Tooltip       "Optional arguments for this list (see enumitem manual)"
+	EndArgument
+    LabelType             Enumerate
+    LabelCounter          tasks
     LabelSep              xx
     ParIndent             MMM
     Align                 Block
-    AlignPossible         Left
+    AlignPossible         Block, Left
     Font
-      Shape               Up
-      Size                Normal
+        Shape             Up
+        Size              Normal
     EndFont
     LabelFont
-      Shape               Up
-      Series              Bold
+        Shape             Up
+        Series            Bold
     EndFont
-    RefPrefix             task:
-    Requires              tasks
+    RefPrefix             task
+    Requires              enumitem
     Preamble
-      \usepackage{tasks}
-      \DeclareInstance{tasks}{alphabetize}{default}{label = \asbuk*)}
-      \DeclareInstance{tasks}{itemize}{default}{}
-      \DeclareInstance{tasks}{enumerate}{default}{label=\arabic*.}
+        \newlist{tasks}{enumerate}{1}
+        \setlist[tasks,1]{
+        leftmargin=\parindent,
+        label=\bfseries\asbuk*.,
+        ref=\theexercise\asbuk*
+    }
     EndPreamble
 End
