@@ -62,6 +62,10 @@
 
 \usepackage{kvoptions}
 
+% Опция для использования преамбулы в LyX:
+% отключает ряд определений, определяемых в настройках документа.
+\DeclareBoolOption{lyx}
+
 % Опция для использования babel вместо polyglossia.
 \DeclareBoolOption{babel}
 
@@ -95,46 +99,49 @@
 % Языковые настройки и шрифты                                                  %
 % ---------------------------------------------------------------------------- %
 
-% Пакет для работы с системными шрифтами
-\usepackage{fontspec}
-
-% Основные языковые пакеты: babel или polyglossia.
-\ifpraeambel@babel
-  \usepackage[\praeambel@language]{babel}
+\ifpraeambel@lyx
 \else
-  % Обработка списка языков.
-  \usepackage{polyglossia}
-  \spliceList{\praeambel@language}
-  \setdefaultlanguage{\@listhead}
-  \ifx\@listtail\empty
+  % Пакет для работы с системными шрифтами
+  \usepackage{fontspec}
+
+  % Основные языковые пакеты: babel или polyglossia.
+  \ifpraeambel@babel
+    \usepackage[\praeambel@language]{babel}
   \else
-    \setotherlanguages{\@listtail}
+    % Обработка списка языков.
+    \usepackage{polyglossia}
+    \spliceList{\praeambel@language}
+    \setdefaultlanguage{\@listhead}
+    \ifx\@listtail\empty
+    \else
+      \setotherlanguages{\@listtail}
+    \fi
   \fi
+
+  % Стандартные опции для шрифтов.
+  \defaultfontfeatures{Ligatures={TeX},Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures={TeX},Scale=1}
+
+  % Назначаем все шрифты.
+  \ifpraeambel@nofonts
+  \else
+    \setmainfont{\praeambel@mainfont}
+    \setsansfont{\praeambel@sansfont}
+    \setmonofont{\praeambel@monofont}
+
+    % В цикле перебираем все языки и задаем соответствующие семейства.
+    % Детальнее в разделе 2.1 справки к пакету fontspec.
+    \@for\@lang:=\praeambel@language\do{%
+      \expandafter\newfontfamily\csname\@lang font\endcsname{\praeambel@mainfont}
+      \expandafter\newfontfamily\csname\@lang fontsf\endcsname{\praeambel@sansfont}
+      \expandafter\newfontfamily\csname\@lang fonttt\endcsname{\praeambel@monofont}
+    }
+  \fi
+
+  % Прочие шрифтовые пакеты
+  \usepackage{csquotes}
+  \usepackage{moresize}
 \fi
-
-% Стандартные опции для шрифтов.
-\defaultfontfeatures{Ligatures={TeX},Scale=MatchLowercase}
-\defaultfontfeatures[\rmfamily]{Ligatures={TeX},Scale=1}
-
-% Назначаем все шрифты.
-\ifpraeambel@nofonts
-\else
-  \setmainfont{\praeambel@mainfont}
-  \setsansfont{\praeambel@sansfont}
-  \setmonofont{\praeambel@monofont}
-
-  % В цикле перебираем все языки и задаем соответствующие семейства.
-  % Детальнее в разделе 2.1 справки к пакету fontspec.
-  \@for\@lang:=\praeambel@language\do{%
-    \expandafter\newfontfamily\csname\@lang font\endcsname{\praeambel@mainfont}
-    \expandafter\newfontfamily\csname\@lang fontsf\endcsname{\praeambel@sansfont}
-    \expandafter\newfontfamily\csname\@lang fonttt\endcsname{\praeambel@monofont}
-  }
-\fi
-
-% Прочие шрифтовые пакеты
-\usepackage{csquotes}
-\usepackage{moresize}
 
 % ------------------------------- %
 % Математические шрифты и символы %
@@ -154,13 +161,19 @@
 % Устанавливаем математический шрифт.
 \setmathfont{\praeambel@mathfont}
 
+% Убираем пустое место вокруг формул
+\setdisplayskipstretch{}
+
 % ---------------------------------------------------------------------------- %
 % Геометрия страницы                                                           %
 % ---------------------------------------------------------------------------- %
 
-\ifpraeambel@beamer
+\ifpraeambel@lyx
 \else
-  \usepackage[left=3cm, right=1.5cm, top=2cm, bottom=2cm]{geometry}
+  \ifpraeambel@beamer
+  \else
+    \usepackage[left=3cm, right=1.5cm, top=2cm, bottom=2cm]{geometry}
+  \fi
 \fi
 
 % ---------------------------------------------------------------------------- %
@@ -170,14 +183,16 @@
 \usepackage{parskip}
 \ifpraeambel@beamer
 \else
-  % Полуторный интервал.
-  \usepackage{setspace}
-  \onehalfspacing
-  \setdisplayskipstretch{}
+  \ifpraeambel@lyx
+  \else
+    % Полуторный интервал.
+    \usepackage{setspace}
+    \onehalfspacing
+    % Настройка красной строки.
+    \setlength{\parindent}{12.5mm}
+  \fi
 
-  % Настройка красной строки.
   \usepackage{indentfirst}
-  \setlength{\parindent}{12.5mm}
   \righthyphenmin=2
 
   \widowpenalty=10000
@@ -188,15 +203,18 @@
 % Титульная страница                                                           %
 % ---------------------------------------------------------------------------- %
 
-\ifpraeambel@beamer
-  % Команда для слайда с заголовком.
-  \newcommand\makebeamertitle{\frame{\maketitle}}
+\ifpraeambel@lyx
 \else
-  % Подзаголовок на титульном листе.
-  \usepackage{etoolbox}
-  \providecommand{\subtitle}[1]{
-    \apptocmd{\@title}{\par {\large #1 \par}}{}{}
-  }
+  \ifpraeambel@beamer
+    % Команда для слайда с заголовком.
+    \newcommand\makebeamertitle{\frame{\maketitle}}
+  \else
+    % Подзаголовок на титульном листе.
+    \usepackage{etoolbox}
+    \providecommand{\subtitle}[1]{
+      \apptocmd{\@title}{\par {\large #1 \par}}{}{}
+    }
+  \fi
 \fi
 
 % Более компактный заголовок статьи.
@@ -209,13 +227,13 @@
       {\Large \@title \par}%
       \ifx\@author\empty
       \else
-      {\large
-        \lineskip .5em%
-        \begin{tabular}[t]{c}%
-          \@author
-        \end{tabular}\par}%
+        {\large
+          \lineskip .5em%
+          \begin{tabular}[t]{c}%
+            \@author
+          \end{tabular}\par}%
       \fi%
-      {\large \@date}%
+        {\large \@date}%
     \end{center}%
     \par}
 \fi
@@ -259,17 +277,20 @@
 
 \usepackage{bookmark}
 
-\usepackage[
-  backend=biber,
-  bibstyle=gost-authoryear-min,
-  citestyle=gost-authoryear,
-  movenames=false
-]{biblatex}
+\ifpraeambel@lyx
+\else
+  \usepackage[
+    backend=biber,
+    bibstyle=gost-authoryear-min,
+    citestyle=gost-authoryear,
+    movenames=false
+  ]{biblatex}
 
-% Установка штрафов для biblatex, поскольку этот пакет сам обрабатывает ссылки.
-\setcounter{biburllcpenalty}{100}
-\setcounter{biburlucpenalty}{200}
-\setcounter{biburlnumpenalty}{100}
+  % Установка штрафов для biblatex, поскольку этот пакет сам обрабатывает ссылки.
+  \setcounter{biburllcpenalty}{100}
+  \setcounter{biburlucpenalty}{200}
+  \setcounter{biburlnumpenalty}{100}
+\fi
 
 % Этот пакет позволяет автоматически разбивать длинные ссылки
 % в произвольном месте.
@@ -286,13 +307,17 @@
 % Списки                                                                       %
 % ---------------------------------------------------------------------------- %
 
-\ifpraeambel@beamer
+\ifpraeambel@lyx
 \else
-  % enumitem конфликтует с beamer, поэтому совместно их не используем.
-  % Вообще, говорят, что это можно обойти, но зачем...
-  \usepackage[inline]{enumitem}
-  \AddEnumerateCounter{\Asbuk}{\russian@alph}{Щ}
-  \AddEnumerateCounter{\asbuk}{\russian@alph}{щ}
+  \ifpraeambel@beamer
+  \else
+    % enumitem конфликтует с beamer, поэтому совместно их не используем.
+    % Вообще, говорят, что это можно обойти, но зачем...
+    \usepackage[inline]{enumitem}
+    \setlist{nosep}
+    \AddEnumerateCounter{\Asbuk}{\russian@alph}{Щ}
+    \AddEnumerateCounter{\asbuk}{\russian@alph}{щ}
+  \fi
 \fi
 
 % Команда для локального сжатия списков.
@@ -305,88 +330,103 @@
 % Подписи плавающих объектов                                                   %
 % ---------------------------------------------------------------------------- %
 
-\usepackage{caption}
+\ifpraeambel@lyx
+\else
+  \usepackage{caption}
 
-% Данный пакет добавляет возможность создавать вложенные объекты с подписями.
-\usepackage{subcaption}
+  % Данный пакет добавляет возможность создавать вложенные объекты с подписями.
+  \usepackage{subcaption}
+\fi
 
 % ---------------------------------------------------------------------------- %
 % Таблицы                                                                      %
 % ---------------------------------------------------------------------------- %
 
-\ifpraeambel@beamer
+\ifpraeambel@lyx
 \else
-  % longtable не очень хорошо работает в beamer.
-  \usepackage{longtable}
+  \ifpraeambel@beamer
+  \else
+    % longtable не очень хорошо работает в beamer.
+    \usepackage{longtable}
+  \fi
+
+  % Красивые горизонтальные линии.
+  \usepackage{booktabs}
+
+  % Ячейки на несколько строк и столбцов.
+  \usepackage{multicol}
+  \usepackage{multirow}
+
+  % Пакет для создания ячеек с переносами строк.
+  \usepackage{makecell}
+
+  % Пакет для раскрашивания столбцов, строк, ячеек и линий.
+  \usepackage{colortbl}
+
+  % Работа с единицами измерения.
+  \usepackage{siunitx}[=v2]
+  \sisetup{
+    detect-all,
+    table-number-alignment=center,
+    table-figures-integer=2,
+    table-figures-decimal=2
+  }
 \fi
-
-% Красивые горизонтальные линии.
-\usepackage{booktabs}
-
-% Ячейки на несколько строк и столбцов.
-\usepackage{multicol}
-\usepackage{multirow}
-
-% Пакет для создания ячеек с переносами строк.
-\usepackage{makecell}
-
-% Пакет для раскрашивания столбцов, строк, ячеек и линий.
-\usepackage{colortbl}
-
-% Работа с единицами измерения.
-\usepackage{siunitx}[=v2]
-\sisetup{
-  detect-all,
-  table-number-alignment=center,
-  table-figures-integer=2,
-  table-figures-decimal=2
-}
 
 % ---------------------------------------------------------------------------- %
 % Рисунки и графики                                                            %
 % ---------------------------------------------------------------------------- %
 
-\usepackage{graphicx}
+\ifpraeambel@lyx
+\else
+  \usepackage{graphicx}
 
-\ifpraeambel@plots
-  \usepackage{tikz}
-  \usepackage{pgfplots}
-  \usepackage{pgfplotstable}
-  \pgfplotsset{compat=1.18}
+  \ifpraeambel@plots
+    \usepackage{tikz}
+    \usepackage{pgfplots}
+    \usepackage{pgfplotstable}
+    \pgfplotsset{compat=1.18}
+  \fi
 \fi
 
 % ---------------------------------------------------------------------------- %
 % Листинги                                                                     %
 % ---------------------------------------------------------------------------- %
 
-\usepackage{minted}
+\ifpraeambel@lyx
+\else
+  \usepackage{minted}
+\fi
 \usepackage{fancyvrb}
 
 % ---------------------------------------------------------------------------- %
 % Прочее                                                                       %
 % ---------------------------------------------------------------------------- %
 
-% Пакеты для фиксации изменений
-\ifpraeambel@changes
-  \usepackage{cancel}
-  \usepackage[commandnameprefix=always]{changes}
-  \newcommand{\stkout}[1]{\ifmmode\xcancel{#1}\else\sout{#1}\fi}
-  \setdeletedmarkup{\stkout{#1}}
+\ifpraeambel@lyx
+\else
+  % Пакеты для фиксации изменений
+  \ifpraeambel@changes
+    \usepackage{cancel}
+    \usepackage[commandnameprefix=always]{changes}
+    \newcommand{\stkout}[1]{\ifmmode\xcancel{#1}\else\sout{#1}\fi}
+    \setdeletedmarkup{\stkout{#1}}
+  \fi
+
+  % Пакет для работы с цветами.
+  \usepackage{xcolor}
+
+  % Пакет для микротипографики.
+  % В XeTeX работает не до конца, в LuaTeX все отлично,
+  % что неудивительно, если учесть, что послений является официально признанным
+  % преемником pdfLaTeX!
+  \usepackage{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+
+  % Разные коробочки.
+  \usepackage{adjustbox}
+  \usepackage[most]{tcolorbox}
 \fi
-
-% Пакет для работы с цветами.
-\usepackage{xcolor}
-
-% Пакет для микротипографики.
-% В XeTeX работает не до конца, в LuaTeX все отлично,
-% что неудивительно, если учесть, что послений является официально признанным
-% преемником pdfLaTeX!
-\usepackage{microtype}
-\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
-
-% Разные коробочки.
-\usepackage{adjustbox}
-\usepackage[most]{tcolorbox}
 
 % ------------------------- %
 % Передаем опции в hyperref %

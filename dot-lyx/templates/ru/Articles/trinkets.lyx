@@ -314,5 +314,14 @@
 
 \end_layout
 
+\begin_layout Standard
+\begin_inset FormulaMacro
+\newcommand{\ones}{\Vect 1}
+{\boldsymbol{1}}
+\end_inset
+
+
+\end_layout
+
 \end_body
 \end_document
