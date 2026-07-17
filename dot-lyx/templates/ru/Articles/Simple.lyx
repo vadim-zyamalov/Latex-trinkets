@@ -9,6 +9,7 @@
 \usepackage[lyx]{praeambel}
 \usepackage[mathb]{mathabx}
 \usepackage{icomma}
+\usepackage{indentfirst}
 \setlist{nosep}
 \VerbatimFootnotes
 \raggedbottom

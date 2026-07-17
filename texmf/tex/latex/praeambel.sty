@@ -180,11 +180,11 @@
 % Размещение текста: красная строка, штрафы                                    %
 % ---------------------------------------------------------------------------- %
 
-\usepackage{parskip}
 \ifpraeambel@beamer
 \else
   \ifpraeambel@lyx
   \else
+    \usepackage{indentfirst}
     % Полуторный интервал.
     \usepackage{setspace}
     \onehalfspacing
@@ -192,7 +192,6 @@
     \setlength{\parindent}{12.5mm}
   \fi
 
-  \usepackage{indentfirst}
   \righthyphenmin=2
 
   \widowpenalty=10000

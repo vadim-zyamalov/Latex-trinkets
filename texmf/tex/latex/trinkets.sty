@@ -52,11 +52,67 @@
 
   % Векторы
   \iftutex
-    \newcommand*{\Vect}[1]{\symbf{#1}}
+    \let\@mymathbf\symbf
   \fi
   \ifpdftex
-    \newcommand*{\Vect}[1]{\bm{#1}}
+    \let\@mymathbf\bm
   \fi
+
+  \newcommand*{\Vect}[1]{\@mymathbf{#1}}
+
+  \newcommand{\vvA}{\@mymathbf{A}}
+  \newcommand{\vva}{\@mymathbf{a}}
+  \newcommand{\vvB}{\@mymathbf{B}}
+  \newcommand{\vvb}{\@mymathbf{b}}
+  \newcommand{\vvC}{\@mymathbf{C}}
+  \newcommand{\vvc}{\@mymathbf{c}}
+  \newcommand{\vvD}{\@mymathbf{D}}
+  \newcommand{\vvd}{\@mymathbf{d}}
+  \newcommand{\vvE}{\@mymathbf{E}}
+  \newcommand{\vve}{\@mymathbf{e}}
+  \newcommand{\vvF}{\@mymathbf{F}}
+  \newcommand{\vvf}{\@mymathbf{f}}
+  \newcommand{\vvG}{\@mymathbf{G}}
+  \newcommand{\vvg}{\@mymathbf{g}}
+  \newcommand{\vvH}{\@mymathbf{H}}
+  \newcommand{\vvh}{\@mymathbf{h}}
+  \newcommand{\vvI}{\@mymathbf{I}}
+  \newcommand{\vvi}{\@mymathbf{i}}
+  \newcommand{\vvJ}{\@mymathbf{J}}
+  \newcommand{\vvj}{\@mymathbf{j}}
+  \newcommand{\vvK}{\@mymathbf{K}}
+  \newcommand{\vvk}{\@mymathbf{k}}
+  \newcommand{\vvL}{\@mymathbf{L}}
+  \newcommand{\vvl}{\@mymathbf{l}}
+  \newcommand{\vvM}{\@mymathbf{M}}
+  \newcommand{\vvm}{\@mymathbf{m}}
+  \newcommand{\vvN}{\@mymathbf{N}}
+  \newcommand{\vvn}{\@mymathbf{n}}
+  \newcommand{\vvO}{\@mymathbf{O}}
+  \newcommand{\vvo}{\@mymathbf{o}}
+  \newcommand{\vvP}{\@mymathbf{P}}
+  \newcommand{\vvp}{\@mymathbf{p}}
+  \newcommand{\vvQ}{\@mymathbf{Q}}
+  \newcommand{\vvq}{\@mymathbf{q}}
+  \newcommand{\vvR}{\@mymathbf{R}}
+  \newcommand{\vvr}{\@mymathbf{r}}
+  \newcommand{\vvS}{\@mymathbf{S}}
+  \newcommand{\vvs}{\@mymathbf{s}}
+  \newcommand{\vvT}{\@mymathbf{T}}
+  \newcommand{\vvt}{\@mymathbf{t}}
+  \newcommand{\vvU}{\@mymathbf{U}}
+  \newcommand{\vvu}{\@mymathbf{u}}
+  \newcommand{\vvV}{\@mymathbf{V}}
+  \newcommand{\vvv}{\@mymathbf{v}}
+  \newcommand{\vvW}{\@mymathbf{W}}
+  \newcommand{\vvw}{\@mymathbf{w}}
+  \newcommand{\vvX}{\@mymathbf{X}}
+  \newcommand{\vvx}{\@mymathbf{x}}
+  \newcommand{\vvY}{\@mymathbf{Y}}
+  \newcommand{\vvy}{\@mymathbf{y}}
+  \newcommand{\vvZ}{\@mymathbf{Z}}
+  \newcommand{\vvz}{\@mymathbf{z}}
+  \newcommand{\vvbeta}{\@mymathbf{\beta}}
 }
 
 \endinput
