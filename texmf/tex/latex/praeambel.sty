@@ -75,9 +75,20 @@
 % Опция для включения пакетов для фиксации изменений.
 \DeclareBoolOption{changes}
 
+% Величина расстояния между абзацами.
+\DeclareStringOption[.5\baselineskip plus 2pt]{parskip}
+
 % Список языков.
 % Если опция не указана, то используется русский язык.
 \DeclareStringOption[russian]{language}
+
+% Опция для компакных заголовков.
+\DeclareBoolOption{compact}
+
+% Названия для части и главы.
+% Если опция не указана, то используется русский язык.
+\DeclareStringOption[Часть]{partname}
+\DeclareStringOption[Глава]{chaptername}
 
 % Опции для выбора основных шрифтов:
 % Не назначать шрифты. Это нужно, например, для LyX, в котором есть встроенные
@@ -160,6 +171,7 @@
 
 % Устанавливаем математический шрифт.
 \setmathfont{\praeambel@mathfont}
+\setmathrm{\praeambel@mathfont}
 
 % Убираем пустое место вокруг формул
 \setdisplayskipstretch{}
@@ -192,6 +204,9 @@
     \setlength{\parindent}{12.5mm}
   \fi
 
+  % Настройка отступа между абзацами.
+  \setlength{\parskip}{\praeambelyx@parskip}
+
   \righthyphenmin=2
 
   \widowpenalty=10000
@@ -217,24 +232,26 @@
 \fi
 
 % Более компактный заголовок статьи.
-\ifpraeambel@article
-  \def\@maketitle{%
-    \newpage
-    \null
-    \begin{center}%
-      \let \footnote \thanks
-      {\Large \@title \par}%
-      \ifx\@author\empty
-      \else
-        {\large
-          \lineskip .5em%
-          \begin{tabular}[t]{c}%
-            \@author
-          \end{tabular}\par}%
-      \fi%
-        {\large \@date}%
-    \end{center}%
-    \par}
+\ifpraeambel@compact
+  \ifpraeambel@article
+    \def\@maketitle{%
+      \newpage
+      \null
+      \begin{center}%
+        \let \footnote \thanks
+        {\Large \@title \par}%
+        \ifx\@author\empty
+        \else
+          {\large
+            \lineskip .5em%
+            \begin{tabular}[t]{c}%
+              \@author
+            \end{tabular}\par}%
+        \fi%
+          {\large \@date}%
+      \end{center}%
+      \par}
+  \fi
 \fi
 
 % ---------------------------------------------------------------------------- %
@@ -250,20 +267,32 @@
 
   \gdef\thepart{\Roman{part}}
 
-  \titleformat{\chapter}[display]{\normalfont\Large\bfseries}{\chaptername~\thechapter}{0pt}{}
-  \titlespacing{\chapter}{0pt}{\parskip}{\parskip}
+  \ifpraeambel@compact
+    \titleformat{\chapter}[hang]{\normalfont\Large\bfseries}{\thechapter}{1em}{}
+    \titlespacing{\chapter}{0pc}{\baselineskip}{\parskip}
+  \else
+    \titleformat{\chapter}[display]{\normalfont\Large\bfseries}{\chaptername~\thechapter}{0pt}{}
+    \titlespacing{\chapter}{0pt}{\baselineskip}{\parskip}
+  \fi
 
   \titleformat{\section}{\normalfont\Large\bfseries}{\thesection}{1em}{}
-  \titlespacing{\section}{0pt}{\parskip}{\parskip}
+  \titlespacing{\section}{0pt}{\baselineskip}{\parskip}
 
   \titleformat{\subsection}{\normalfont\large\bfseries}{\thesubsection}{1em}{}
-  \titlespacing{\subsection}{0pt}{\parskip}{\parskip}
+  \titlespacing{\subsection}{0pt}{\baselineskip}{\parskip}
 
   \AddToHook{cmd/appendix/after}{%
     \gdef\@chapapp{\appendixname}%
     \gdef\chaptername{\appendixname}%
     \gdef\thechapter{\Asbuk{chapter}}%
     \titleformat{\chapter}{\normalfont\Large\bfseries}{\thechapter}{1em}{}}
+
+  \ifpraeambel@babel
+    \addto{\captionsrussian}{%
+      \renewcommand{\partname}{\praeambel@partname}%
+      \renewcommand{\chaptername}{\praeambel@chaptername}%
+    }
+  \fi
 \fi
 
 \ifpraeambel@article
