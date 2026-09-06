@@ -36,9 +36,11 @@ AddToPreamble
  
   \xsimsetup{
     exercise/template=runin,
-    solution/template=runin,
     exercise/begin-hook = \onehalfspacing,
-  	exercise/end-hook = \par
+    exercise/end-hook = \vspace{\the\parskip},
+    solution/template=runin,
+    solution/begin-hook = \onehalfspacing,
+    solution/end-hook = \vspace{\the\parskip}
   }
 
   \DeclareExerciseTranslation{Russian}{exercise}{№}
@@ -65,10 +67,10 @@ End
 Style ExSolCommon
   Margin                Dynamic
   LatexType             Environment
-  ParagraphGroup        1
+  ParagraphGroup        0
   NextNoIndent          1
   ResetArgs             1
-  KeepEmpty             1
+  KeepEmpty             0
   Argument 1
     LabelString   "Optional parameter"
     Decoration    Minimalistic

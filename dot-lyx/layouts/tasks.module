@@ -27,6 +27,7 @@ Style Tasks
 	EndArgument
     LabelType             Enumerate
     LabelCounter          tasks
+    LabelIndent           xx
     LabelSep              xx
     ParIndent             MMM
     Align                 Block
@@ -44,7 +45,9 @@ Style Tasks
     Preamble
         \newlist{tasks}{enumerate}{1}
         \setlist[tasks,1]{
-        leftmargin=\parindent,
+        nosep,
+        labelindent=\parindent,
+        leftmargin=*,
         label=\bfseries\asbuk*.,
         ref=\theexercise\asbuk*
     }
